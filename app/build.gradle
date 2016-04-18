@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.dtu.tournamate_v1"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -17,6 +17,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
 }
 
 dependencies {
@@ -25,4 +32,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:recyclerview-v7:23.0.+'
+    compile 'com.firebase:firebase-client-android:2.3.1'
+    compile 'com.firebaseui:firebase-ui:0.3.1'
 }

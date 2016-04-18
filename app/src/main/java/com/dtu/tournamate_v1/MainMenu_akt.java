@@ -1,12 +1,13 @@
 package com.dtu.tournamate_v1;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,15 +17,30 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_akt;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.ui.FirebaseRecyclerAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    ArrayList<Tournament> storedTournaments = new ArrayList();
+    ArrayList<String> storedTournamentsNames = new ArrayList();
+    private DBAdapter dbAdapter = new DBAdapter(this);
+
+    Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
+    Firebase tournamentRef = myFirebaseRef.child("Tournaments");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +78,38 @@ public class MainMenu_akt extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // Test String array of names
-        String[] tournamentNames = {"RecyclerView for tournaments","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3"};
+        FirebaseRecyclerAdapter<Tournament, MessageViewHolder> fireBaseAdapter =
+                new FirebaseRecyclerAdapter<Tournament, MessageViewHolder>(
+                        Tournament.class,
+                        R.layout.tournament_listelement,
+                        MessageViewHolder.class,
+                        tournamentRef
+                ) {
+                    @Override
+                    protected void populateViewHolder(MessageViewHolder messageViewHolder, Tournament t, int i) {
+                        messageViewHolder.tName.setText(t.getName());
+                        messageViewHolder.tDate.setText(t.getCreatedAt());
+                    }
+                };
+        mRecyclerView.setAdapter(fireBaseAdapter);
 
-        // specify an adapter (see also next example)
-        mAdapter = new MyRecyclerAdapter(tournamentNames);
-        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
+    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+        TextView tName;
+        TextView tDate;
+        public MessageViewHolder(View v){
+            super(v);
+            tName = (TextView) v.findViewById(R.id.tournament_list_name);
+            tDate = (TextView) v.findViewById(R.id.tournament_list_date);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
     }
 
@@ -119,6 +161,48 @@ public class MainMenu_akt extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void updateList(){
+
+        storedTournamentsNames.clear();
+        storedTournaments.clear();
+
+        Log.d("RecyclerView", "Lenght of empty arraylist: " + storedTournamentsNames.size());
+
+        final ProgressDialog progress;
+        progress = ProgressDialog.show(this, "Finding stored tournaments", "", true);
+        progress.setCancelable(false);
+        progress.show();
+
+        dbAdapter.open();
+        Cursor c = dbAdapter.getAllRows(MyApplication.DATABASE_TABLE_TOURNAMENTS);
+        if (c.moveToFirst()){
+            do {
+                String temp_name = c.getString(MyApplication.COL_TOURNAMENTS_NAME);
+                String date = c.getString(MyApplication.COL_TOURNAMENTS_DATE);
+                String isDone = c.getString(MyApplication.COL_TOURNAMENTS_DONE);
+                long id = Long.parseLong(c.getString(MyApplication.COL_ROWID));
+                String objectID = c.getString(MyApplication.COL_TOURNAMENTS_PARSE);
+                Tournament t = new Tournament();
+                t.setName(temp_name);
+                t.setCreatedAt(date);
+                t.setObjectID_sql(id);
+                t.setObjectID(objectID);
+                if(isDone.equals("true")){
+                    t.setIsDone(true);
+                }
+                else{
+                    t.setIsDone(false);
+                }
+                storedTournaments.add(t);
+                storedTournamentsNames.add(temp_name);
+
+            } while (c.moveToNext());
+            c.close();
+        }
+        dbAdapter.close();
+        progress.dismiss();
     }
 
 

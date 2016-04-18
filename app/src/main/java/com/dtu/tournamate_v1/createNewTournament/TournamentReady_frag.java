@@ -21,6 +21,10 @@ import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
 import com.dtu.tournamate_v1.Tournament;
 import com.dtu.tournamate_v1.activeTournament.ActiveMatchScore_frag;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 //import com.parse.ParseException;
 //import com.parse.SaveCallback;
 
@@ -31,7 +35,7 @@ import java.util.Date;
 /**
  * Created by Christian on 05-04-2015.
  */
-public class TournamentReady_frag extends Fragment implements View.OnClickListener {
+public class  TournamentReady_frag extends Fragment implements View.OnClickListener {
 
     // Define graphical elements
     TextView selectedType_tv, header;
@@ -41,6 +45,7 @@ public class TournamentReady_frag extends Fragment implements View.OnClickListen
     View rod;
     Boolean tCreated = false;
     DBAdapter db_adapter = new DBAdapter(getActivity());
+    Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class TournamentReady_frag extends Fragment implements View.OnClickListen
 
         header.setText(getString(R.string.tournamentResume_header));
         selectedType_tv.setText(MyApplication.type);
+
 
         MyApplication.activeMatch = 1;
         MyApplication.matchesPlayed = 0;
@@ -97,6 +103,24 @@ public class TournamentReady_frag extends Fragment implements View.OnClickListen
                 progress = ProgressDialog.show(getActivity(), getString(R.string.tournamentResume_dialogHeader), getString(R.string.tournamentResume_dialogText), true);
                 progress.setCancelable(false);
                 progress.show();
+
+                // Firebase test
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                String date  = dateFormat.format(new Date());
+
+                Tournament tournament = new Tournament();
+                tournament.setName(MyApplication.tournamentName);
+                tournament.setIsDone(false);
+                tournament.setWinner("No winner yet");
+                tournament.setCreatedAt(date);
+
+                Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+                tournamentRef.push().setValue(tournament);
+                MyApplication.tournamentID_parse = tournamentRef.getKey();
+
+
+                progress.dismiss();
+
                 /**
                 new AsyncTask() {
                     @Override
@@ -206,7 +230,7 @@ public class TournamentReady_frag extends Fragment implements View.OnClickListen
         openDB();
         db_t_id = db_adapter.insertRowTournament(MyApplication.tournamentName,MyApplication.type,MyApplication.activeMatch,MyApplication.matchesPlayed, String.valueOf(MyApplication.isDone).toString() ,String.valueOf(MyApplication.isOnline),MyApplication.tournamentID_parse,date);
         MyApplication.tournamentID_sql = db_t_id;
-        Log.d("DB", "Tournament saved. Name: " + MyApplication.tournamentName +" type: "+ MyApplication.type +" activematch: "+ MyApplication.activeMatch +" played: "+ MyApplication.matchesPlayed +" done: "+ String.valueOf(MyApplication.isDone).toString() +" online: "+ String.valueOf(MyApplication.isOnline) +" date: "+ date);
+        Log.d("DB", "Tournament saved. Name: " + MyApplication.tournamentName + "Firebase ID: "+ MyApplication.tournamentID_parse + " type: "+ MyApplication.type +" activematch: "+ MyApplication.activeMatch +" played: "+ MyApplication.matchesPlayed +" done: "+ String.valueOf(MyApplication.isDone).toString() +" online: "+ String.valueOf(MyApplication.isOnline) +" date: "+ date);
         for(Match m : MyApplication.matchList){
             Team t1 = m.getT1();
             Team t2 = m.getT2();

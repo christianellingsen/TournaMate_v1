@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.Team;
+import com.firebase.client.Firebase;
 //import com.facebook.FacebookSdk;
 //import com.firebase.client.Firebase;
 //import com.parse.Parse;
@@ -26,7 +27,7 @@ import java.util.Set;
  * Created by Christian on 12-03-2015.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends android.app.Application {
 
     public static final String YOUR_APPLICATION_ID = "kSXYu1zyAGX1LjakV2v5X69UnWHg6DWIItTLH3VS";
     public static final String YOUR_CLIENT_KEY = "jTqfP3caYT82lZ3wGufiTjrgfnxHzEhiHfMHDlBz";
@@ -76,6 +77,10 @@ public class MyApplication extends Application {
     public static final int COL_MATCHES_NUMBER = 6;
     public static final int COL_MATCHES_PLAYED = 7;
 
+    // Firebase
+    public static final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/TournaMate_v1";
+
+
 
     @Override
     public void onCreate() {
@@ -98,8 +103,8 @@ public class MyApplication extends Application {
         **/
 
         // Firebase
-        //Firebase.setAndroidContext(this);
-        final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/";
+        Firebase.setAndroidContext(this);
+
         // ...
     }
 

@@ -66,7 +66,7 @@ public class DBAdapter {
     public static final String DATABASE_TABLE_MATCHES = MyApplication.DATABASE_TABLE_MATCHES;
     public static final String DATABASE_TABLE_TEAMS = MyApplication.DATABASE_TABLE_TEAMS;
     // Track DB version if a new version of your app changes the format.
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
 
     private static final String DATABASE_TOURNAMENTS_CREATE_SQL =
             "create table " + DATABASE_TABLE_TOURNAMENTS
