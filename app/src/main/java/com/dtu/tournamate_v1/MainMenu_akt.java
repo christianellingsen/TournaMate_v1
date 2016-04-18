@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +21,10 @@ import com.dtu.tournamate_v1.createNewTournament.NewTournament_akt;
 
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,24 @@ public class MainMenu_akt extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // Test String array of names
+        String[] tournamentNames = {"RecyclerView for tournaments","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3","T1","T2","T3"};
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyRecyclerAdapter(tournamentNames);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
     @Override
@@ -95,4 +120,6 @@ public class MainMenu_akt extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
