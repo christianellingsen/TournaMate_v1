@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:id="@+id/LinearLayout01"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical">
+
+        <!-- content goes here -->
+        <TextView
+            android:layout_width="359dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/textViewTeams"
+            android:text="@string/tournamentResume_teamHeader"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.05"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="35dp"
+            />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:id="@+id/listViewTeams"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.37"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarThumbVertical="@drawable/scrollbar"
+            android:fadeScrollbars="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="2dp" />
+        <!-- stretching frame layout, using layout_weight -->
+
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/textViewType"
+                style="@style/txt_h1"
+                android:text="Vælg typ Tour"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Selected type"
+                android:id="@+id/textViewSelectedType"
+
+                style="@style/txt_button"
+                android:layout_gravity="center_horizontal|bottom" />
+
+        </FrameLayout>
+
+        <!-- content fixated to the bottom of the screen -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#81617E"
+            android:padding="10dp"
+            android:gravity="center">
+            <!-- your bottom content -->
+            <ToggleButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#DADFE5"
+                android:text="New ToggleButton"
+                android:id="@+id/toggleButtonONOFFline"
+                android:textOff="@string/tournamentResume_buttonMatchOffline"
+                android:textOn="@string/tournamentResume_buttonMatchOnline"
+                android:textSize="24dp"
+                android:layout_marginRight="10dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="START"
+                android:id="@+id/buttonStart"
+                android:textSize="24dp"
+                android:textColor="#ffffff"
+                android:background="@drawable/apply_button"
+                android:layout_alignParentRight="true" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

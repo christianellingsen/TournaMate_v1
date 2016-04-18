@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        android:id="@+id/linearLayout6"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/tournamentWinner_theWinneris"
+        android:id="@+id/textView42"
+        android:textSize="35dp"
+        android:layout_above="@+id/textViewWinner_teamName"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Team name"
+        android:id="@+id/textViewWinner_teamName"
+        android:textColor="#0FAE02"
+        android:textSize="27dp"
+        android:paddingBottom="20dp"
+        android:layout_above="@+id/linearLayout6"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:id="@+id/linearLayout5"
+        android:layout_above="@+id/listViewWinner"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="false">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="#"
+            android:id="@+id/textViewRankTV_Rank"
+            android:layout_marginLeft="10dp"
+            style="@style/txt_h3"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Hold navn"
+            android:id="@+id/textViewRankTV_name"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/textViewRankTV_Rank"
+            style="@style/txt_h3"/>
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="155dp">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content">
+            <TextView
+                android:id="@+id/textViewRankTV_Played"
+                android:text="K"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:gravity="left"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/txt_h3"></TextView>
+            <TextView
+                android:id="@+id/textViewRankTV_Won"
+                android:text="V"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:gravity="left"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/txt_h3"></TextView>
+            <TextView
+                android:id="@+id/textViewRankTV_Draw"
+                android:text="U"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:gravity="left"
+                android:layout_marginRight="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/txt_h3"></TextView>
+            <TextView
+                android:text="T"
+                android:id="@+id/textViewRankTV_Lost"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:gravity="left"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/txt_h3"></TextView>
+            <TextView
+                android:text="Point"
+                android:id="@+id/textViewRankTV_Points"
+                android:textStyle="bold"
+                android:typeface="serif"
+                android:gravity="left"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="gravity"
+                style="@style/txt_h3"></TextView>
+        </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="323dp"
+        android:id="@+id/listViewWinner"
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/linearLayout4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:fadeScrollbars="false"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_weight="0.35"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout4">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/activeTournament_buttonRank"
+            android:id="@+id/buttonWinner_rank"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/activeTournament_buttonMatchlist"
+            android:id="@+id/buttonWinner_matchList"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/tournamentWinner_end"
+            android:id="@+id/buttonWinner_end" />
+    </LinearLayout>
+</RelativeLayout>

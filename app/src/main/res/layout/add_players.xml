@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/addplayer_selectPlayers"
+        android:id="@+id/textView6"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:divider="@color/button_material_dark"
+        android:weightSum="1">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editTextName"
+            android:hint="@string/addplayer_hint"
+            android:layout_weight="0.97" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/addplayer_addButton"
+            android:id="@+id/buttonAddPlayer"
+            android:background="@drawable/apply_button"
+            android:textColor="#ffffff"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="389dp"
+        android:id="@+id/listViewSelectPlayers"
+        android:choiceMode="multipleChoice"
+        android:layout_weight="0.62"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:fadeScrollbars="false">
+    </ListView>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/addplayer_removeButton"
+            android:id="@+id/buttonRemove"
+            android:layout_gravity="left"
+            android:layout_marginLeft="10dp" />
+
+        <ToggleButton
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/addplayer_selectAllButton"
+            android:id="@+id/toggleButtonF"
+            android:checked="false"
+            android:textOff="@string/addplayer_selectAllButton"
+            android:textOn="@string/addplayer_RemoveAllButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="@string/addplayer_done"
+            android:id="@+id/buttonDonePlayers"
+            android:background="@drawable/apply_button"
+            android:textColor="#ffffff"
+            android:layout_gravity="right"
+            android:layout_marginLeft="4dp" />
+    </LinearLayout>
+</LinearLayout>
