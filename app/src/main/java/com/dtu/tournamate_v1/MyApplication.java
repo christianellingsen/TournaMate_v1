@@ -29,9 +29,12 @@ import java.util.Set;
 
 public class MyApplication extends android.app.Application {
 
-    public static final String YOUR_APPLICATION_ID = "kSXYu1zyAGX1LjakV2v5X69UnWHg6DWIItTLH3VS";
-    public static final String YOUR_CLIENT_KEY = "jTqfP3caYT82lZ3wGufiTjrgfnxHzEhiHfMHDlBz";
+    // User data
 
+    private static boolean firstTime = true;
+    
+
+    // Active tournaments data
     public static Set<String> playerSet = new HashSet<>();
     public static Set<String> selectedPlayerSet = new HashSet<>();
     public static ArrayList<Team> teams = new ArrayList<>();
@@ -80,6 +83,10 @@ public class MyApplication extends android.app.Application {
     // Firebase
     public static final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/TournaMate_v1";
 
+
+    // Parse
+    public static final String YOUR_APPLICATION_ID = "kSXYu1zyAGX1LjakV2v5X69UnWHg6DWIItTLH3VS";
+    public static final String YOUR_CLIENT_KEY = "jTqfP3caYT82lZ3wGufiTjrgfnxHzEhiHfMHDlBz";
 
 
     @Override
