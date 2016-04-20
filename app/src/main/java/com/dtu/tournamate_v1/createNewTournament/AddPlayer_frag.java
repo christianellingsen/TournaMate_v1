@@ -32,7 +32,6 @@ import java.util.HashSet;
 public class AddPlayer_frag extends Fragment implements View.OnClickListener {
 
     private Button addPlayerToList_b, remove_b, done_b;
-    private TextView header;
     private ToggleButton selectAll_tb;
     private EditText newName_et;
     private ListView lv;
@@ -49,15 +48,12 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
 
         rod = i.inflate(R.layout.add_players, container, false);
 
-        header = (TextView) getActivity().findViewById(R.id.textViewNewTournamentHeader);
         addPlayerToList_b = (Button) rod.findViewById(R.id.buttonAddPlayer);
         remove_b = (Button) rod.findViewById(R.id.buttonRemove);
         selectAll_tb = (ToggleButton) rod.findViewById(R.id.toggleButtonF);
         newName_et = (EditText) rod.findViewById(R.id.editTextName);
         done_b = (Button) rod.findViewById(R.id.buttonDonePlayers);
         lv = (ListView) rod.findViewById(R.id.listViewSelectPlayers);
-
-        header.setText(getString(R.string.addplayer_header));
 
         addPlayerToList_b.setOnClickListener(this);
         remove_b.setOnClickListener(this);

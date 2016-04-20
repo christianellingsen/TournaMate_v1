@@ -90,6 +90,7 @@ public class MainMenu_akt extends AppCompatActivity
                         messageViewHolder.tName.setText(t.getName());
                         messageViewHolder.tDate.setText(t.getCreatedAt());
                     }
+
                 };
         mRecyclerView.setAdapter(fireBaseAdapter);
 

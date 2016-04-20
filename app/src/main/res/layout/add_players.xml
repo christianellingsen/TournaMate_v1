@@ -62,8 +62,8 @@
         android:weightSum="1">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="110dp"
+            android:layout_height="70dp"
             android:background="@drawable/standard_button"
             style="@style/txt_button"
             android:text="@string/addplayer_removeButton"
@@ -72,8 +72,8 @@
             android:layout_marginLeft="10dp" />
 
         <ToggleButton
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="110dp"
+            android:layout_height="70dp"
             android:background="@drawable/standard_button"
             style="@style/txt_button"
             android:text="@string/addplayer_selectAllButton"
@@ -85,8 +85,8 @@
             android:layout_marginLeft="5dp" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="110dp"
+            android:layout_height="70dp"
             android:text="@string/addplayer_done"
             android:id="@+id/buttonDonePlayers"
             android:background="@drawable/apply_button"

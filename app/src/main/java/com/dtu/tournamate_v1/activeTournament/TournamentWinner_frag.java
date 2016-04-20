@@ -33,7 +33,7 @@ import java.util.Date;
  */
 public class TournamentWinner_frag extends Fragment implements View.OnClickListener {
 
-    private TextView winnerName_tv,header;
+    private TextView winnerName_tv;
     private Button rank_b, matchList_b, end_b;
     private Team winner;
     ListView lv;
@@ -53,13 +53,11 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
         matches = MyApplication.matchList;
         teamsStringList = new ArrayList<>();
 
-        header = (TextView) getActivity().findViewById(R.id.textViewNewTournamentHeader);
         winnerName_tv = (TextView) rod.findViewById(R.id.textViewWinner_teamName);
         rank_b = (Button) rod.findViewById(R.id.buttonWinner_rank);
         matchList_b = (Button) rod.findViewById(R.id.buttonWinner_matchList);
         end_b = (Button) rod.findViewById(R.id.buttonWinner_end);
 
-        header.setText(getString(R.string.tournamentWinner_header));
 
         rank_b.setOnClickListener(this);
         matchList_b.setOnClickListener(this);

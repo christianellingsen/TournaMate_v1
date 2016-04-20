@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -25,8 +26,6 @@ import java.util.Date;
  */
 public class NewTournament_akt extends Activity {
 
-    ImageView home;
-    TextView header;
     DBAdapter db_adapter = new DBAdapter(this);
 
     @Override
@@ -34,6 +33,8 @@ public class NewTournament_akt extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_tournament);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_new_tournament);
+        setSupportActionBar(toolbar);
 
         if (!MyApplication.resumingTournament) {
             AlertDialog.Builder setName = new AlertDialog.Builder(this);
@@ -64,6 +65,10 @@ public class NewTournament_akt extends Activity {
                     .add(R.id.fragmentContent, fragment)
                     .commit();
         }**/
+    }
+
+    private void setSupportActionBar(Toolbar toolbar) {
+
     }
 
     @Override

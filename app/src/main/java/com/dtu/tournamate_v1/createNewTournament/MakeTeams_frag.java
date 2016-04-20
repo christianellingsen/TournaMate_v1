@@ -32,8 +32,6 @@ public class MakeTeams_frag extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
 
         rod = i.inflate(R.layout.make_teams, container, false);
-        header = (TextView) getActivity().findViewById(R.id.textViewNewTournamentHeader);
-        header.setText(getString(R.string.maketeams_header));
 
         MyApplication.teams.clear();
 

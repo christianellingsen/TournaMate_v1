@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/standard_button"
                 style="@style/txt_button"
-                android:text="Make teams"
+                android:text="@string/Make_teams"
                 android:id="@+id/buttonMakeTeams"
                 android:layout_gravity="center_horizontal" />
 

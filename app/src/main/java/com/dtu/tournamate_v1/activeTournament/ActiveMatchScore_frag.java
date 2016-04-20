@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class ActiveMatchScore_frag extends Fragment implements View.OnClickListener{
 
-    private TextView matchNumber_tv, teamX_tv, teamY_tv, teamXScore_tv, teamYScore_tv, header;
+    private TextView matchNumber_tv, teamX_tv, teamY_tv, teamXScore_tv, teamYScore_tv;
     private Button teamXPlus_b, teamXMinus_b, teamYMinus_b, teamYPlus_b, rank_b, matchlist_b, next_b;
     private int activeMatchNumber;
     private Match m;
@@ -40,7 +40,6 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
             rod = i.inflate(R.layout.active_match_score, container, false);
 
-            header = (TextView) getActivity().findViewById(R.id.textViewNewTournamentHeader);
             matchNumber_tv = (TextView) rod.findViewById(R.id.textViewMatchNumber);
             teamX_tv = (TextView) rod.findViewById(R.id.textViewTeamX);
             teamY_tv = (TextView) rod.findViewById(R.id.textViewTeamY);
@@ -54,7 +53,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             matchlist_b = (Button) rod.findViewById(R.id.buttonViewAllMatches);
             next_b = (Button) rod.findViewById(R.id.buttonNextMatch);
 
-            header.setText(MyApplication.tournamentName);
+
 
             teamXPlus_b.setOnClickListener(this);
             teamXMinus_b.setOnClickListener(this);

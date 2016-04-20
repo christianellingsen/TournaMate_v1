@@ -38,7 +38,7 @@ import java.util.Date;
 public class  TournamentReady_frag extends Fragment implements View.OnClickListener {
 
     // Define graphical elements
-    TextView selectedType_tv, header;
+    TextView selectedType_tv;
     Button start_b;
     ToggleButton onOffLine_b;
     ListView lv;
@@ -52,13 +52,12 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
 
         rod = i.inflate(R.layout.tournament_ready, container, false);
 
-        header = (TextView) getActivity().findViewById(R.id.textViewNewTournamentHeader);
         lv = (ListView) rod.findViewById(R.id.listViewTeams);
         selectedType_tv = (TextView) rod.findViewById(R.id.textViewSelectedType);
         start_b = (Button) rod.findViewById(R.id.buttonStart);
         onOffLine_b = (ToggleButton) rod.findViewById(R.id.toggleButtonONOFFline);
 
-        header.setText(getString(R.string.tournamentResume_header));
+
         selectedType_tv.setText(MyApplication.type);
 
 
