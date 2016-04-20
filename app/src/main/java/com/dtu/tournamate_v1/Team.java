@@ -20,10 +20,17 @@ public class Team { // extends ParseObject{
     private String matchID;
     private long teamID_sql;
 
-
-    public Team(){
-
+    public Team() {
+        this.teamName = "";
+        this.matchesWon = 0;
+        this.matchesLost = 0;
+        this.matchesDraw = 0;
+        this.matechesPlayed = 0;
+        this.overAllScore = 0;
+        this.matchID = "";
+        this.teamID_sql = 0;
     }
+
 
     public void addTeamMember(String newTeamMember){
         teamMembers.add(newTeamMember);

@@ -11,20 +11,57 @@ import android.util.Log;
 //@bParseClassName("Matches")
 public class Match { //extends ParseObject {
 
-    private int matchNumber, scoreT1, scoreT2;
+    private int matchNumber;
+    private int scoreT1;
+    private int scoreT2;
+    private int winnerOfMatchNumber;
+    private int roundID;
     private Team t1, t2, winner;
     private boolean played;
     private String matchID, t1ID, t2ID,tournamentID ;
     private long matchID_sql,t1ID_sql,t2ID_sql;
+    private String matchTitle;
 
-    public Match(){
+    public Match() {
+        this.matchNumber =0;
+        this.scoreT1 = 0;
+        this.scoreT2 = 0;
+        this.winnerOfMatchNumber = 0;
+        this.roundID = 0;
+        this.t1 = new Team();
+        this.t2 = new Team();
+        this.winner = new Team();
+        this.played = false;
+        this.matchID = "";
+        this.t1ID = "";
+        this.t2ID = "";
+        this.tournamentID = "";
+        this.matchID_sql = 0;
+        this.t1ID_sql = 0;
+        this.t2ID_sql = 0;
+        this.matchTitle = "";
+    }
 
+    public String getMatchTitle() {
+        return matchTitle;
+    }
+
+    public void setMatchTitle(String matchTitle) {
+        this.matchTitle = matchTitle;
     }
 
     public int getMatchNumber() {
         return matchNumber;
     }
     public void setMatchNumber(int value){this.matchNumber=value;}
+
+    public int getRoundID() {
+        return roundID;
+    }
+
+    public void setRoundID(int roundID) {
+        this.roundID = roundID;
+    }
 
     public String getScoreVs(){
         return scoreT1 + " VS " + scoreT2;
@@ -66,6 +103,16 @@ public class Match { //extends ParseObject {
         this.played = played;
         Log.d("Debug","Match " + matchNumber +" is played");
     }
+
+    public int getWinnerOfMatchNumber() {
+        return winnerOfMatchNumber;
+    }
+
+    public void setWinnerOfMatchNumber(int winnerOfMatchNumber) {
+        this.winnerOfMatchNumber = winnerOfMatchNumber;
+    }
+
+
     public void setMatchID(String vaule){
         this.matchID = vaule;
     }

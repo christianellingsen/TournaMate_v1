@@ -2,7 +2,6 @@ package com.dtu.tournamate_v1.createNewTournament;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,19 +14,19 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.dtu.tournamate_v1.DBAdapter;
+import com.dtu.tournamate_v1.Logic.RoundRobin_logic;
+import com.dtu.tournamate_v1.Logic.SingleElimination_logic;
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
 import com.dtu.tournamate_v1.Tournament;
 import com.dtu.tournamate_v1.activeTournament.ActiveMatchScore_frag;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 //import com.parse.ParseException;
 //import com.parse.SaveCallback;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -201,19 +200,29 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             }
 
             //Start tournament
+
+            MyApplication.matchList.clear();
+            MyApplication.matchesPlayed = 0;
+
             if (MyApplication.type.equals("Round Robin")) {
                 RoundRobin_logic rr;
-                MyApplication.matchList.clear();
-                MyApplication.matchesPlayed = 0;
-
                 rr = new RoundRobin_logic();
                 rr.createMatches();
-
-                ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, fragment)
-                        .commit();
             }
+            else {
+                SingleElimination_logic se;
+                se = new SingleElimination_logic();
+                try {
+                    se.createMatches();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
+            getFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContent, fragment)
+                .commit();
+
             // Save to local data store
             saveOnDevice();
 
@@ -233,6 +242,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
         for(Match m : MyApplication.matchList){
             Team t1 = m.getT1();
             Team t2 = m.getT2();
+            Log.d("DB", "Saving match: " +t1.getTeamName()+t1.getMatchesWon()+t1.getMatchesLost()+t1.getMatchesDraw()+t1.getOverAllScore()+t1.getMatechesPlayed());
             db_t1_id = db_adapter.insertRowTeams(t1.getTeamName(),t1.getMatchesWon(),t1.getMatchesLost(),t1.getMatchesDraw(),t1.getOverAllScore(),t1.getMatechesPlayed());
             db_t2_id = db_adapter.insertRowTeams(t2.getTeamName(),t2.getMatchesWon(),t2.getMatchesLost(),t2.getMatchesDraw(),t2.getOverAllScore(),t2.getMatechesPlayed());
             db_m_id = db_adapter.insertRowMatches(String.valueOf(m.isPlayed()),(int)db_t_id,(int)db_t1_id, m.getScoreT1(),m.getScoreT2(),(int)db_t2_id, m.getMatchNumber());

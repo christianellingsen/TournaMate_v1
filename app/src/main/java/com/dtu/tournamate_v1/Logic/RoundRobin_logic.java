@@ -1,4 +1,4 @@
-package com.dtu.tournamate_v1.createNewTournament;
+package com.dtu.tournamate_v1.Logic;
 
 import android.util.Log;
 

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,9 +33,11 @@ public class MyApplication extends android.app.Application {
     // User data
 
     private static boolean firstTime = true;
-    
 
-    // Active tournaments data
+
+
+    // Tournaments data
+    public static List<String> tournamnetTypes = new ArrayList<>();
     public static Set<String> playerSet = new HashSet<>();
     public static Set<String> selectedPlayerSet = new HashSet<>();
     public static ArrayList<Team> teams = new ArrayList<>();
@@ -93,6 +96,9 @@ public class MyApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
+        tournamnetTypes.add("Round Robin");
+        tournamnetTypes.add("Single Elimination");
+
         //SharedPreferences playerList = getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
         //SharedPreferences teamList = getSharedPreferences("TeamList", Context.MODE_PRIVATE);
         //SharedPreferences.Editor pl_editor = playerList.edit();
@@ -125,6 +131,15 @@ public class MyApplication extends android.app.Application {
             }
         });
 
+    }
+
+    public static void sortMatches() {
+        Collections.sort(matchList, new Comparator<Match>() {
+            @Override
+            public int compare(Match m1, Match m2) {
+                return m2.getMatchNumber() - m1.getMatchNumber();
+            }
+        });
     }
 
 }

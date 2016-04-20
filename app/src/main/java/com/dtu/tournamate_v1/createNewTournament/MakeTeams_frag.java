@@ -84,7 +84,7 @@ public class MakeTeams_frag extends Fragment implements View.OnClickListener{
             Toast.makeText(getActivity(),getString(R.string.mainMenu_commingSoonToast),Toast.LENGTH_SHORT).show();
        }
        else if (v==done_b){
-           MyApplication.type = "Round Robin";
+           //MyApplication.type = "Round Robin";
            getFragmentManager().beginTransaction()
                    .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out)
                    .replace(R.id.fragmentContent, new TournamentReady_frag())
