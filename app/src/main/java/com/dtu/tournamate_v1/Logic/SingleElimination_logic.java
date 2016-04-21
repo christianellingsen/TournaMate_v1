@@ -78,10 +78,31 @@ public class SingleElimination_logic {
             }
             Log.d("Debug", "Round ID: " + roundID);
         }
+
+        for (Match m : matches){
+            if (m.getMatchNumber()<numberOfMatches){
+                if (m.getMatchNumber()==numberOfMatches-1){
+                    m.setNextMatchNumber(numberOfMatches);
+                }
+                else if (m.getMatchNumber()==numberOfMatches-2){
+                    m.setNextMatchNumber(numberOfMatches);
+                }
+                else {
+                    int i = numberOfMatches - m.getMatchNumber();
+                    i = (int)Math.ceil((i-1)/2);
+                    m.setNextMatchNumber(numberOfMatches-i);
+                }
+                Log.d("Debug", "match number: " + m.getMatchNumber()+ " next match: "+ m.getNextMatchNumber());
+            }
+        }
+
         MyApplication.matchList = matches;
         Log.d("Debug", "Match: " + roundID);
         MyApplication.sortMatches();
         matches = MyApplication.matchList;
+
+
+
         int i,j;
         i = 0;
         j = 0;
@@ -102,10 +123,14 @@ public class SingleElimination_logic {
                 m.setT2(t2);
                 Log.d("Debug", "Adding t2");
             }
+
             i = i+2;
             j++;
         }
+
         MyApplication.matchList = matches;
+
+
 
         Log.d("Debug", "############ DONE ##############");
         printMatches();

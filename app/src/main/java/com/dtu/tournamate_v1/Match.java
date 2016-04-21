@@ -14,20 +14,22 @@ public class Match { //extends ParseObject {
     private int matchNumber;
     private int scoreT1;
     private int scoreT2;
-    private int winnersNextMatchNumber;
     private int roundID;
     private Team t1, t2, winner;
     private boolean played;
     private String matchID, t1ID, t2ID,tournamentID ;
     private long matchID_sql,t1ID_sql,t2ID_sql;
     private String matchTitle;
+    private int nextMatchNumber;
+    private int teamsAdded;
 
     public Match() {
         this.matchNumber =0;
+        this.nextMatchNumber = 0 ;
         this.scoreT1 = 0;
         this.scoreT2 = 0;
-        this.winnersNextMatchNumber = 0;
         this.roundID = 0;
+        this.teamsAdded = 0;
         this.t1 = new Team();
         this.t2 = new Team();
         this.winner = new Team();
@@ -40,6 +42,22 @@ public class Match { //extends ParseObject {
         this.t1ID_sql = 0;
         this.t2ID_sql = 0;
         this.matchTitle = "";
+    }
+
+    public int getNextMatchNumber() {
+        return nextMatchNumber;
+    }
+
+    public int getTeamsAdded() {
+        return teamsAdded;
+    }
+
+    public void setTeamsAdded(int teamsAdded) {
+        this.teamsAdded = teamsAdded;
+    }
+
+    public void setNextMatchNumber(int nextMatchNumber) {
+        this.nextMatchNumber = nextMatchNumber;
     }
 
     public String getMatchTitle() {
@@ -103,15 +121,6 @@ public class Match { //extends ParseObject {
         this.played = played;
         Log.d("Debug","Match " + matchNumber +" is played");
     }
-
-    public int getWinnersNextMatchNumber() {
-        return winnersNextMatchNumber;
-    }
-
-    public void setWinnersNextMatchNumber(int winnersNextMatchNumber) {
-        this.winnersNextMatchNumber = winnersNextMatchNumber;
-    }
-
 
     public void setMatchID(String vaule){
         this.matchID = vaule;
