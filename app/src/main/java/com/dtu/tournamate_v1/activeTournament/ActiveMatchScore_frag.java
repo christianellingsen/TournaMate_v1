@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
+import com.firebase.client.Firebase;
 //import com.parse.FindCallback;
 //import com.parse.GetCallback;
 //import com.parse.ParseException;
@@ -40,6 +41,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     private Button teamXPlus_b, teamXMinus_b, teamYMinus_b, teamYPlus_b, rank_b, matchlist_b, next_b;
     private int activeMatchNumber;
     private Match m;
+    Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
+    Firebase matchesRef = myFirebaseRef.child("Matches");
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
@@ -246,6 +249,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 }
                 if (MyApplication.isOnline) {
                     //saveToParse();
+                    saveToFireBase();
                 }
             }
         } else if (v == teamXPlus_b) {
@@ -253,6 +257,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             score++;
             updateScore("t1", score);
             //if(MyApplication.isOnline){saveToParse();}
+            if(MyApplication.isOnline){saveToFireBase();}
 
         } else if (v == teamXMinus_b) {
             int score = Integer.parseInt(teamXScore_tv.getText().toString());
@@ -261,12 +266,14 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             }
             updateScore("t1", score);
             //if(MyApplication.isOnline){saveToParse();}
+            if(MyApplication.isOnline){saveToFireBase();}
 
         } else if (v == teamYPlus_b) {
             int score = Integer.parseInt(teamYScore_tv.getText().toString());
             score++;
             updateScore("t2", score);
             //if(MyApplication.isOnline){saveToParse();}
+            if(MyApplication.isOnline){saveToFireBase();}
 
         } else if (v == teamYMinus_b) {
             int score = Integer.parseInt(teamYScore_tv.getText().toString());
@@ -274,9 +281,17 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 score--;
             }
             updateScore("t2", score);
-            //if(MyApplication.isOnline){saveToParse();}
+            //if(MyApplication.isOnline){saveToParse()();}
+            if(MyApplication.isOnline){saveToFireBase();}
         }
     }
+
+    public void saveToFireBase(){
+
+        Firebase updateMatchRef = matchesRef.child(m.getMatchID());
+        updateMatchRef.setValue(m);
+    }
+
     /**
      public void saveToParse(){
      new AsyncTask() {

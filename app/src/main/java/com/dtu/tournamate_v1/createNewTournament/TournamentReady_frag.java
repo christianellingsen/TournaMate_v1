@@ -102,7 +102,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 progress.setCancelable(false);
                 progress.show();
 
-                // Firebase test
+                // Firebase
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 String date  = dateFormat.format(new Date());
 
@@ -113,11 +113,14 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 tournament.setCreatedAt(date);
 
                 Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-                tournamentRef.push().setValue(tournament);
-                MyApplication.tournamentID_parse = tournamentRef.getKey();
-
+                Firebase newTournamentRef = tournamentRef.push();
+                newTournamentRef.setValue(tournament);
+                tournament.setObjectID(newTournamentRef.getKey());
+                MyApplication.tournamentID_parse = tournament.getObjectId();
+                Log.d("Firebase","Tournament id: "+tournament.getObjectId());
 
                 progress.dismiss();
+
 
                 /**
                 new AsyncTask() {
@@ -218,6 +221,19 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                     e.printStackTrace();
                 }
             }
+
+            // Save matches to Firebase
+
+            Firebase matchesRef = myFirebaseRef.child("Matches");
+
+            for (Match m : MyApplication.matchList) {
+                Firebase newMatchesRef = matchesRef.push();
+                newMatchesRef.setValue(m);
+                m.setMatchID(newMatchesRef.getKey());
+                m.setTournamentID(MyApplication.tournamentID_parse);
+                Log.d("Firebase", "Match id: " + m.getMatchID());
+            }
+
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
             getFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContent, fragment)
