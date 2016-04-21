@@ -73,7 +73,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
         matches = MyApplication.matchList;
 
-        if (MyApplication.type == "Round Robin") {
+        if (MyApplication.type.equals("Round Robin")) {
             matchTitle_tv.setVisibility(View.GONE);
         } else {
             matchTitle_tv.setVisibility(View.VISIBLE);

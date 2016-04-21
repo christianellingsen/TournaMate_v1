@@ -19,6 +19,7 @@ import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
+import com.firebase.client.Firebase;
 /**import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -43,6 +44,7 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
     ArrayList<String> matchesStringList;
     View rod;
     DBAdapter db_adapter = new DBAdapter(getActivity());
+    Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
@@ -114,6 +116,12 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
             }
         };
         lv.setAdapter(adapter);
+
+        Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+        Firebase updateTournamentRef = tournamentRef.child(MyApplication.tournamentID_parse);
+        updateTournamentRef.child("isDone").setValue(true);
+        updateTournamentRef.child("winner").setValue(winner.getTeamName());
+
         /**
         // Write to parse
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Tournaments");
@@ -130,6 +138,9 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
             }
         });
          **/
+
+
+
         updateOnDevice();
         return rod;
 
