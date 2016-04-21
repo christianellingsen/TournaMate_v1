@@ -137,7 +137,7 @@ public class MyApplication extends android.app.Application {
         Collections.sort(matchList, new Comparator<Match>() {
             @Override
             public int compare(Match m1, Match m2) {
-                return m2.getMatchNumber() - m1.getMatchNumber();
+                return m1.getMatchNumber() - m2.getMatchNumber();
             }
         });
     }

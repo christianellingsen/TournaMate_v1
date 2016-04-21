@@ -14,7 +14,7 @@ public class Match { //extends ParseObject {
     private int matchNumber;
     private int scoreT1;
     private int scoreT2;
-    private int winnerOfMatchNumber;
+    private int winnersNextMatchNumber;
     private int roundID;
     private Team t1, t2, winner;
     private boolean played;
@@ -26,7 +26,7 @@ public class Match { //extends ParseObject {
         this.matchNumber =0;
         this.scoreT1 = 0;
         this.scoreT2 = 0;
-        this.winnerOfMatchNumber = 0;
+        this.winnersNextMatchNumber = 0;
         this.roundID = 0;
         this.t1 = new Team();
         this.t2 = new Team();
@@ -104,12 +104,12 @@ public class Match { //extends ParseObject {
         Log.d("Debug","Match " + matchNumber +" is played");
     }
 
-    public int getWinnerOfMatchNumber() {
-        return winnerOfMatchNumber;
+    public int getWinnersNextMatchNumber() {
+        return winnersNextMatchNumber;
     }
 
-    public void setWinnerOfMatchNumber(int winnerOfMatchNumber) {
-        this.winnerOfMatchNumber = winnerOfMatchNumber;
+    public void setWinnersNextMatchNumber(int winnersNextMatchNumber) {
+        this.winnersNextMatchNumber = winnersNextMatchNumber;
     }
 
 

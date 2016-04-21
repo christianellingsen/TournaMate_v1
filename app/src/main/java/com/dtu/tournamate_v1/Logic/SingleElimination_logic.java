@@ -50,23 +50,25 @@ public class SingleElimination_logic {
                 m.setMatchTitle("Final");
             }
             else if (matchNumber==numberOfMatches-1){
-                    m.setMatchTitle("Semifinal 1");
+                    m.setMatchTitle("Semifinal 2");
             }
             else if (matchNumber==numberOfMatches-2){
-                m.setMatchTitle("Semifinal 2");
+                m.setMatchTitle("Semifinal 1");
             }
             else if (matchNumber==numberOfMatches-3){
-                m.setMatchTitle("Quarterfinal 1");
-            }
-            else if(matchNumber==numberOfMatches-4){
-                m.setMatchTitle("Quarterfinal 2");
-            }
-            else if(matchNumber==numberOfMatches-5){
-                m.setMatchTitle("Quarterfinal 3");
-            }
-            else if(matchNumber==numberOfMatches-6){
                 m.setMatchTitle("Quarterfinal 4");
             }
+            else if(matchNumber==numberOfMatches-4){
+                m.setMatchTitle("Quarterfinal 3");
+            }
+            else if(matchNumber==numberOfMatches-5){
+                m.setMatchTitle("Quarterfinal 2");
+            }
+            else if(matchNumber==numberOfMatches-6){
+                m.setMatchTitle("Quarterfinal 1");
+            }
+
+
 
             matches.add(m);
             Log.d("Debug", "Adding match");
@@ -77,22 +79,31 @@ public class SingleElimination_logic {
             Log.d("Debug", "Round ID: " + roundID);
         }
         MyApplication.matchList = matches;
+        Log.d("Debug", "Match: " + roundID);
         MyApplication.sortMatches();
         matches = MyApplication.matchList;
-        int i = 0;
-        while(i<teams.size()){
-            Match m = matches.get(i);
+        int i,j;
+        i = 0;
+        j = 0;
+        while(i+1<=teams.size()){
+            Log.d("Debug", "adding teams. i : " + i);
+            Match m = matches.get(j);
+            Log.d("Debug", "Matchtitle: " + m.getMatchTitle());
             Team t1, t2;
             t1 = teams.get(i);
+            Log.d("Debug", "T1: " + t1.getTeamName());
             t2 = null;
-            if(teams.size()<=i+1){
+            if(i+1<teams.size()){
                 t2 = teams.get(i+1);
             }
             m.setT1(t1);
-            if(t2==null){
+//            Log.d("Debug", "t2: " + t2.getTeamName());
+            if(t2!=null){
                 m.setT2(t2);
+                Log.d("Debug", "Adding t2");
             }
             i = i+2;
+            j++;
         }
         MyApplication.matchList = matches;
 
@@ -118,7 +129,7 @@ public class SingleElimination_logic {
     public void printMatches(){
         MyApplication.sortMatches();
         for (Match m : MyApplication.matchList){
-            Log.d("Knockout","Match: "+m.getMatchNumber()+ " has title: "+m.getMatchTitle());
+            Log.d("Knockout","Match: "+m.getMatchNumber()+ " has title: "+m.getMatchTitle()+" with team: "+ m.getT1().getTeamName() + " and "+ m.getT2().getTeamName());
         }
     }
 }

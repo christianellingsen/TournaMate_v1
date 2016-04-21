@@ -224,7 +224,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 .commit();
 
             // Save to local data store
-            saveOnDevice();
+            //saveOnDevice();
 
         }
     }
