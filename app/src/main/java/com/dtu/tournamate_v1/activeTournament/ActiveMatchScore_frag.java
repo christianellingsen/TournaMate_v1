@@ -149,7 +149,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     .addToBackStack(null)
                     .commit();
         } else if (v == next_b) {
-            if(m.getScoreT1()==m.getScoreT2()){
+            if(m.getScoreT1()==m.getScoreT2() && MyApplication.type.equals("Single Elimination")){
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false)
@@ -176,7 +176,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     m.getT1().addToOverAllScore(3);
                     m.getT2().addToOverAllScore(0);
                     m.setWinner(m.getT1());
-                    if (m.getMatchNumber() < MyApplication.matchList.size()) {
+                    if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.type.equals("Single Elimination")) {
 
 
                         if (matches.get(m.getNextMatchNumber() - 1).getTeamsAdded() == 0) {

@@ -143,7 +143,7 @@ public class ListStoredMatched_frag extends Fragment {
                                 @Override
                                 public void onClick(View view) {
 
-                                    Snackbar snackbar1 = Snackbar.make(getView(), "Message is restored!", Snackbar.LENGTH_SHORT);
+                                    Snackbar snackbar1 = Snackbar.make(getView(), "Not implemented yet!", Snackbar.LENGTH_SHORT);
                                     snackbar1.show();
                                 }
                             });
@@ -153,8 +153,13 @@ public class ListStoredMatched_frag extends Fragment {
                     deleteTournament(fireBaseAdapter.getRef(position).getKey());
                     fireBaseAdapter.notifyItemRemoved(position);
                 } else {
-                    removeView();
-                    edit_position = position;
+                    Snackbar snackbar = Snackbar
+                            .make(getView(), "Added to favourites.. if it was implemented..", Snackbar.LENGTH_LONG);
+
+                    snackbar.show();
+                    mRecyclerView.setAdapter(fireBaseAdapter);
+                    //removeView();
+                    //edit_position = position;
                 }
             }
 
