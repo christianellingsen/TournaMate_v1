@@ -93,34 +93,16 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
     public void onClick(View v) {
         if (v == start_b) {
 
+            final ProgressDialog progress;
+            progress = ProgressDialog.show(getActivity(), getString(R.string.tournamentResume_dialogHeader), getString(R.string.tournamentResume_dialogText), true);
+            progress.setCancelable(false);
+            progress.show();
+
             if (onOffLine_b.isChecked()) {
 
                 MyApplication.isOnline = true;
 
-                final ProgressDialog progress;
-                progress = ProgressDialog.show(getActivity(), getString(R.string.tournamentResume_dialogHeader), getString(R.string.tournamentResume_dialogText), true);
-                progress.setCancelable(false);
-                progress.show();
 
-                // Firebase
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                String date  = dateFormat.format(new Date());
-
-                Tournament tournament = new Tournament();
-                tournament.setName(MyApplication.tournamentName);
-                tournament.setIsDone(false);
-                tournament.setWinner("No winner yet");
-                tournament.setCreatedAt(date);
-                tournament.setType(MyApplication.type);
-
-                Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-                Firebase newTournamentRef = tournamentRef.push();
-                tournament.setObjectID(newTournamentRef.getKey());
-                newTournamentRef.setValue(tournament);
-                MyApplication.tournamentID_parse = tournament.getObjectID();
-                Log.d("Firebase","Tournament id: "+tournament.getObjectID());
-
-                progress.dismiss();
 
 
                 /**
@@ -223,6 +205,25 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 }
             }
 
+            // Firebase
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date  = dateFormat.format(new Date());
+
+            Tournament tournament = new Tournament();
+            tournament.setName(MyApplication.tournamentName);
+            tournament.setIsDone(false);
+            tournament.setWinner("No winner yet");
+            tournament.setCreatedAt(date);
+            tournament.setType(MyApplication.type);
+            tournament.setNumberOfMatches(MyApplication.matchList.size());
+
+            Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+            Firebase newTournamentRef = tournamentRef.push();
+            tournament.setObjectID(newTournamentRef.getKey());
+            newTournamentRef.setValue(tournament);
+            MyApplication.tournamentID_parse = tournament.getObjectID();
+            Log.d("Firebase", "Tournament id: " + tournament.getObjectID());
+
             // Save matches and teams to Firebase
 
             Firebase matchesRef = myFirebaseRef.child("Matches");
@@ -236,24 +237,23 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
 
                 if(m.getTeamsAdded()>=1){
                     Log.d("Firebase", "Team 1 added: " + m.getT1().getTeamName());
-                    teamsRef.push();
+                    Firebase newTeamRef = teamsRef.push();
+                    newTeamRef.push();
                     m.getT1().setMatchID(m.getMatchID());
-                    teamsRef.setValue(m.getT1());
+                    newTeamRef.setValue(m.getT1());
                 }
                 if (m.getTeamsAdded()>1){
                     Log.d("Firebase", "Team 2 added: " + m.getT2().getTeamName());
-                    teamsRef.push();
+                    Firebase newTeamRef = teamsRef.push();
+                    newTeamRef.push();
+                    newTeamRef.push();
                     m.getT2().setMatchID(m.getMatchID());
-                    teamsRef.setValue(m.getT2());
+                    newTeamRef.setValue(m.getT2());
                 }
 
-                Log.d("Firebase", "Match id: " + m.getMatchID());
             }
 
-            for (Team t : MyApplication.teams){
-                Firebase newTeamRef = teamsRef.push();
-                newTeamRef.setValue(t);
-            }
+            progress.dismiss();
 
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
             getFragmentManager().beginTransaction()
@@ -285,9 +285,9 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             db_m_id = db_adapter.insertRowMatches(String.valueOf(m.isPlayed()),(int)db_t_id,(int)db_t1_id, m.getScoreT1(),m.getScoreT2(),(int)db_t2_id, m.getMatchNumber());
             t1.setTeamID_sql(db_t1_id);
             t2.setTeamID_sql(db_t2_id);
-            m.setMatchID_sql(db_m_id);
-            m.setT1ID_sql(db_t1_id);
-            m.setT2ID_sql(db_t2_id);
+            //m.setMatchID_sql(db_m_id);
+            //m.setT1ID_sql(db_t1_id);
+            //m.setT2ID_sql(db_t2_id);
         }
         closeDB();
     }

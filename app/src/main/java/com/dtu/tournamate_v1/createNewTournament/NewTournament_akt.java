@@ -117,7 +117,7 @@ public class NewTournament_akt extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        updateOnDevice();
+        //updateOnDevice();
     }
 
     public void updateOnDevice(){
@@ -132,7 +132,7 @@ public class NewTournament_akt extends Activity{
             Team t2 = m.getT2();
             db_adapter.updateRowTeam(t1.getTeamID_sql(), t1.getTeamName(), t1.getMatchesWon(), t1.getMatchesLost(), t1.getMatchesDraw(), t1.getOverAllScore(), t1.getMatechesPlayed());
             db_adapter.updateRowTeam(t2.getTeamID_sql(), t2.getTeamName(), t2.getMatchesWon(), t2.getMatchesLost(), t2.getMatchesDraw(), t2.getOverAllScore(), t2.getMatechesPlayed());
-            db_adapter.updateRowMatch(m.getMatchID_sql(),String.valueOf(m.isPlayed()),(int)MyApplication.tournamentID_sql,(int)t1.getTeamID_sql(),(int)t2.getTeamID_sql(), m.getScoreT1(),m.getScoreT2(),m.getMatchNumber());
+            //db_adapter.updateRowMatch(m.getMatchID_sql(),String.valueOf(m.isPlayed()),(int)MyApplication.tournamentID_sql,(int)t1.getTeamID_sql(),(int)t2.getTeamID_sql(), m.getScoreT1(),m.getScoreT2(),m.getMatchNumber());
         }
         closeDB();
     }

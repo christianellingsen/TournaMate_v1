@@ -21,6 +21,7 @@ public class Tournament {
     private String objectID;
     private long objectID_sql;
     private String type;
+    private int numberOfMatches;
 
     public void Tournament(){
     }
@@ -46,6 +47,9 @@ public class Tournament {
     public void setType(String type) {
         this.type = type;
     }
+
+    public int getNumberOfMatches() {return numberOfMatches;}
+    public void setNumberOfMatches(int numberOfMatches) {this.numberOfMatches = numberOfMatches;}
 
     // SQL
     public long getObjectID_sql() {

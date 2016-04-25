@@ -46,6 +46,7 @@ public class MyApplication extends android.app.Application {
     public static boolean isDone = false;
     public static boolean isOnline = false;
     public static boolean resumingTournament = false;
+    public static int numberOfMatches;
 
     // DATABASE
 

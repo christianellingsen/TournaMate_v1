@@ -56,7 +56,7 @@ public class RoundRobinMatchList_frag extends Fragment implements AdapterView.On
 
                 TextView score = (TextView) view.findViewById(R.id.textViewMatchList_score);
                 score.setText(matches.get(position).getScoreT1() + " - " + matches.get(position).getScoreT2());
-
+                score.setTextColor(Color.parseColor("#000000"));
                 if (matches.get(position).isPlayed()){
                     score.setTextColor(Color.parseColor("#0FAE02"));
                 }
