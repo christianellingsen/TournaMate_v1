@@ -14,11 +14,10 @@ import java.util.ArrayList;
 //@ParseClassName("Team")
 public class Team { // extends ParseObject{
 
-    private String teamName = "";
+    private String teamName,matchID;
     private int matchesWon, matchesLost, matchesDraw, matechesPlayed, overAllScore;
     private ArrayList<String> teamMembers = new ArrayList<>();
-    private String matchID;
-    private long teamID_sql;
+    //private long teamID_sql;
 
     public Team() {
         this.teamName = "";
@@ -28,7 +27,7 @@ public class Team { // extends ParseObject{
         this.matechesPlayed = 0;
         this.overAllScore = 0;
         this.matchID = "";
-        this.teamID_sql = 0;
+        //this.teamID_sql = 0;
     }
 
 
@@ -113,10 +112,4 @@ public class Team { // extends ParseObject{
         }
     }
 
-    public long getTeamID_sql() {
-        return teamID_sql;
-    }
-    public void setTeamID_sql(long teamID_sql) {
-        this.teamID_sql = teamID_sql;
-    }
 }

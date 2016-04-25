@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.dtu.tournamate_v1.DBAdapter;
 import com.dtu.tournamate_v1.MainMenu_akt;
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
@@ -25,9 +24,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;**/
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Christian on 20-04-2015.
@@ -43,7 +40,6 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
     ArrayList<Match> matches;
     ArrayList<String> matchesStringList;
     View rod;
-    DBAdapter db_adapter = new DBAdapter(getActivity());
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
 
     @Override
@@ -122,26 +118,6 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
         updateTournamentRef.child("isDone").setValue(true);
         updateTournamentRef.child("winner").setValue(winner.getTeamName());
 
-        /**
-        // Write to parse
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Tournaments");
-        // Retrieve the object by id
-        query.getInBackground(MyApplication.tournamentID_parse, new GetCallback<ParseObject>() {
-            public void done(ParseObject t, ParseException e) {
-                if (e == null) {
-                    // Now let's update it with some new data. In this case, only cheatMode and score
-                    // will get sent to the Parse Cloud. playerName hasn't changed.
-                    t.put("Winner",winner.getTeamName());
-                    t.put("isDone",true);
-                    t.saveInBackground();
-                }
-            }
-        });
-         **/
-
-
-
-        //updateOnDevice();
         return rod;
 
     }
@@ -204,31 +180,6 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
             Intent i = new Intent(getActivity(), MainMenu_akt.class);
             startActivity(i);
         }
-    }
-    public void updateOnDevice(){
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String date  = dateFormat.format(new Date());
-        openDB();
-        db_adapter.updateRowTournament(MyApplication.tournamentID_sql,MyApplication.tournamentName,MyApplication.type,MyApplication.activeMatch,MyApplication.matchesPlayed, String.valueOf(MyApplication.isDone).toString() ,String.valueOf(MyApplication.isOnline),MyApplication.tournamentID_parse ,date);
-        Log.d("DB", "Tournament updated. Name: " + MyApplication.tournamentName +" type: "+ MyApplication.type +" activematch: "+ MyApplication.activeMatch +" played: "+ MyApplication.matchesPlayed +" done: "+ String.valueOf(MyApplication.isDone).toString() +" online: "+ String.valueOf(MyApplication.isOnline) +" date: "+ date);
-        for(Match m : MyApplication.matchList){
-            Team t1 = m.getT1();
-            Team t2 = m.getT2();
-            db_adapter.updateRowTeam(t1.getTeamID_sql(), t1.getTeamName(), t1.getMatchesWon(), t1.getMatchesLost(), t1.getMatchesDraw(), t1.getOverAllScore(), t1.getMatechesPlayed());
-            db_adapter.updateRowTeam(t2.getTeamID_sql(), t2.getTeamName(), t2.getMatchesWon(), t2.getMatchesLost(), t2.getMatchesDraw(), t2.getOverAllScore(), t2.getMatechesPlayed());
-            //db_adapter.updateRowMatch(m.getMatchID_sql(),String.valueOf(m.isPlayed()),(int)MyApplication.tournamentID_sql,(int)t1.getTeamID_sql(),(int)t2.getTeamID_sql(), m.getScoreT1(),m.getScoreT2(),m.getMatchNumber());
-        }
-        closeDB();
-    }
-
-    public void openDB(){
-        db_adapter = new DBAdapter(getActivity());
-        db_adapter.open();
-    }
-
-    public void closeDB(){
-        db_adapter.close();
     }
 
 }

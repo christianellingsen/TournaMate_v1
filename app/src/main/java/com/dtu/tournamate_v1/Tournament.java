@@ -51,17 +51,5 @@ public class Tournament {
     public int getNumberOfMatches() {return numberOfMatches;}
     public void setNumberOfMatches(int numberOfMatches) {this.numberOfMatches = numberOfMatches;}
 
-    // SQL
-    public long getObjectID_sql() {
-        return objectID_sql;
-    }
-    public void setObjectID_sql(long objectID_sql) {
-        this.objectID_sql = objectID_sql;
-    }
-
-
-
-
-
 
 }

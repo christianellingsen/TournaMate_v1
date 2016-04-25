@@ -48,47 +48,8 @@ public class MyApplication extends android.app.Application {
     public static boolean resumingTournament = false;
     public static int numberOfMatches;
 
-    // DATABASE
-
-    public static long tournamentID_sql = 0;
-
-    public static final String DATABASE_TABLE_TOURNAMENTS = "tournaments";
-    public static final String DATABASE_TABLE_MATCHES = "matches";
-    public static final String DATABASE_TABLE_TEAMS = "teams";
-
-    public static final int COL_ROWID = 0;
-
-    public static final int COL_TOURNAMENTS_NAME = 1;
-    public static final int COL_TOURNAMENTS_TYPE = 2;
-    public static final int COL_TOURNAMENTS_DONE = 3;
-    public static final int COL_TOURNAMENTS_ACTIVE = 4;
-    public static final int COL_TOURNAMENTS_PLAYED = 5;
-    public static final int COL_TOURNAMENTS_ONLINE = 6;
-    public static final int COL_TOURNAMENTS_PARSE = 7;
-    public static final int COL_TOURNAMENTS_DATE = 8;
-
-    public static final int COL_TEAMS_NAME = 1;
-    public static final int COL_TEAMS_WON = 2;
-    public static final int COL_TEAMS_LOST = 3;
-    public static final int COL_TEAMS_DRAW = 4;
-    public static final int COL_TEAMS_SCORE = 5;
-    public static final int COL_TEAMS_PLAYED = 6;
-
-    public static final int COL_MATCHES_TID = 1;
-    public static final int COL_MATCHES_T1ID = 2;
-    public static final int COL_MATCHES_T2ID = 3;
-    public static final int COL_MATCHES_T1SCORE = 4;
-    public static final int COL_MATCHES_T2SCORE = 5;
-    public static final int COL_MATCHES_NUMBER = 6;
-    public static final int COL_MATCHES_PLAYED = 7;
-
     // Firebase
     public static final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/TournaMate_v1";
-
-
-    // Parse
-    public static final String YOUR_APPLICATION_ID = "kSXYu1zyAGX1LjakV2v5X69UnWHg6DWIItTLH3VS";
-    public static final String YOUR_CLIENT_KEY = "jTqfP3caYT82lZ3wGufiTjrgfnxHzEhiHfMHDlBz";
 
 
     @Override
@@ -103,21 +64,15 @@ public class MyApplication extends android.app.Application {
         //SharedPreferences.Editor pl_editor = playerList.edit();
         //SharedPreferences.Editor tl_editor = teamList.edit();
 
-        /**
-        // Add your initialization code here
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
-        ParseObject.registerSubclass(Tournament.class);
-        ParseObject.registerSubclass(Match.class);
-        ParseObject.registerSubclass(Team.class);
 
+        /**
         FacebookSdk.sdkInitialize(getApplicationContext());
         **/
 
         // Firebase
         Firebase.setAndroidContext(this);
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
 
-        // ...
     }
 
 

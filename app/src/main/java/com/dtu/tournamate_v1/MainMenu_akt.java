@@ -45,7 +45,6 @@ public class MainMenu_akt extends AppCompatActivity
     ArrayList<Tournament> storedTournaments = new ArrayList();
     ArrayList<String> storedTournamentsNames = new ArrayList();
     ArrayList<Match> fetchedMatchesFirebase = new ArrayList();
-    private DBAdapter dbAdapter = new DBAdapter(this);
 
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
     Firebase tournamentRef = myFirebaseRef.child("Tournaments");
@@ -198,47 +197,6 @@ public class MainMenu_akt extends AppCompatActivity
         public void recyclerViewListClicked(View v, int position);
     }
 
-    public void updateList(){
-
-        storedTournamentsNames.clear();
-        storedTournaments.clear();
-
-        Log.d("RecyclerView", "Lenght of empty arraylist: " + storedTournamentsNames.size());
-
-        final ProgressDialog progress;
-        progress = ProgressDialog.show(this, "Finding stored tournaments", "", true);
-        progress.setCancelable(false);
-        progress.show();
-
-        dbAdapter.open();
-        Cursor c = dbAdapter.getAllRows(MyApplication.DATABASE_TABLE_TOURNAMENTS);
-        if (c.moveToFirst()){
-            do {
-                String temp_name = c.getString(MyApplication.COL_TOURNAMENTS_NAME);
-                String date = c.getString(MyApplication.COL_TOURNAMENTS_DATE);
-                String isDone = c.getString(MyApplication.COL_TOURNAMENTS_DONE);
-                long id = Long.parseLong(c.getString(MyApplication.COL_ROWID));
-                String objectID = c.getString(MyApplication.COL_TOURNAMENTS_PARSE);
-                Tournament t = new Tournament();
-                t.setName(temp_name);
-                t.setCreatedAt(date);
-                t.setObjectID_sql(id);
-                t.setObjectID(objectID);
-                if(isDone.equals("true")){
-                    t.setIsDone(true);
-                }
-                else{
-                    t.setIsDone(false);
-                }
-                storedTournaments.add(t);
-                storedTournamentsNames.add(temp_name);
-
-            } while (c.moveToNext());
-            c.close();
-        }
-        dbAdapter.close();
-        progress.dismiss();
-    }
 
     @Override
     protected void onDestroy() {
