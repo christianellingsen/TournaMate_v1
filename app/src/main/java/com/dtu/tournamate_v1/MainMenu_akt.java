@@ -20,14 +20,24 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_akt;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +51,8 @@ public class MainMenu_akt extends AppCompatActivity
 
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
     Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+
+    FirebaseRecyclerAdapter<Tournament, viewHolder> fireBaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,34 +90,64 @@ public class MainMenu_akt extends AppCompatActivity
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        FirebaseRecyclerAdapter<Tournament, MessageViewHolder> fireBaseAdapter =
-                new FirebaseRecyclerAdapter<Tournament, MessageViewHolder>(
+        fireBaseAdapter =
+                new FirebaseRecyclerAdapter<Tournament, viewHolder>(
                         Tournament.class,
                         R.layout.tournament_listelement,
-                        MessageViewHolder.class,
+                        viewHolder.class,
                         tournamentRef
                 ) {
                     @Override
-                    protected void populateViewHolder(MessageViewHolder messageViewHolder, Tournament t, int i) {
-                        messageViewHolder.tName.setText(t.getName());
-                        messageViewHolder.tDate.setText(t.getCreatedAt());
+                    protected void populateViewHolder(viewHolder mViewHolder, Tournament t, final int i) {
+                        mViewHolder.tName.setText(t.getName());
+                        mViewHolder.tDate.setText(t.getCreatedAt());
+                        mViewHolder.mView.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view) {
+                                Log.w("RecyclerView", "You clicked on " + i);
+                                //mRecycleViewAdapter.getRef(position).removeValue();
+                                String tID = fireBaseAdapter.getRef(i).getKey();
+                                fetchTournament(tID);
+
+                                ProgressDialog progressDialog = ProgressDialog.show(MainMenu_akt.this, "",
+                                        "Loading. Please wait...", true);
+                                try {
+                                    Thread.sleep(2000);                 //1000 milliseconds is one second.
+                                } catch(InterruptedException ex) {
+                                    Thread.currentThread().interrupt();
+                                }
+                                Log.d("Firebase", "Resuming tournament");
+                                Log.d("Firebase","Tournament name " +MyApplication.tournamentName);
+                                Log.d("Firebase","Number of matches "+ MyApplication.matchList.size());
+                                Log.d("Firebase", "Number of teams " + MyApplication.teams.size());
+                                Intent i = new Intent(getBaseContext(), NewTournament_akt.class);
+                                startActivity(i);
+
+                                progressDialog.dismiss();
+
+                            }
+                        });
                     }
 
                 };
         mRecyclerView.setAdapter(fireBaseAdapter);
+        mRecyclerView.setClickable(true);
 
 
     }
 
-    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+    public static class viewHolder extends RecyclerView.ViewHolder {
+        View mView;
         TextView tName;
         TextView tDate;
-        public MessageViewHolder(View v){
+        public viewHolder(View v){
             super(v);
             tName = (TextView) v.findViewById(R.id.tournament_list_name);
             tDate = (TextView) v.findViewById(R.id.tournament_list_date);
+            mView = v;
         }
     }
+
 
     @Override
     protected void onStart() {
@@ -164,6 +206,12 @@ public class MainMenu_akt extends AppCompatActivity
         return true;
     }
 
+    public interface RecyclerViewClickListener
+    {
+
+        public void recyclerViewListClicked(View v, int position);
+    }
+
     public void updateList(){
 
         storedTournamentsNames.clear();
@@ -206,5 +254,65 @@ public class MainMenu_akt extends AppCompatActivity
         progress.dismiss();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fireBaseAdapter.cleanup();
+    }
+
+    public void fetchTournament(final String objectID){
+
+        MyApplication.resumingTournament = true;
+        MyApplication.matchList.clear();
+        MyApplication.teams.clear();
+
+        Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+        Firebase matchRef = myFirebaseRef.child("Matches");
+        Firebase fetchTournamentRef = tournamentRef.child(objectID);
+
+        tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String t_objectID = (String) child.getKey();
+                    if(t_objectID == objectID){
+                        MyApplication.tournamentID_parse = t_objectID;
+                        MyApplication.isDone =(boolean) child.child("isDone").getValue();
+                        MyApplication.tournamentName = (String) child.child("name").getValue();
+                        MyApplication.type = (String) child.child("type").getValue();
+                        Log.d("Firebase", "Tournament found: " + MyApplication.tournamentName);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+        matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String t_objectID = (String) child.getKey();
+                    if (t_objectID == objectID) {
+                        Match m = child.getValue(Match.class);
+                        Log.d("Firebase", "Match found: " + m.getMatchTitle());
+                        //MyApplication.isDone =(boolean) child.child("isDone").getValue();
+                        //MyApplication.tournamentName = (String) child.child("name").getValue();
+                        //MyApplication.type = (String) child.child("type").getValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+    }
 
 }

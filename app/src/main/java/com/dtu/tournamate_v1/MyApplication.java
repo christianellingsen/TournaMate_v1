@@ -34,8 +34,6 @@ public class MyApplication extends android.app.Application {
 
     private static boolean firstTime = true;
 
-
-
     // Tournaments data
     public static List<String> tournamnetTypes = new ArrayList<>();
     public static Set<String> playerSet = new HashSet<>();

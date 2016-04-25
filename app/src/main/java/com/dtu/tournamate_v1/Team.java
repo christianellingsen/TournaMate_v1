@@ -35,11 +35,7 @@ public class Team { // extends ParseObject{
     public void addTeamMember(String newTeamMember){
         teamMembers.add(newTeamMember);
     }
-
-    public String getTeamName(){
-
-        return teamName;
-    }
+    public String getTeamName(){return teamName;}
 
     public void matchResult(String result){
         if ("won".equals(result)){
@@ -66,7 +62,6 @@ public class Team { // extends ParseObject{
     public int getMatchesWon() {
         return matchesWon;
     }
-
     public void setMatchesWon(int matchesWon){
         this.matchesWon = matchesWon;
     }
@@ -74,7 +69,6 @@ public class Team { // extends ParseObject{
     public int getOverAllScore(){
         return overAllScore;
     }
-
     public void setOverAllScore(int overAllScore){
         this.overAllScore= overAllScore;
     }
@@ -82,7 +76,6 @@ public class Team { // extends ParseObject{
     public int getMatchesLost() {
         return matchesLost;
     }
-
     public void setMatchesLost(int matchesLost) {
         this.matchesLost = matchesLost;
     }
@@ -90,7 +83,6 @@ public class Team { // extends ParseObject{
     public int getMatchesDraw() {
         return matchesDraw;
     }
-
     public void setMatchesDraw(int matchesDraw) {
         this.matchesDraw = matchesDraw;
     }
@@ -98,7 +90,6 @@ public class Team { // extends ParseObject{
     public int getMatechesPlayed() {
         return matechesPlayed;
     }
-
     public void setMatechesPlayed(int matechesPlayed) {
         this.matechesPlayed = matechesPlayed;
     }
@@ -125,7 +116,6 @@ public class Team { // extends ParseObject{
     public long getTeamID_sql() {
         return teamID_sql;
     }
-
     public void setTeamID_sql(long teamID_sql) {
         this.teamID_sql = teamID_sql;
     }

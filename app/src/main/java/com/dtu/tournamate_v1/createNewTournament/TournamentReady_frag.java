@@ -111,13 +111,14 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 tournament.setIsDone(false);
                 tournament.setWinner("No winner yet");
                 tournament.setCreatedAt(date);
+                tournament.setType(MyApplication.type);
 
                 Firebase tournamentRef = myFirebaseRef.child("Tournaments");
                 Firebase newTournamentRef = tournamentRef.push();
-                newTournamentRef.setValue(tournament);
                 tournament.setObjectID(newTournamentRef.getKey());
-                MyApplication.tournamentID_parse = tournament.getObjectId();
-                Log.d("Firebase","Tournament id: "+tournament.getObjectId());
+                newTournamentRef.setValue(tournament);
+                MyApplication.tournamentID_parse = tournament.getObjectID();
+                Log.d("Firebase","Tournament id: "+tournament.getObjectID());
 
                 progress.dismiss();
 
@@ -135,9 +136,9 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                             public void done(ParseException e) {
                                 if (e == null) {
                                     // Success!
-                                    MyApplication.tournamentID_parse = tournament.getObjectId();
+                                    MyApplication.tournamentID_parse = tournament.getObjectID();
                                     tCreated = true;
-                                    Log.d("Parse", "Tournament created with id: " + tournament.getObjectId());
+                                    Log.d("Parse", "Tournament created with id: " + tournament.getObjectID());
                                 } else {
                                     // Failure!
                                 }
@@ -175,7 +176,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                                 public void done(ParseException e) {
                                     if (e == null) {
                                         // Success!
-                                        Log.d("Parse", "Match created with id: " + Match.getObjectId());
+                                        Log.d("Parse", "Match created with id: " + Match.getObjectID());
 
                                     } else {
                                         // Failure!
@@ -222,16 +223,36 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 }
             }
 
-            // Save matches to Firebase
+            // Save matches and teams to Firebase
 
             Firebase matchesRef = myFirebaseRef.child("Matches");
+            Firebase teamsRef = myFirebaseRef.child("Teams");
 
             for (Match m : MyApplication.matchList) {
                 Firebase newMatchesRef = matchesRef.push();
-                newMatchesRef.setValue(m);
                 m.setMatchID(newMatchesRef.getKey());
                 m.setTournamentID(MyApplication.tournamentID_parse);
+                newMatchesRef.setValue(m);
+
+                if(m.getTeamsAdded()>=1){
+                    Log.d("Firebase", "Team 1 added: " + m.getT1().getTeamName());
+                    teamsRef.push();
+                    m.getT1().setMatchID(m.getMatchID());
+                    teamsRef.setValue(m.getT1());
+                }
+                if (m.getTeamsAdded()>1){
+                    Log.d("Firebase", "Team 2 added: " + m.getT2().getTeamName());
+                    teamsRef.push();
+                    m.getT2().setMatchID(m.getMatchID());
+                    teamsRef.setValue(m.getT2());
+                }
+
                 Log.d("Firebase", "Match id: " + m.getMatchID());
+            }
+
+            for (Team t : MyApplication.teams){
+                Firebase newTeamRef = teamsRef.push();
+                newTeamRef.setValue(t);
             }
 
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();

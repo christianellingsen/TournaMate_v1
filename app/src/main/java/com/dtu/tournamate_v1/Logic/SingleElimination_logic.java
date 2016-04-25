@@ -118,9 +118,11 @@ public class SingleElimination_logic {
                 t2 = teams.get(i+1);
             }
             m.setT1(t1);
+            m.setTeamsAdded(1);
 //            Log.d("Debug", "t2: " + t2.getTeamName());
             if(t2!=null){
                 m.setT2(t2);
+                m.setTeamsAdded(2);
                 Log.d("Debug", "Adding t2");
             }
 

@@ -335,8 +335,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     if (parseObjects.size() > 1) {
     Log.d("Parse", "Flere en 1 objekt fundet " + parseObjects.size());
     } else {
-    m.setMatchID(parseObjects.get(0).getObjectId());
-    Log.d("Parse", "Match Query! Result: number of matches found: " + parseObjects.size() + " And first ID: " + parseObjects.get(0).getObjectId());
+    m.setMatchID(parseObjects.get(0).getObjectID());
+    Log.d("Parse", "Match Query! Result: number of matches found: " + parseObjects.size() + " And first ID: " + parseObjects.get(0).getObjectID());
     }
     } else {
     Log.d("Parse", "Update match went wrong");

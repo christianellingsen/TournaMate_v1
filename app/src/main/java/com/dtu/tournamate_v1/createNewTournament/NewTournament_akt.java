@@ -24,6 +24,7 @@ import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
+import com.dtu.tournamate_v1.activeTournament.ActiveMatchScore_frag;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -101,12 +102,12 @@ public class NewTournament_akt extends Activity{
                         .commit();
             }
         }
-        /**else {
+        else {
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
             getFragmentManager().beginTransaction()
                     .add(R.id.fragmentContent, fragment)
                     .commit();
-        }**/
+        }
     }
 
     private void setSupportActionBar(Toolbar toolbar) {
