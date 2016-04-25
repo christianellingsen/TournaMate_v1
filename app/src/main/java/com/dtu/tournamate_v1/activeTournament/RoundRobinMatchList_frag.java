@@ -1,6 +1,6 @@
 package com.dtu.tournamate_v1.activeTournament;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,7 +75,7 @@ public class RoundRobinMatchList_frag extends Fragment implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         MyApplication.activeMatch = position+1;
         getFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContent, new ActiveMatchScore_frag())
+                .replace(R.id.main_frame, new ActiveMatchScore_frag())
                 .addToBackStack(null)
                 .commit();
     }

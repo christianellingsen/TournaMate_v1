@@ -1,6 +1,6 @@
 package com.dtu.tournamate_v1.activeTournament;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;

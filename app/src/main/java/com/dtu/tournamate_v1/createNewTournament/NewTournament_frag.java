@@ -1,9 +1,8 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,30 +19,30 @@ import com.dtu.tournamate_v1.activeTournament.ActiveMatchScore_frag;
 /**
  * Created by Christian on 06-04-2015.
  */
-public class NewTournament_akt extends Activity{
+public class NewTournament_frag extends Fragment {
 
     String selectedType;
+    private View root;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_tournament);
+    public View onCreateView(LayoutInflater ViewInflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_new_tournament);
-        setSupportActionBar(toolbar);
+        root = ViewInflater.inflate(R.layout.list_stored_matched_fragment, container, false);
+
 
         if (!MyApplication.resumingTournament) {
 
-            final AlertDialog setName_dialog = new AlertDialog.Builder(NewTournament_akt.this).create();
+            final AlertDialog setName_dialog = new AlertDialog.Builder(getActivity()).create();
 
             setName_dialog.setTitle(getString(R.string.newTournament_dialogHeader));
-            LayoutInflater inflater = this.getLayoutInflater();
-            View dialogView = inflater.inflate(R.layout.set_tournemnt_name_dialog,  (ViewGroup) findViewById(R.id.dialog_root_id));
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.set_tournemnt_name_dialog,  (ViewGroup) root.findViewById(R.id.dialog_root_id));
             setName_dialog.setView(dialogView);
 
             final EditText name = (EditText) dialogView.findViewById(R.id.dialog_t_name_et);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item, MyApplication.tournamnetTypes);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item, MyApplication.tournamnetTypes);
 
             Spinner type = (Spinner) dialogView.findViewById(R.id.dialog_t_type_spinner);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -84,26 +83,18 @@ public class NewTournament_akt extends Activity{
             if (savedInstanceState == null) {
                 AddPlayer_frag fragment = new AddPlayer_frag();
                 getFragmentManager().beginTransaction()
-                        .add(R.id.fragmentContent, fragment)
+                        .replace(R.id.main_frame, fragment)
                         .commit();
             }
         }
         else {
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
             getFragmentManager().beginTransaction()
-                    .add(R.id.fragmentContent, fragment)
+                    .replace(R.id.main_frame, fragment)
                     .commit();
         }
+
+        return root;
     }
-
-    private void setSupportActionBar(Toolbar toolbar) {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 
 }

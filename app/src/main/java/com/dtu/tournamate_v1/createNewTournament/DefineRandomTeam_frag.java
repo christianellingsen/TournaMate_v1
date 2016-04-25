@@ -1,12 +1,7 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +10,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
@@ -23,8 +17,6 @@ import com.dtu.tournamate_v1.Team;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Christian on 06-04-2015.

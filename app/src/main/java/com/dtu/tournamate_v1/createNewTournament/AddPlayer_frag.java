@@ -1,9 +1,9 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
@@ -141,7 +141,7 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
             }
             else {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContent, new MakeTeams_frag())
+                        .replace(R.id.main_frame, new MakeTeams_frag())
                         .addToBackStack(null)
                         .commit();
             }

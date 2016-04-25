@@ -1,6 +1,6 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -178,7 +178,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
 
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
             getFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContent, fragment)
+                .replace(R.id.main_frame, fragment)
                 .commit();
 
         }

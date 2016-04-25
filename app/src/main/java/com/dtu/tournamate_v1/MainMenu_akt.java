@@ -1,55 +1,23 @@
 package com.dtu.tournamate_v1;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import com.dtu.tournamate_v1.createNewTournament.NewTournament_akt;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.firebase.ui.FirebaseRecyclerAdapter;
-
-import java.util.ArrayList;
+import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    private boolean doneFetchingFirebase = false;
-    private Handler handler;
-
-    private String tID;
-    ProgressDialog progressDialog;
-
-    ArrayList<Tournament> storedTournaments = new ArrayList();
-    ArrayList<String> storedTournamentsNames = new ArrayList();
-    ArrayList<Match> fetchedMatchesFirebase = new ArrayList();
-
-    Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
-    Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-
-    FirebaseRecyclerAdapter<Tournament, viewHolder> fireBaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +26,19 @@ public class MainMenu_akt extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        handler = new Handler();
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Intent i = new Intent (getApplication().getBaseContext(), NewTournament_akt.class);
-                startActivity(i);
+                MyApplication.resumingTournament = false;
+                getSupportFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.main_frame, new NewTournament_frag())
+                        .commit();
+
+                fabOnOff(0);
             }
         });
 
@@ -80,57 +52,11 @@ public class MainMenu_akt extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.main_frame, new ListStoredMatched_frag())
+                .commit();
 
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        fireBaseAdapter =
-                new FirebaseRecyclerAdapter<Tournament, viewHolder>(
-                        Tournament.class,
-                        R.layout.tournament_listelement,
-                        viewHolder.class,
-                        tournamentRef
-                ) {
-                    @Override
-                    protected void populateViewHolder(viewHolder mViewHolder, Tournament t, final int i) {
-                        mViewHolder.tName.setText(t.getName());
-                        mViewHolder.tDate.setText(t.getCreatedAt());
-                        mViewHolder.mView.setOnClickListener(new View.OnClickListener(){
-                            @Override
-                            public void onClick(View view) {
-                                Log.w("RecyclerView", "You clicked on " + i);
-                                //mRecycleViewAdapter.getRef(position).removeValue();
-                                tID = fireBaseAdapter.getRef(i).getKey();
-                                fetchTournament();
-                                fetchFromFireBase();
-                                //fetchMatches(tID);
-
-                            }
-                        });
-                    }
-
-                };
-        mRecyclerView.setAdapter(fireBaseAdapter);
-        mRecyclerView.setClickable(true);
-
-
-    }
-
-    public static class viewHolder extends RecyclerView.ViewHolder {
-        View mView;
-        TextView tName;
-        TextView tDate;
-        public viewHolder(View v){
-            super(v);
-            tName = (TextView) v.findViewById(R.id.tournament_list_name);
-            tDate = (TextView) v.findViewById(R.id.tournament_list_date);
-            mView = v;
-        }
     }
 
 
@@ -169,6 +95,14 @@ public class MainMenu_akt extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.action_home) {
+            getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.main_frame, new ListStoredMatched_frag())
+                    .commit();
+            fabOnOff(1);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -191,107 +125,22 @@ public class MainMenu_akt extends AppCompatActivity
         return true;
     }
 
-    public interface RecyclerViewClickListener
-    {
-
-        public void recyclerViewListClicked(View v, int position);
-    }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        fireBaseAdapter.cleanup();
     }
 
-
-    public void fetchTournament() {
-
-            MyApplication.resumingTournament = true;
-            MyApplication.matchList.clear();
-            MyApplication.teams.clear();
-            fetchedMatchesFirebase.clear();
-
-            Firebase matchRef = myFirebaseRef.child("Matches");
-            Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-
-            tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("Firebase", "Tournament listener called: ");
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        String t_objectID = (String) child.getKey();
-                        if (t_objectID == tID) {
-                            MyApplication.tournamentID_parse = t_objectID;
-                            MyApplication.isDone = (boolean) child.child("isDone").getValue();
-                            MyApplication.tournamentName = (String) child.child("name").getValue();
-                            MyApplication.type = (String) child.child("type").getValue();
-                            MyApplication.numberOfMatches = Integer.parseInt(""+child.child("numberOfMatches").getValue());
-                            Log.d("Firebase", "Tournament found: " + MyApplication.tournamentName);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });
-
-            matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    Log.d("Firebase", "Match listener called: ");
-                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-                        String m_objectID = (String) child.getKey();
-                        Log.d("Firebase", "Match found: " + (String) child.getKey());
-                        String t_objectID = (String) child.child("tournamentID").getValue();
-                        Log.d("Firebase", "Compare t_objectID: " + t_objectID + " and tID: " + tID);
-                        if (t_objectID.equals(tID)) {
-                            Match m = child.getValue(Match.class);
-                            Log.d("Firebase", "Match title: " + m.getMatchTitle());
-                            fetchedMatchesFirebase.add(m);
-                        }
-                    }
-                    MyApplication.matchList = fetchedMatchesFirebase;
-                    doneFetchingFirebase = true;
-                    Log.d("Firebase", "Size of fetchedMatchesFirebase: "+ fetchedMatchesFirebase.size());
-                    Log.d("Firebase", "Size of MyApplication.matchList: "+ MyApplication.matchList.size());
-                    Log.d("Firebase", "Done fetching, and added to Myapplication");
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-                    Log.d("Firebase", "Match fetch error: " + firebaseError.getMessage());
-                }
-            });
-    }
-
-    public void fetchFromFireBase(){
-        progressDialog = ProgressDialog.show(MainMenu_akt.this, "",
-                "Loading. Please wait...", true);
-        new Thread(resumeWhenReady).start();
-    }
-
-    public final Runnable resumeWhenReady = new Runnable() {
-
-        @Override
-        public void run() {
-            if (doneFetchingFirebase) {
-                Log.d("Firebase", "Size of matchlist:" + MyApplication.matchList.size() + " and number of matches: " + MyApplication.numberOfMatches);
-                if (MyApplication.matchList.size() == MyApplication.numberOfMatches && MyApplication.matchList.size() > 0) {
-                    progressDialog.dismiss();
-                    Log.d("Firebase", "Done fetching = true");
-                    Log.d("Firebase", "Number of matches " + MyApplication.matchList.size());
-
-                    Intent i = new Intent(getBaseContext(), NewTournament_akt.class);
-                    startActivity(i);
-                }
-            }
-            else {
-                handler.postDelayed(resumeWhenReady, 1000);
-            }
+    public void fabOnOff(int state){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        if (state==0){
+            fab.setVisibility(View.GONE);
         }
-    };
+        else {
+            fab.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }

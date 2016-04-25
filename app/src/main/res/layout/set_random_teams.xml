@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.93"
-        android:id="@+id/fragmentContent">
+        android:id="@+id/fragmentContentRandomTeams">
 
         <LinearLayout
             android:orientation="vertical"

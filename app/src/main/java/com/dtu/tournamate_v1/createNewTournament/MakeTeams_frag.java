@@ -1,10 +1,7 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,8 +83,8 @@ public class MakeTeams_frag extends Fragment implements View.OnClickListener{
        else if (v==done_b){
            //MyApplication.type = "Round Robin";
            getFragmentManager().beginTransaction()
-                   .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out)
-                   .replace(R.id.fragmentContent, new TournamentReady_frag())
+                   //.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out)
+                   .replace(R.id.main_frame, new TournamentReady_frag())
                    .addToBackStack(null)
                    .commit();
        }

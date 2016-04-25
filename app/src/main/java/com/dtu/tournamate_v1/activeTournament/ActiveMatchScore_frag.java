@@ -1,7 +1,7 @@
 package com.dtu.tournamate_v1.activeTournament;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -140,12 +140,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
         if (v == rank_b) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, new RankList_frag())
+                    .replace(R.id.main_frame, new RankList_frag())
                     .addToBackStack(null)
                     .commit();
         } else if (v == matchlist_b) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContent, new RoundRobinMatchList_frag())
+                    .replace(R.id.main_frame, new RoundRobinMatchList_frag())
                     .addToBackStack(null)
                     .commit();
         } else if (v == next_b) {
@@ -238,12 +238,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 if (MyApplication.matchesPlayed == matches.size()) {
                     MyApplication.isDone = true;
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContent, new TournamentWinner_frag())
+                            .replace(R.id.main_frame, new TournamentWinner_frag())
                             .addToBackStack(null)
                             .commit();
                 } else {
                     getFragmentManager().beginTransaction()
-                            .replace(R.id.fragmentContent, new ActiveMatchScore_frag())
+                            .replace(R.id.main_frame, new ActiveMatchScore_frag())
                             .addToBackStack(null)
                             .commit();
                 }
@@ -292,60 +292,4 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         updateMatchRef.setValue(m);
     }
 
-    /**
-     public void saveToParse(){
-     new AsyncTask() {
-    @Override protected Object doInBackground(Object... arg0) {
-    Log.d("Parse", "Laver query på " + m.getMatchID());
-    while (m.getMatchID() == null) ;
-    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Matches");
-    query2.getInBackground(m.getMatchID(), new GetCallback<ParseObject>() {
-    @Override public void done(ParseObject m_parse, ParseException e) {
-    if(e == null) {
-    m_parse.put("Team1Score", m.getScoreT1());
-
-    m_parse.put("Team2Score", m.getScoreT2());
-    if (m.isPlayed()) {
-    m_parse.put("isPlayed", true);
-    }
-    m_parse.saveInBackground();
-    Log.d("Parse","Saved match info to parse");
-    }
-    else{
-    Log.d("Parse","Failed to update match info to parse");
-    }
-    }
-    });
-    return null;
-    }
-    }.execute();
-     }
-
-     public void fetchMatchID() {
-     new AsyncTask() {
-    @Override protected Object doInBackground(Object... arg0) {
-    ParseQuery<ParseObject> query = ParseQuery.getQuery("Matches");
-    Log.d("Parse","Fetching for match:"+m.getT1().getTeamName()+" vs "+ m.getT2().getTeamName()+ " with tournament id: "+MyApplication.tournamentID_parse);
-    query.whereEqualTo("TournamentID", MyApplication.tournamentID_parse);
-    query.whereContains("Team1Name", m.getT1().getTeamName());
-    query.whereContains("Team2Name", m.getT2().getTeamName());
-    query.findInBackground(new FindCallback<ParseObject>() {
-    @Override public void done(List<ParseObject> parseObjects, ParseException e) {
-    if (e == null) {
-    if (parseObjects.size() > 1) {
-    Log.d("Parse", "Flere en 1 objekt fundet " + parseObjects.size());
-    } else {
-    m.setMatchID(parseObjects.get(0).getObjectID());
-    Log.d("Parse", "Match Query! Result: number of matches found: " + parseObjects.size() + " And first ID: " + parseObjects.get(0).getObjectID());
-    }
-    } else {
-    Log.d("Parse", "Update match went wrong");
-    }
-    }
-    });
-    return null;
-    }
-    }.execute();
-     }
-     **/
 }
