@@ -1,6 +1,8 @@
 package com.dtu.tournamate_v1;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -33,7 +35,8 @@ public class MyApplication extends android.app.Application {
     // User data
 
     private static boolean firstTime = true;
-    private static String u_ID, firstName, lastName, userName, imageURL, eMail;
+    User user = new User();
+
 
     // Tournaments data
     public static List<String> tournamnetTypes = new ArrayList<>();
@@ -57,8 +60,44 @@ public class MyApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
+        // Firebase
+        Firebase.setAndroidContext(this);
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+        Firebase ref = new Firebase(firebase_URL);
+
         tournamnetTypes.add("Round Robin");
         tournamnetTypes.add("Single Elimination");
+
+        // ******* TEST ***********
+
+        SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
+
+        if (prefs.getBoolean("firstrun", true)) {
+
+            Firebase usersRef = ref.child("users");
+            Firebase newUserRef = usersRef.push();
+
+            user.setFirstName("Test");
+            user.setLastName("Person");
+            user.setUserName("testUser");
+            user.seteMail("test@firebaseuser.com");
+            user.setU_ID(newUserRef.getKey());
+
+            newUserRef.setValue(user);
+
+            prefs.edit().putBoolean("firstrun", false).apply();
+            prefs.edit().putString("user_ID", user.getU_ID()).apply();
+            prefs.edit().putString("userName",user.getUserName()).apply();
+            prefs.edit().commit();
+            Log.d("First time test","First time! User added to Firebase and SharedPrefs");
+        }
+        else {
+            user.setU_ID(prefs.getString("user_ID",""));
+            user.setUserName(prefs.getString("userName", ""));
+            Log.d("First time test", "Not first time! User data collected from SharedPrefs. username is:" +
+                    user.getUserName());
+        }
+
 
         //SharedPreferences playerList = getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
         //SharedPreferences teamList = getSharedPreferences("TeamList", Context.MODE_PRIVATE);
@@ -70,9 +109,7 @@ public class MyApplication extends android.app.Application {
         FacebookSdk.sdkInitialize(getApplicationContext());
         **/
 
-        // Firebase
-        Firebase.setAndroidContext(this);
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+
 
     }
 

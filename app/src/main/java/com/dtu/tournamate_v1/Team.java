@@ -14,7 +14,7 @@ import java.util.ArrayList;
 //@ParseClassName("Team")
 public class Team { // extends ParseObject{
 
-    private String teamName,matchID;
+    private String teamName,matchID, teamID, tournamentID;
     private int matchesWon, matchesLost, matchesDraw, matechesPlayed, overAllScore;
     private ArrayList<String> teamMembers = new ArrayList<>();
     //private long teamID_sql;
@@ -35,6 +35,30 @@ public class Team { // extends ParseObject{
         teamMembers.add(newTeamMember);
     }
     public String getTeamName(){return teamName;}
+
+    public String getTeamID() {
+        return teamID;
+    }
+
+    public void setTeamID(String teamID) {
+        this.teamID = teamID;
+    }
+
+    public String getTournamentID() {
+        return tournamentID;
+    }
+
+    public void setTournamentID(String tournamentID) {
+        this.tournamentID = tournamentID;
+    }
+
+    public ArrayList<String> getTeamMembers() {
+        return teamMembers;
+    }
+
+    public void setTeamMembers(ArrayList<String> teamMembers) {
+        this.teamMembers = teamMembers;
+    }
 
     public void matchResult(String result){
         if ("won".equals(result)){
