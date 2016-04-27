@@ -43,6 +43,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     private Match m;
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
     Firebase matchesRef = myFirebaseRef.child("Matches");
+    Firebase activeMatchRef;
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
@@ -120,6 +121,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         if (MyApplication.isOnline) {
             //fetchMatchID();
         }
+
+        activeMatchRef = matchesRef.child(m.getMatchID());
 
         return rod;
     }
@@ -288,8 +291,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
     public void saveToFireBase(){
 
-        Firebase updateMatchRef = matchesRef.child(m.getMatchID());
-        updateMatchRef.setValue(m);
+        //Firebase updateMatchRef = matchesRef.child(m.getMatchID());
+        activeMatchRef.setValue(m);
     }
 
 }

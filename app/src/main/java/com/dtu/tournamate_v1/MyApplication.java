@@ -33,6 +33,7 @@ public class MyApplication extends android.app.Application {
     // User data
 
     private static boolean firstTime = true;
+    private static String u_ID, firstName, lastName, userName, imageURL, eMail;
 
     // Tournaments data
     public static List<String> tournamnetTypes = new ArrayList<>();

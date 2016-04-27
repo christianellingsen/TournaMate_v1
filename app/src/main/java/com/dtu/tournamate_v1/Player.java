@@ -6,17 +6,21 @@ package com.dtu.tournamate_v1;
 public class Player {
 
     //Basic info
-    private String name;
-    private int points;
+    private String p_ID, u_ID, te_ID, t_ID,name;
+    private int score;
     // Image?
 
     //Firebase
     private String teamRef;
     private String userRef;
 
-    public Player(String name, int points, String teamRef, String userRef) {
+    public Player(String p_ID, String u_ID, String te_ID, String t_ID, String name, int score, String teamRef, String userRef) {
+        this.p_ID = p_ID;
+        this.u_ID = u_ID;
+        this.te_ID = te_ID;
+        this.t_ID = t_ID;
         this.name = name;
-        this.points = points;
+        this.score = score;
         this.teamRef = teamRef;
         this.userRef = userRef;
     }
@@ -29,12 +33,12 @@ public class Player {
         this.name = name;
     }
 
-    public int getPoints() {
-        return points;
+    public int getScore() {
+        return score;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public String getTeamRef() {
@@ -51,5 +55,37 @@ public class Player {
 
     public void setUserRef(String userRef) {
         this.userRef = userRef;
+    }
+
+    public String getP_ID() {
+        return p_ID;
+    }
+
+    public void setP_ID(String p_ID) {
+        this.p_ID = p_ID;
+    }
+
+    public String getU_ID() {
+        return u_ID;
+    }
+
+    public void setU_ID(String u_ID) {
+        this.u_ID = u_ID;
+    }
+
+    public String getTe_ID() {
+        return te_ID;
+    }
+
+    public void setTe_ID(String te_ID) {
+        this.te_ID = te_ID;
+    }
+
+    public String getT_ID() {
+        return t_ID;
+    }
+
+    public void setT_ID(String t_ID) {
+        this.t_ID = t_ID;
     }
 }

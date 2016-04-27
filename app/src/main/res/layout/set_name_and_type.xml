@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="center_horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/set_tournament_name_et"
+            android:layout_gravity="center"
+            android:text=""
+            android:hint="Tournament name"
+            android:textSize="25dp"
+            android:textColor="#c7c7c7"
+            android:textColorHighlight="#c7c7c7"
+            android:textColorHint="#c7c7c7"
+            android:textColorLink="#c7c7c7"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Group play"
+                android:id="@+id/set_group_play_b"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="110dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Knockout"
+                android:id="@+id/set_elimination_b"
+                android:layout_below="@+id/set_group_play_b"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="114dp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+</LinearLayout>
