@@ -83,6 +83,7 @@ public class MyApplication extends android.app.Application {
             user.seteMail("test@firebaseuser.com");
             user.setU_ID(newUserRef.getKey());
 
+
             newUserRef.setValue(user);
 
             prefs.edit().putBoolean("firstrun", false).apply();
