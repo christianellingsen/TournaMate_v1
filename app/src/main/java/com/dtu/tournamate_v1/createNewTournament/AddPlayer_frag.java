@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.KeyEvent;
@@ -47,6 +48,8 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
 
         rod = i.inflate(R.layout.add_players, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add players");
 
         addPlayerToList_b = (Button) rod.findViewById(R.id.buttonAddPlayer);
         remove_b = (Button) rod.findViewById(R.id.buttonRemove);

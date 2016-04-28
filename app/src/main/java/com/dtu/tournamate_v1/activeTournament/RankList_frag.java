@@ -2,6 +2,7 @@ package com.dtu.tournamate_v1.activeTournament;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ public class RankList_frag extends Fragment {
         rod = i.inflate(R.layout.rank_list, container, false);
         teams = MyApplication.teams;
         teamsStringList = new ArrayList<>();
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Rank");
 
         MyApplication.rankTeams();
 

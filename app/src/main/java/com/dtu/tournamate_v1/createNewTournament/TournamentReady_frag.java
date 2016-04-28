@@ -3,6 +3,7 @@ package com.dtu.tournamate_v1.createNewTournament;
 import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +39,6 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
     // Define graphical elements
     TextView selectedType_tv;
     Button start_b;
-    ToggleButton onOffLine_b;
     ListView lv;
     View rod;
     Boolean tCreated = false;
@@ -52,11 +52,10 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
         lv = (ListView) rod.findViewById(R.id.listViewTeams);
         selectedType_tv = (TextView) rod.findViewById(R.id.textViewSelectedType);
         start_b = (Button) rod.findViewById(R.id.buttonStart);
-        onOffLine_b = (ToggleButton) rod.findViewById(R.id.toggleButtonONOFFline);
-
 
         selectedType_tv.setText(MyApplication.type);
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(MyApplication.tournamentName);
 
         MyApplication.activeMatch = 1;
         MyApplication.matchesPlayed = 0;
@@ -83,7 +82,6 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
         lv.setAdapter(adapter);
 
         start_b.setOnClickListener(this);
-        onOffLine_b.setOnClickListener(this);
 
         return rod;
     }
@@ -96,26 +94,53 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             progress.setCancelable(false);
             progress.show();
 
-            if (onOffLine_b.isChecked()) {
-
-                MyApplication.isOnline = true;
-
-            }
-            else {
-                MyApplication.isOnline = false;
-            }
-
             //Start tournament
 
             MyApplication.matchList.clear();
             MyApplication.matchesPlayed = 0;
+
+            // Save tournament to Firebase
+
+            Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+            Firebase newTournamentRef = tournamentRef.push();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String date  = dateFormat.format(new Date());
+
+            Tournament tournament = new Tournament();
+            tournament.setName(MyApplication.tournamentName);
+            tournament.setCreatedBy_uID(MyApplication.getUser().getU_ID());
+            tournament.setIsDone(false);
+            tournament.setWinner("No winner yet");
+            tournament.setCreatedAt(date);
+            tournament.setType(MyApplication.type);
+            tournament.setIsDeleted(false);
+            tournament.setNumberOfMatches(MyApplication.matchList.size());
+
+            tournament.setT_ID(newTournamentRef.getKey());
+            newTournamentRef.setValue(tournament);
+            MyApplication.tournamentID_parse = tournament.getT_ID();
+            Log.d("Firebase", "Tournament id: " + tournament.getT_ID());
+
+            // Save teams to Firebase
+
+            Firebase teamsRef = myFirebaseRef.child("Teams");
+
+            for (Team t : MyApplication.teams){
+                Firebase newTeamRef = teamsRef.push();
+                t.setTeamID(newTeamRef.getKey());
+                t.setTournamentID(MyApplication.tournamentID_parse);
+                newTeamRef.setValue(t);
+            }
+
+            // Make matches
 
             if (MyApplication.type.equals("Round Robin")) {
                 RoundRobin_logic rr;
                 rr = new RoundRobin_logic();
                 rr.createMatches();
             }
-            else {
+            else if (MyApplication.type.equals("Single Elimination")){
                 SingleElimination_logic se;
                 se = new SingleElimination_logic();
                 try {
@@ -125,53 +150,25 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 }
             }
 
-            // Save tournament to Firebase
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String date  = dateFormat.format(new Date());
-
-            Tournament tournament = new Tournament();
-            tournament.setName(MyApplication.tournamentName);
-            tournament.setIsDone(false);
-            tournament.setWinner("No winner yet");
-            tournament.setCreatedAt(date);
-            tournament.setType(MyApplication.type);
-            tournament.setNumberOfMatches(MyApplication.matchList.size());
-
-            Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-            Firebase newTournamentRef = tournamentRef.push();
-            tournament.setObjectID(newTournamentRef.getKey());
-            newTournamentRef.setValue(tournament);
-            MyApplication.tournamentID_parse = tournament.getObjectID();
-            Log.d("Firebase", "Tournament id: " + tournament.getObjectID());
-
-            // Save matches and teams to Firebase
+            // Save matches to Firebase
 
             Firebase matchesRef = myFirebaseRef.child("Matches");
-            Firebase teamsRef = myFirebaseRef.child("Teams");
 
             for (Match m : MyApplication.matchList) {
                 Firebase newMatchesRef = matchesRef.push();
                 m.setMatchID(newMatchesRef.getKey());
                 m.setTournamentID(MyApplication.tournamentID_parse);
+                m.setT1ID(m.getT1().getTeamID());
+                m.setT2ID(m.getT2().getTeamID());
+
+                Log.d("Firebase", "match id: " + m.getMatchID()+ " t1 id lenght: "+ m.getT1ID().length()+ " t2 id lenght: "+m.getT2ID().length());
+                if (m.getT1ID().length()>1){
+                    m.setTeamsAdded(1);
+                }
+                if (m.getT2ID().length()>1){
+                    m.setTeamsAdded(2);
+                }
                 newMatchesRef.setValue(m);
-
-                if(m.getTeamsAdded()>=1){
-                    Log.d("Firebase", "Team 1 added: " + m.getT1().getTeamName());
-                    Firebase newTeamRef = teamsRef.push();
-                    newTeamRef.push();
-                    m.getT1().setMatchID(m.getMatchID());
-                    newTeamRef.setValue(m.getT1());
-                }
-                if (m.getTeamsAdded()>1){
-                    Log.d("Firebase", "Team 2 added: " + m.getT2().getTeamName());
-                    Firebase newTeamRef = teamsRef.push();
-                    newTeamRef.push();
-                    newTeamRef.push();
-                    m.getT2().setMatchID(m.getMatchID());
-                    newTeamRef.setValue(m.getT2());
-                }
-
             }
 
             progress.dismiss();

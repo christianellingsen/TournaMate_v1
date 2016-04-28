@@ -72,19 +72,6 @@
             android:padding="10dp"
             android:gravity="center">
             <!-- your bottom content -->
-            <ToggleButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/standard_button"
-                android:text="New ToggleButton"
-                android:id="@+id/toggleButtonONOFFline"
-                android:textOff="@string/tournamentResume_buttonMatchOffline"
-                android:textOn="@string/tournamentResume_buttonMatchOnline"
-                android:textSize="24dp"
-                android:layout_marginRight="10dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:textAllCaps="false"/>
 
             <Button
                 android:layout_width="wrap_content"

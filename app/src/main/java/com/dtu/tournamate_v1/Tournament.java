@@ -1,12 +1,8 @@
 package com.dtu.tournamate_v1;
 
-import android.util.Log;
-
 //import com.parse.ParseClassName;
 //import com.parse.ParseObject;
 
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Christian on 26-04-2015.
@@ -14,13 +10,8 @@ import java.util.Date;
 
 public class Tournament {
 
-    private String name;
-    private Boolean isDone;
-    private String winner;
-    private String createdAt;
-    private String objectID;
-    private long objectID_sql;
-    private String type;
+    private String name,winner,createdAt, t_ID,type,createdBy_uID;
+    private Boolean isDone, isDeleted;
     private int numberOfMatches;
 
     public void Tournament(){
@@ -38,8 +29,8 @@ public class Tournament {
     public void setCreatedAt(String value){this.createdAt = value;}
     public String getCreatedAt() {return createdAt;}
 
-    public String getObjectID(){return objectID;}
-    public void setObjectID(String objectID){this.objectID=objectID;}
+    public String getT_ID(){return t_ID;}
+    public void setT_ID(String t_ID){this.t_ID = t_ID;}
 
     public String getType() {
         return type;
@@ -51,5 +42,19 @@ public class Tournament {
     public int getNumberOfMatches() {return numberOfMatches;}
     public void setNumberOfMatches(int numberOfMatches) {this.numberOfMatches = numberOfMatches;}
 
+    public String getCreatedBy_uID() {
+        return createdBy_uID;
+    }
 
+    public void setCreatedBy_uID(String createdBy_uID) {
+        this.createdBy_uID = createdBy_uID;
+    }
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

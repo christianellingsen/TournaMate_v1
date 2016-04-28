@@ -24,8 +24,10 @@ import android.widget.TextView;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.EventTarget;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.ui.FirebaseRecyclerAdapter;
 
@@ -38,6 +40,7 @@ public class ListStoredMatched_frag extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private boolean doneFetchingFirebase = false;
+    private boolean foundUsersTournaments = false;
     private Handler handler;
 
     private String tID;
@@ -51,6 +54,7 @@ public class ListStoredMatched_frag extends Fragment {
     Firebase tournamentRef = myFirebaseRef.child("Tournaments");
 
     FirebaseRecyclerAdapter<Tournament, viewHolder> fireBaseAdapter;
+    MyRecyclerAdapter adapter;
 
     View root;
     View view;
@@ -76,12 +80,20 @@ public class ListStoredMatched_frag extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
+        // Standard adapter
+        Query tournamentQueryUID = tournamentRef.orderByChild("createdBy_uID").equalTo(MyApplication.getUser().getU_ID());
+        //Query tournamentQueryDeleted = tournamentRef.orderByChild("isDeleted").equalTo(false);
+
+        Query tournamentQueryDeleted = tournamentQueryUID.getRef().orderByChild("isDeleted").equalTo(false);
+
+        // Firebase adaper
         fireBaseAdapter =
                 new FirebaseRecyclerAdapter<Tournament, viewHolder>(
                         Tournament.class,
                         R.layout.tournament_listelement,
                         viewHolder.class,
-                        tournamentRef
+                        tournamentQueryDeleted
                 ) {
                     @Override
                     protected void populateViewHolder(viewHolder mViewHolder, Tournament t, final int i) {
@@ -138,13 +150,12 @@ public class ListStoredMatched_frag extends Fragment {
                 if (direction == ItemTouchHelper.RIGHT){
 
                     Snackbar snackbar = Snackbar
-                            .make(getView(), "Message is deleted", Snackbar.LENGTH_LONG)
+                            .make(getView(), "Tournament is deleted", Snackbar.LENGTH_LONG)
                             .setAction("UNDO", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
 
-                                    Snackbar snackbar1 = Snackbar.make(getView(), "Not implemented yet!", Snackbar.LENGTH_SHORT);
-                                    snackbar1.show();
+                                    undoDeleteTournament(tID);
                                 }
                             });
 
@@ -211,7 +222,8 @@ public class ListStoredMatched_frag extends Fragment {
 
     public void deleteTournament(final String tournamentID) {
 
-        Firebase matchRef = myFirebaseRef.child("Matches");
+        tID = tournamentID;
+
         Firebase tournamentRef = myFirebaseRef.child("Tournaments");
 
         tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -220,7 +232,8 @@ public class ListStoredMatched_frag extends Fragment {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String t_objectID = (String) child.getKey();
                     if (t_objectID.equals(tournamentID)) {
-                        child.getRef().removeValue();
+                        //child.getRef().removeValue();
+                        child.getRef().child("isDeleted").setValue(true);
                         Log.d("Firebase", "Tournament found and deleted");
                     }
                 }
@@ -233,24 +246,32 @@ public class ListStoredMatched_frag extends Fragment {
 
         });
 
-        matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    }
+
+    public void undoDeleteTournament(final String tournamentID) {
+
+        Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+
+        tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String t_objectID = (String) child.child("tournamentID").getValue();
+                    String t_objectID = (String) child.getKey();
                     if (t_objectID.equals(tournamentID)) {
-                        child.getRef().removeValue();
+                        //child.getRef().removeValue();
+                        child.getRef().child("isDeleted").setValue(false);
+                        Log.d("Firebase", "Tournament found and deleted");
                     }
                 }
-                Log.d("Firebase", "Done deliting matches");
-
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Firebase", "Match fetch error: " + firebaseError.getMessage());
+
             }
+
         });
+
     }
 
     public void fetchTournament() {
@@ -260,8 +281,9 @@ public class ListStoredMatched_frag extends Fragment {
         MyApplication.teams.clear();
         fetchedMatchesFirebase.clear();
 
-        Firebase matchRef = myFirebaseRef.child("Matches");
-        Firebase tournamentRef = myFirebaseRef.child("Tournaments");
+        Firebase matchRef = myFirebaseRef.child(MyApplication.matchesString);
+        Firebase tournamentRef = myFirebaseRef.child(MyApplication.tournamentsString);
+        Firebase teamsRef = myFirebaseRef.child(MyApplication.teamsString);
 
         tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -303,9 +325,6 @@ public class ListStoredMatched_frag extends Fragment {
                     }
                 }
                 MyApplication.matchList = fetchedMatchesFirebase;
-                doneFetchingFirebase = true;
-                Log.d("Firebase", "Size of fetchedMatchesFirebase: " + fetchedMatchesFirebase.size());
-                Log.d("Firebase", "Size of MyApplication.matchList: " + MyApplication.matchList.size());
                 Log.d("Firebase", "Done fetching, and added to Myapplication");
 
             }
@@ -313,6 +332,27 @@ public class ListStoredMatched_frag extends Fragment {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.d("Firebase", "Match fetch error: " + firebaseError.getMessage());
+            }
+        });
+
+        teamsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String t_objectID = (String) child.child("tournamentID").getValue();
+                    if (t_objectID.equals(tID)) {
+                        Team t = child.getValue(Team.class);
+                        MyApplication.teams.add(t);
+                    }
+                }
+
+                doneFetchingFirebase = true;
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d("Firebase", "Team fetch error: " + firebaseError.getMessage());
             }
         });
     }
@@ -346,6 +386,22 @@ public class ListStoredMatched_frag extends Fragment {
             }
         }
     };
+
+    public final Runnable findUserTournaments = new Runnable() {
+
+        @Override
+        public void run() {
+            if (foundUsersTournaments) {
+                adapter = new MyRecyclerAdapter(storedTournaments);
+                mRecyclerView.setAdapter(adapter);
+            }
+            else {
+                handler.postDelayed(findUserTournaments, 1000);
+            }
+        }
+    };
+
+
 }
 
 

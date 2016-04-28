@@ -12,9 +12,9 @@ import android.util.Log;
 public class Match { //extends ParseObject {
 
     private int matchNumber, scoreT1, scoreT2, roundID, nextMatchNumber, teamsAdded;
-    private Team t1, t2, winner, looser;
+    private Team t1, t2;
     private boolean played;
-    private String matchID, matchTitle, t1ID, t2ID, tournamentID ;
+    private String matchID, matchTitle, t1ID, t2ID, tournamentID,winner ;
 
     public Match() {
         this.matchNumber =0;
@@ -25,7 +25,7 @@ public class Match { //extends ParseObject {
         this.teamsAdded = 0;
         this.t1 = new Team();
         this.t2 = new Team();
-        this.winner = new Team();
+        this.winner = "";
         this.played = false;
         this.matchID = "";
         this.t1ID = "";
@@ -89,10 +89,10 @@ public class Match { //extends ParseObject {
         this.t2 = t2;
     }
 
-    public Team getWinner() {
+    public String getWinner() {
         return winner;
     }
-    public void setWinner(Team winner) {
+    public void setWinner(String winner) {
         this.winner = winner;
     }
 

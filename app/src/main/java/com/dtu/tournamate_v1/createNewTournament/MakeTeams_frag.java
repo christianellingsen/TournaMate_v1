@@ -2,6 +2,7 @@ package com.dtu.tournamate_v1.createNewTournament;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ public class MakeTeams_frag extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
 
         rod = i.inflate(R.layout.make_teams, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Make teams");
 
         MyApplication.teams.clear();
 

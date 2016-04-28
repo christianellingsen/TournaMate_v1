@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
+import com.dtu.tournamate_v1.Team;
 import com.firebase.client.Firebase;
+import com.firebase.client.Query;
 //import com.parse.FindCallback;
 //import com.parse.GetCallback;
 //import com.parse.ParseException;
@@ -41,14 +44,20 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     private Button teamXPlus_b, teamXMinus_b, teamYMinus_b, teamYPlus_b, rank_b, matchlist_b, next_b;
     private int activeMatchNumber;
     private Match m;
+    private Team t1, t2;
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
-    Firebase matchesRef = myFirebaseRef.child("Matches");
+    Firebase matchesRef = myFirebaseRef.child(MyApplication.matchesString);
     Firebase activeMatchRef;
+
+    Firebase teamsRef = myFirebaseRef.child(MyApplication.teamsString);
+    Firebase t1Ref, t2Ref;
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
 
         rod = i.inflate(R.layout.active_match_score, container, false);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(MyApplication.tournamentName);
 
         matchNumber_tv = (TextView) rod.findViewById(R.id.textViewMatchNumber);
         matchTitle_tv = (TextView) rod.findViewById(R.id.textView_matchtitle);
@@ -73,6 +82,9 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         next_b.setOnClickListener(this);
 
         matches = MyApplication.matchList;
+        t1 = new Team();
+        t2 = new Team();
+
 
         if (MyApplication.type.equals("Round Robin")) {
             matchTitle_tv.setVisibility(View.GONE);
@@ -96,10 +108,25 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         if (activeMatchNumber <= matches.size()) {
             m = matches.get(activeMatchNumber - 1);
 
+            Log.d("Active match","size of matchlist: "+matches.size());
+            for (Team t : MyApplication.teams){
+                Log.d("Active match","Set teams: t name: "+t.getTeamName()+" tID: "+t.getTeamID()+" m t1 ID: "+m.getT1ID()+" or "+ m.getT2ID());
+
+                if (m.getT1ID().trim().equals(t.getTeamID().trim())){
+                    t1 = t;
+                    Log.d("Active match","team1 found "+ t1.getTeamName());
+                }
+                else if (m.getT2ID().trim().equals(t.getTeamID().trim())){
+                    t2=t;
+                    Log.d("Active match","team2 found "+t2.getTeamName());
+                }
+            }
+
+
             matchNumber_tv.setText(getString(R.string.activeTournament_Match) + m.getMatchNumber());
             matchTitle_tv.setText(m.getMatchTitle());
-            teamX_tv.setText(m.getT1().getTeamName());
-            teamY_tv.setText(m.getT2().getTeamName());
+            teamX_tv.setText(t1.getTeamName());
+            teamY_tv.setText(t2.getTeamName());
         }
         if (MyApplication.matchesPlayed == matches.size() - 2) {
             next_b.setText(getString(R.string.activeTournament_playNext));
@@ -111,6 +138,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             next_b.setText(getString(R.string.activeTournament_seeWinner));
         }
 
+
+
         teamXScore_tv.setText("" + m.getScoreT1());
         teamYScore_tv.setText("" + m.getScoreT2());
 
@@ -118,11 +147,11 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             matchNumber_tv.setBackgroundColor(Color.parseColor("#0FAE02"));
         }
 
-        if (MyApplication.isOnline) {
-            //fetchMatchID();
-        }
 
         activeMatchRef = matchesRef.child(m.getMatchID());
+
+        t1Ref = teamsRef.child(t1.getTeamID());
+        t2Ref = teamsRef.child(t2.getTeamID());
 
         return rod;
     }
@@ -173,14 +202,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     MyApplication.matchesPlayed++;
                 }
                 if (m.getScoreT1() > m.getScoreT2()) {
-                    m.setWinner(m.getT1());
-                    m.getT1().matchResult("won");
-                    m.getT2().matchResult("lost");
-                    m.getT1().addToOverAllScore(3);
-                    m.getT2().addToOverAllScore(0);
-                    m.setWinner(m.getT1());
+                    m.setWinner(t1.getTeamName());
+                    t1.matchResult("won");
+                    t2.matchResult("lost");
+                    t1.addToOverAllScore(3);
+                    t2.addToOverAllScore(0);
                     if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.type.equals("Single Elimination")) {
-
 
                         if (matches.get(m.getNextMatchNumber() - 1).getTeamsAdded() == 0) {
                             matches.get(m.getNextMatchNumber() - 1).setT1(m.getT1());
@@ -192,13 +219,14 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                         }
                     }
                     Log.d("Debug", m.getT1().getTeamName() + " won");
+
                 } else if (m.getScoreT1() < m.getScoreT2()) {
-                    m.setWinner(m.getT2());
-                    m.getT1().matchResult("lost");
-                    m.getT2().matchResult("won");
-                    m.getT1().addToOverAllScore(0);
-                    m.getT2().addToOverAllScore(3);
-                    m.setWinner(m.getT2());
+                    m.setWinner(t2.getTeamName());
+                    t1.matchResult("lost");
+                    t2.matchResult("won");
+                    t1.addToOverAllScore(0);
+                    t2.addToOverAllScore(3);
+
                     if (m.getMatchNumber() < MyApplication.matchList.size()) {
                         if (matches.get(m.getNextMatchNumber() - 1).getTeamsAdded() == 0) {
                             matches.get(m.getNextMatchNumber() - 1).setT1(m.getT2());
@@ -211,10 +239,10 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                         Log.d("Debug", m.getT2().getTeamName() + " won");
                     }
                 } else {
-                    m.getT1().matchResult("draw");
-                    m.getT2().matchResult("draw");
-                    m.getT1().addToOverAllScore(1);
-                    m.getT2().addToOverAllScore(1);
+                    t1.matchResult("draw");
+                    t2.matchResult("draw");
+                    t1.addToOverAllScore(1);
+                    t2.addToOverAllScore(1);
                     Log.d("Debug", "Is was a draw");
                 }
 
@@ -235,7 +263,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 Log.d("Match", "Match " + activeMatchNumber + " done!");
                 Log.d("Match", "Score " + m.getScoreT1() + " - " + m.getScoreT2());
                 if (m.getWinner() != null) {
-                    Log.d("Match", "Winner is " + m.getWinner().getTeamName());
+                    Log.d("Match", "Winner is " + m.getWinner());
                 } else Log.d("Match", "Match draw!");
 
                 if (MyApplication.matchesPlayed == matches.size()) {
@@ -250,17 +278,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                             .addToBackStack(null)
                             .commit();
                 }
-                if (MyApplication.isOnline) {
-                    //saveToParse();
-                    saveToFireBase();
-                }
             }
+
         } else if (v == teamXPlus_b) {
             int score = Integer.parseInt(teamXScore_tv.getText().toString());
             score++;
             updateScore("t1", score);
-            //if(MyApplication.isOnline){saveToParse();}
-            if(MyApplication.isOnline){saveToFireBase();}
 
         } else if (v == teamXMinus_b) {
             int score = Integer.parseInt(teamXScore_tv.getText().toString());
@@ -268,15 +291,11 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 score--;
             }
             updateScore("t1", score);
-            //if(MyApplication.isOnline){saveToParse();}
-            if(MyApplication.isOnline){saveToFireBase();}
 
         } else if (v == teamYPlus_b) {
             int score = Integer.parseInt(teamYScore_tv.getText().toString());
             score++;
             updateScore("t2", score);
-            //if(MyApplication.isOnline){saveToParse();}
-            if(MyApplication.isOnline){saveToFireBase();}
 
         } else if (v == teamYMinus_b) {
             int score = Integer.parseInt(teamYScore_tv.getText().toString());
@@ -284,15 +303,16 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 score--;
             }
             updateScore("t2", score);
-            //if(MyApplication.isOnline){saveToParse()();}
-            if(MyApplication.isOnline){saveToFireBase();}
         }
+        saveToFireBase();
     }
 
     public void saveToFireBase(){
 
         //Firebase updateMatchRef = matchesRef.child(m.getMatchID());
         activeMatchRef.setValue(m);
+        t1Ref.setValue(t1);
+        t2Ref.setValue(t2);
     }
 
 }

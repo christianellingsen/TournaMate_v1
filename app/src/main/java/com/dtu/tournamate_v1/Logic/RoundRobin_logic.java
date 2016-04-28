@@ -73,12 +73,7 @@ public class RoundRobin_logic {
                         m.setT1(t1);
                         m.setT2(t2);
                         m.setMatchNumber(matchesMade + 1);
-                        /**m.pinInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                m.setMatchID(m.getObjectID());
-                            }
-                        });**/
+
                         m.setTeamsAdded(2);
                         matches.add(m);
 

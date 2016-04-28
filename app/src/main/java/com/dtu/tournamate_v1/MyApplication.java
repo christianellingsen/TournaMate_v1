@@ -35,7 +35,7 @@ public class MyApplication extends android.app.Application {
     // User data
 
     private static boolean firstTime = true;
-    User user = new User();
+    private static User user = new User();
 
 
     // Tournaments data
@@ -48,12 +48,16 @@ public class MyApplication extends android.app.Application {
     public static int activeMatch = 1;
     public static String type, tournamentName, tournamentID_parse;
     public static boolean isDone = false;
-    public static boolean isOnline = false;
     public static boolean resumingTournament = false;
     public static int numberOfMatches;
 
-    // Firebase
+    // Firebase strings
     public static final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/TournaMate_v1";
+    public static String usersString = "users";
+    public static String tournamentsString = "Tournaments";
+    public static String teamsString = "Teams";
+    public static String matchesString = "Matches";
+
 
 
     @Override
@@ -63,6 +67,7 @@ public class MyApplication extends android.app.Application {
         // Firebase
         Firebase.setAndroidContext(this);
         Firebase.getDefaultConfig().setPersistenceEnabled(true);
+
         Firebase ref = new Firebase(firebase_URL);
 
         tournamnetTypes.add("Round Robin");
@@ -114,6 +119,10 @@ public class MyApplication extends android.app.Application {
 
     }
 
+
+    public static User getUser() {
+        return user;
+    }
 
     public static void rankTeams() {
 

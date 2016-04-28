@@ -18,13 +18,14 @@ import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_akt);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("My tournaments");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         assert fab != null;
@@ -63,8 +64,6 @@ public class MainMenu_akt extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
 
     @Override
@@ -75,6 +74,12 @@ public class MainMenu_akt extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportActionBar().setTitle("My tournaments");
     }
 
     @Override
@@ -96,6 +101,7 @@ public class MainMenu_akt extends AppCompatActivity
             return true;
         }
         else if(id == R.id.action_home) {
+            getSupportActionBar().setTitle("My tournaments");
             getSupportFragmentManager().beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.main_frame, new ListStoredMatched_frag())
@@ -141,6 +147,5 @@ public class MainMenu_akt extends AppCompatActivity
             fab.setVisibility(View.VISIBLE);
         }
     }
-
 
 }

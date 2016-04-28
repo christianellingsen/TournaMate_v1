@@ -3,6 +3,7 @@ package com.dtu.tournamate_v1.activeTournament;
 import android.support.v4.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ public class RoundRobinMatchList_frag extends Fragment implements AdapterView.On
         rod = i.inflate(R.layout.test_list, container, false);
         matches = MyApplication.matchList;
         matchesStringList = new ArrayList<>();
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Scheduled matches");
 
         lv = (ListView) rod.findViewById(R.id.listView);
 
