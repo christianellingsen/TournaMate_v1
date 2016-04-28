@@ -58,6 +58,9 @@ public class MyApplication extends android.app.Application {
     public static String teamsString = "Teams";
     public static String matchesString = "Matches";
 
+    // Tournament type strings
+    public static String roundRobinString = "Round Robin";
+    public static String singleEliminationString ="Single Elimination";
 
 
     @Override

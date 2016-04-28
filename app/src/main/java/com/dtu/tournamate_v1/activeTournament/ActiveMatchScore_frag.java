@@ -4,18 +4,13 @@ import android.app.AlertDialog;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dtu.tournamate_v1.Match;
@@ -23,7 +18,6 @@ import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
 import com.firebase.client.Firebase;
-import com.firebase.client.Query;
 //import com.parse.FindCallback;
 //import com.parse.GetCallback;
 //import com.parse.ParseException;
@@ -31,7 +25,6 @@ import com.firebase.client.Query;
 //import com.parse.ParseQuery;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Christian on 19-04-2015.
@@ -43,11 +36,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     private TextView matchNumber_tv, teamX_tv, teamY_tv, teamXScore_tv, teamYScore_tv, matchTitle_tv;
     private Button teamXPlus_b, teamXMinus_b, teamYMinus_b, teamYPlus_b, rank_b, matchlist_b, next_b;
     private int activeMatchNumber;
-    private Match m;
+    private Match m, nextMatch;
     private Team t1, t2;
+    private boolean readyToPlay = false;
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
     Firebase matchesRef = myFirebaseRef.child(MyApplication.matchesString);
-    Firebase activeMatchRef;
+    Firebase activeMatchRef, nextMatchRef;
 
     Firebase teamsRef = myFirebaseRef.child(MyApplication.teamsString);
     Firebase t1Ref, t2Ref;
@@ -84,6 +78,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         matches = MyApplication.matchList;
         t1 = new Team();
         t2 = new Team();
+        nextMatch = new Match();
 
 
         if (MyApplication.type.equals("Round Robin")) {
@@ -138,6 +133,14 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             next_b.setText(getString(R.string.activeTournament_seeWinner));
         }
 
+        if (t1.getTeamName().length()>1 && t2.getTeamName().length()>1){
+            readyToPlay = true;
+        }
+        else {
+            next_b.setText("Not ready yet");
+            next_b.setBackground(getResources().getDrawable(R.drawable.red_button));
+            next_b.setClickable(false);
+        }
 
 
         teamXScore_tv.setText("" + m.getScoreT1());
@@ -147,8 +150,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             matchNumber_tv.setBackgroundColor(Color.parseColor("#0FAE02"));
         }
 
+        if (MyApplication.type.equals(MyApplication.singleEliminationString)) {
+            nextMatch = matches.get(m.getNextMatchNumber() - 1);
+        }
 
         activeMatchRef = matchesRef.child(m.getMatchID());
+        nextMatchRef = matchesRef.child(nextMatch.getMatchID());
 
         t1Ref = teamsRef.child(t1.getTeamID());
         t2Ref = teamsRef.child(t2.getTeamID());
@@ -201,6 +208,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 if (!m.isPlayed()) {
                     MyApplication.matchesPlayed++;
                 }
+
                 if (m.getScoreT1() > m.getScoreT2()) {
                     m.setWinner(t1.getTeamName());
                     t1.matchResult("won");
@@ -209,12 +217,15 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     t2.addToOverAllScore(0);
                     if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.type.equals("Single Elimination")) {
 
-                        if (matches.get(m.getNextMatchNumber() - 1).getTeamsAdded() == 0) {
-                            matches.get(m.getNextMatchNumber() - 1).setT1(m.getT1());
-                            matches.get(m.getNextMatchNumber() - 1).setTeamsAdded(1);
+                        if (nextMatch.getTeamsAdded() == 0) {
+                            nextMatch.setT1(m.getT1());
+                            nextMatch.setT1ID(m.getT1ID());
+                            nextMatch.setTeamsAdded(1);
                             Log.d("Debug", "case 1");
                         } else {
-                            matches.get(m.getNextMatchNumber() - 1).setT2(m.getT1());
+                            nextMatch.setT2(m.getT1());
+                            nextMatch.setT2ID(m.getT1ID());
+                            nextMatch.setTeamsAdded(2);
                             Log.d("Debug", "case 2");
                         }
                     }
@@ -228,12 +239,15 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     t2.addToOverAllScore(3);
 
                     if (m.getMatchNumber() < MyApplication.matchList.size()) {
-                        if (matches.get(m.getNextMatchNumber() - 1).getTeamsAdded() == 0) {
-                            matches.get(m.getNextMatchNumber() - 1).setT1(m.getT2());
-                            matches.get(m.getNextMatchNumber() - 1).setTeamsAdded(1);
+                        if (nextMatch.getTeamsAdded() == 0) {
+                            nextMatch.setT1(m.getT2());
+                            nextMatch.setT1ID(m.getT2ID());
+                            nextMatch.setTeamsAdded(1);
                             Log.d("Debug", "case 3");
                         } else {
-                            matches.get(m.getNextMatchNumber() - 1).setT2(m.getT2());
+                            nextMatch.setT2(m.getT2());
+                            nextMatch.setT2ID(m.getT2ID());
+                            nextMatch.setTeamsAdded(2);
                             Log.d("Debug", "case 4");
                         }
                         Log.d("Debug", m.getT2().getTeamName() + " won");
@@ -310,9 +324,12 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     public void saveToFireBase(){
 
         //Firebase updateMatchRef = matchesRef.child(m.getMatchID());
-        activeMatchRef.setValue(m);
-        t1Ref.setValue(t1);
-        t2Ref.setValue(t2);
+        if (readyToPlay) {
+            activeMatchRef.setValue(m);
+            nextMatchRef.setValue(nextMatch);
+            t1Ref.setValue(t1);
+            t2Ref.setValue(t2);
+        }
     }
 
 }

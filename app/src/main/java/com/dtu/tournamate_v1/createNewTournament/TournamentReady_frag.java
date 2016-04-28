@@ -115,12 +115,11 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             tournament.setCreatedAt(date);
             tournament.setType(MyApplication.type);
             tournament.setIsDeleted(false);
-            tournament.setNumberOfMatches(MyApplication.matchList.size());
-
             tournament.setT_ID(newTournamentRef.getKey());
-            newTournamentRef.setValue(tournament);
+
             MyApplication.tournamentID_parse = tournament.getT_ID();
-            Log.d("Firebase", "Tournament id: " + tournament.getT_ID());
+            tournament.setT_ID(newTournamentRef.getKey());
+
 
             // Save teams to Firebase
 
@@ -170,6 +169,10 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 }
                 newMatchesRef.setValue(m);
             }
+
+            tournament.setNumberOfMatches(MyApplication.matchList.size());
+            newTournamentRef.setValue(tournament);
+            Log.d("Firebase", "Tournament id: " + tournament.getT_ID());
 
             progress.dismiss();
 

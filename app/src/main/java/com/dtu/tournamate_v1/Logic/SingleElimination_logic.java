@@ -80,7 +80,7 @@ public class SingleElimination_logic {
         }
 
         for (Match m : matches){
-            if (m.getMatchNumber()<numberOfMatches){
+            if (m.getMatchNumber()<=numberOfMatches){
                 if (m.getMatchNumber()==numberOfMatches-1){
                     m.setNextMatchNumber(numberOfMatches);
                 }

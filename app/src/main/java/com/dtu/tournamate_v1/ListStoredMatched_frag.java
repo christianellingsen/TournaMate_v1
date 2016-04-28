@@ -40,7 +40,6 @@ public class ListStoredMatched_frag extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
 
     private boolean doneFetchingFirebase = false;
-    private boolean foundUsersTournaments = false;
     private Handler handler;
 
     private String tID;
@@ -297,7 +296,7 @@ public class ListStoredMatched_frag extends Fragment {
                         MyApplication.tournamentName = (String) child.child("name").getValue();
                         MyApplication.type = (String) child.child("type").getValue();
                         MyApplication.numberOfMatches = Integer.parseInt("" + child.child("numberOfMatches").getValue());
-                        Log.d("Firebase", "Tournament found: " + MyApplication.tournamentName);
+                        Log.d("Firebase", "Tournament found: " + MyApplication.tournamentID_parse);
                     }
                 }
             }
@@ -307,6 +306,26 @@ public class ListStoredMatched_frag extends Fragment {
 
             }
 
+        });
+
+        teamsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String t_objectID = (String) child.child("tournamentID").getValue();
+                    Log.d("Firebase", "Team found: "+ child.child("teamName").getValue());
+                    if (t_objectID.equals(tID)) {
+                        Team t = child.getValue(Team.class);
+                        MyApplication.teams.add(t);
+                    }
+                }
+                Log.d("Firebase", "Done fetching teams");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.d("Firebase", "Team fetch error: " + firebaseError.getMessage());
+            }
         });
 
         matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -317,7 +336,6 @@ public class ListStoredMatched_frag extends Fragment {
                     String m_objectID = (String) child.getKey();
                     Log.d("Firebase", "Match found: " + (String) child.getKey());
                     String t_objectID = (String) child.child("tournamentID").getValue();
-                    Log.d("Firebase", "Compare t_objectID: " + t_objectID + " and tID: " + tID);
                     if (t_objectID.equals(tID)) {
                         Match m = child.getValue(Match.class);
                         Log.d("Firebase", "Match title: " + m.getMatchTitle());
@@ -325,6 +343,7 @@ public class ListStoredMatched_frag extends Fragment {
                     }
                 }
                 MyApplication.matchList = fetchedMatchesFirebase;
+                doneFetchingFirebase = true;
                 Log.d("Firebase", "Done fetching, and added to Myapplication");
 
             }
@@ -335,26 +354,7 @@ public class ListStoredMatched_frag extends Fragment {
             }
         });
 
-        teamsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String t_objectID = (String) child.child("tournamentID").getValue();
-                    if (t_objectID.equals(tID)) {
-                        Team t = child.getValue(Team.class);
-                        MyApplication.teams.add(t);
-                    }
-                }
 
-                doneFetchingFirebase = true;
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Firebase", "Team fetch error: " + firebaseError.getMessage());
-            }
-        });
     }
 
     public void fetchFromFireBase(){
@@ -368,7 +368,9 @@ public class ListStoredMatched_frag extends Fragment {
 
         @Override
         public void run() {
+            Log.d("Firebase", "Runnable call");
             if (doneFetchingFirebase) {
+                Log.d("Firebase", "doneFetchingFirebase true");
                 Log.d("Firebase", "Size of matchlist:" + MyApplication.matchList.size() + " and number of matches: " + MyApplication.numberOfMatches);
                 if (MyApplication.matchList.size() == MyApplication.numberOfMatches && MyApplication.matchList.size() > 0) {
                     progressDialog.dismiss();
@@ -382,25 +384,11 @@ public class ListStoredMatched_frag extends Fragment {
                 }
             }
             else {
+                Log.d("Firebase", "doneFetchingFirebase true");
                 handler.postDelayed(resumeWhenReady, 1000);
             }
         }
     };
-
-    public final Runnable findUserTournaments = new Runnable() {
-
-        @Override
-        public void run() {
-            if (foundUsersTournaments) {
-                adapter = new MyRecyclerAdapter(storedTournaments);
-                mRecyclerView.setAdapter(adapter);
-            }
-            else {
-                handler.postDelayed(findUserTournaments, 1000);
-            }
-        }
-    };
-
 
 }
 
