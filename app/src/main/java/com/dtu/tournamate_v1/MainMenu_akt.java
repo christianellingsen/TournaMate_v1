@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
+import com.dtu.tournamate_v1.login.Login;
+import com.firebase.client.Firebase;
 
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -120,10 +122,19 @@ public class MainMenu_akt extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if (id == R.id.nav_share) {
+        if (id == R.id.nav_my_tournaments) {
+            getSupportActionBar().setTitle("My tournaments");
+            getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.main_frame, new ListStoredMatched_frag())
+                    .commit();
+            fabOnOff(1);
+        }
 
-        } else if (id == R.id.nav_send) {
-
+        else if (id == R.id.nav_log_out) {
+            Firebase ref = new Firebase(MyApplication.firebase_URL);
+            ref.unauth();
+            startActivity(new Intent(this, Login.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

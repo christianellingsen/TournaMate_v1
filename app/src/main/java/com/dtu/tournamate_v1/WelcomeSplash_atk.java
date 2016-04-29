@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 
+import com.dtu.tournamate_v1.login.Login;
+import com.firebase.client.Firebase;
+
 /**
  * Created by Christian on 17-03-2015.
  */
@@ -14,6 +17,7 @@ public class WelcomeSplash_atk extends Activity implements Runnable {
     Handler handler = new Handler();
     static WelcomeSplash_atk aktivitetDerVisesNu = null;
     ImageView iv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +30,13 @@ public class WelcomeSplash_atk extends Activity implements Runnable {
         iv.setImageResource(R.drawable.icon);
 
         if (savedInstanceState == null) {
-            handler.postDelayed(this, 3000); // Kør om 3 sekunder
+            handler.postDelayed(this, 2000); // Kør om 3 sekunder
         }
         aktivitetDerVisesNu = this;
     }
 
     public void run() {
-        startActivity(new Intent(this, MainMenu_akt.class));
+        startActivity(new Intent(this, Login.class));
         aktivitetDerVisesNu.finish();  // Luk velkomst
         aktivitetDerVisesNu = null;
     }
