@@ -219,12 +219,11 @@ public class Login extends AppCompatActivity  {
                         prefs.edit().putString("firstName", user.getFirstName()).apply();
                         prefs.edit().putString("lastName", user.getLastName()).apply();
                         prefs.edit().putString("email", user.getEmail()).apply();
-                        prefs.edit().putStringSet("tournaments",user.getStoredTournamentsID()).apply();
+                        prefs.edit().putStringSet("tournaments", user.getStoredTournamentsID()).apply();
                         prefs.edit().commit();
 
-                        doneFetchingUser = true;
-
                     }
+                    doneFetchingUser = true;
                 }
             }
 
