@@ -145,7 +145,7 @@ public class Login extends AppCompatActivity  {
 
                         @Override
                         public void onAuthenticationError(FirebaseError error) {
-                            // Something went wrong :(
+                            startActivity(new Intent(getBaseContext(),Login.class));
                         }
                     });
         }

@@ -33,7 +33,7 @@
         <activity
             android:name=".login.WelcomeScreen_akt"
             android:label="@string/title_activity_welcome_screen_akt" />
-        <activity android:name=".login.SignUp_akt"></activity>
+
     </application>
 
 </manifest>

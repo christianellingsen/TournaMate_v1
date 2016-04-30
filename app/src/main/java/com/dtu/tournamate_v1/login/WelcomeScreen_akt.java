@@ -63,7 +63,7 @@ public class WelcomeScreen_akt extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View v) {
         if (v== signUp_b){
-            startActivity(new Intent(this, SignUp_akt.class));
+            startActivity(new Intent(this, SignUp.class));
         }
         else if (v==logIn_b){
             startActivity(new Intent(this, Login.class));
