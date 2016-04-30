@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.widget.ImageView;
 
 import com.dtu.tournamate_v1.login.Login;
+import com.dtu.tournamate_v1.login.WelcomeScreen_akt;
 import com.firebase.client.Firebase;
 
 /**
@@ -36,7 +37,7 @@ public class WelcomeSplash_atk extends Activity implements Runnable {
     }
 
     public void run() {
-        startActivity(new Intent(this, Login.class));
+        startActivity(new Intent(this, WelcomeScreen_akt.class));
         aktivitetDerVisesNu.finish();  // Luk velkomst
         aktivitetDerVisesNu = null;
     }

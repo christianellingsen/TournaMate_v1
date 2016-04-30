@@ -77,7 +77,7 @@ public class MyApplication extends android.app.Application {
         tournamnetTypes.add("Single Elimination");
 
         // ******* TEST ***********
-
+        /**
         SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
 
         if (prefs.getBoolean("firstrun", true)) {
@@ -90,7 +90,6 @@ public class MyApplication extends android.app.Application {
             user.setUserName("testUser");
             user.seteMail("test@firebaseuser.com");
             user.setU_ID(newUserRef.getKey());
-
 
             newUserRef.setValue(user);
 
@@ -106,7 +105,7 @@ public class MyApplication extends android.app.Application {
             Log.d("First time test", "Not first time! User data collected from SharedPrefs. username is:" +
                     user.getUserName());
         }
-
+        **/
 
         //SharedPreferences playerList = getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
         //SharedPreferences teamList = getSharedPreferences("TeamList", Context.MODE_PRIVATE);
@@ -125,6 +124,10 @@ public class MyApplication extends android.app.Application {
 
     public static User getUser() {
         return user;
+    }
+
+    public static void setUser(User user) {
+        MyApplication.user = user;
     }
 
     public static void rankTeams() {

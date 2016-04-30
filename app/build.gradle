@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.dtu.tournamate_v1"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -39,4 +39,5 @@ dependencies {
     compile 'com.firebaseui:firebase-ui:0.3.1'
     compile 'com.android.support:support-v4:23.3.0'
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.0.0'
+    compile 'com.commit451:inkpageindicator:1.0.2'
 }

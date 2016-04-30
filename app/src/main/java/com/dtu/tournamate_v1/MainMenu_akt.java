@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.dtu.tournamate_v1.login.Login;
+import com.dtu.tournamate_v1.login.WelcomeScreen_akt;
 import com.firebase.client.Firebase;
 
 public class MainMenu_akt extends AppCompatActivity
@@ -134,7 +135,7 @@ public class MainMenu_akt extends AppCompatActivity
         else if (id == R.id.nav_log_out) {
             Firebase ref = new Firebase(MyApplication.firebase_URL);
             ref.unauth();
-            startActivity(new Intent(this, Login.class));
+            startActivity(new Intent(this, WelcomeScreen_akt.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

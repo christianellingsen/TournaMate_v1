@@ -49,10 +49,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class Login extends AppCompatActivity  {
 
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-
     final Firebase ref = new Firebase(MyApplication.firebase_URL);
 
     // UI references.
@@ -65,13 +61,6 @@ public class Login extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_akt);
-
-        // Check if already logged in
-        AuthData authData = ref.getAuth();
-        if (authData != null) {
-            startActivity(new Intent(getBaseContext(), MainMenu_akt.class));
-        }
-
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -146,14 +135,14 @@ public class Login extends AppCompatActivity  {
                         @Override
                         public void onAuthenticated(AuthData authData) {
                             // Authentication just completed successfully :)
-                            Map<String, String> map = new HashMap<String, String>();
+                            /**Map<String, String> map = new HashMap<String, String>();
                             map.put("provider", authData.getProvider());
                             if (authData.getProviderData().containsKey("displayName")) {
                                 map.put("displayName", authData.getProviderData().get("displayName").toString());
                             }
 
                             ref.child("users").child(authData.getUid()).setValue(map);
-
+                            **/
                             startActivity(new Intent(getBaseContext(), MainMenu_akt.class));
 
                         }
