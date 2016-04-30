@@ -1,19 +1,44 @@
 package com.dtu.tournamate_v1;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by chris on 27-04-2016.
  */
 public class User {
 
-    private String u_ID, firstName, lastName, userName, imageURL, eMail;
+    private String u_ID;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String provider;
+    private Set<String> storedTournamentsID;
 
     public User() {
         this.u_ID = "";
         this.firstName = "";
         this.lastName = "";
-        this.userName = "";
-        this.imageURL = "";
-        this.eMail ="";
+        this.email ="";
+        this.provider="";
+        this.storedTournamentsID = new HashSet<>();
+    }
+
+    public Set<String> getStoredTournamentsID() {
+        return storedTournamentsID;
+    }
+
+    public void setStoredTournamentsID(Set<String> storedTournamentsID) {
+        this.storedTournamentsID = storedTournamentsID;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public String getU_ID() {
@@ -40,27 +65,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getImageURL() {
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
-    public String geteMail() {
-        return eMail;
-    }
-
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

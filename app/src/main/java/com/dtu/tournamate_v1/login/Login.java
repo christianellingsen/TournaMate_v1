@@ -3,46 +3,36 @@ package com.dtu.tournamate_v1.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.dtu.tournamate_v1.MainMenu_akt;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
+import com.dtu.tournamate_v1.User;
+import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import com.firebase.client.ValueEventListener;
 
 /**
  * A login screen that offers login via email/password.
@@ -56,11 +46,16 @@ public class Login extends AppCompatActivity  {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private boolean doneFetchingUser =false;
+    private Handler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_akt);
+
+        handler = new Handler();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -129,6 +124,7 @@ public class Login extends AppCompatActivity  {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+            new Thread(startWhenReady).start();
             ref.authWithPassword(email, password,
                     new Firebase.AuthResultHandler() {
 
@@ -143,8 +139,8 @@ public class Login extends AppCompatActivity  {
 
                             ref.child("users").child(authData.getUid()).setValue(map);
                             **/
-                            startActivity(new Intent(getBaseContext(), MainMenu_akt.class));
 
+                            saveLocalUserData(authData.getUid());
                         }
 
                         @Override
@@ -200,6 +196,61 @@ public class Login extends AppCompatActivity  {
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+    public void saveLocalUserData(final String uid){
+
+        MyApplication.setUser(null);
+
+        Firebase usersRef = ref.child(MyApplication.usersString);
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String child_uid = (String) child.getKey();
+                    if (uid.equals(child_uid)) {
+                        User user;
+                        user = child.getValue(User.class);
+                        user.setU_ID(child_uid.trim());
+                        Log.d("Firebase", "User found: " + user.getFirstName());
+                        MyApplication.setUser(user);
+
+                        SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
+                        prefs.edit().putString("uID",user.getU_ID()).apply();
+                        prefs.edit().putString("firstName", user.getFirstName()).apply();
+                        prefs.edit().putString("lastName", user.getLastName()).apply();
+                        prefs.edit().putString("email", user.getEmail()).apply();
+                        prefs.edit().putStringSet("tournaments",user.getStoredTournamentsID()).apply();
+                        prefs.edit().commit();
+
+                        doneFetchingUser = true;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
+
+    }
+
+
+    public final Runnable startWhenReady = new Runnable() {
+
+        @Override
+        public void run() {
+
+            if (doneFetchingUser==true) {
+                startActivity(new Intent(getBaseContext(), MainMenu_akt.class));
+            }
+            else {
+                handler.postDelayed(startWhenReady, 100);
+            }
+        }
+    };
 
 }
 

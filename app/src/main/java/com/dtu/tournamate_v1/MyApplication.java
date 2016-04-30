@@ -76,6 +76,14 @@ public class MyApplication extends android.app.Application {
         tournamnetTypes.add("Round Robin");
         tournamnetTypes.add("Single Elimination");
 
+
+        SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
+        user.setU_ID(prefs.getString("uID", ""));
+        user.setFirstName(prefs.getString("firstName", ""));
+        user.setLastName(prefs.getString("lastName", ""));
+        user.setEmail(prefs.getString("email", ""));
+        user.setStoredTournamentsID(prefs.getStringSet("tournaments",new HashSet<String>()));
+
         // ******* TEST ***********
         /**
         SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
@@ -88,7 +96,7 @@ public class MyApplication extends android.app.Application {
             user.setFirstName("Test");
             user.setLastName("Person");
             user.setUserName("testUser");
-            user.seteMail("test@firebaseuser.com");
+            user.setEmail("test@firebaseuser.com");
             user.setU_ID(newUserRef.getKey());
 
             newUserRef.setValue(user);
@@ -148,6 +156,16 @@ public class MyApplication extends android.app.Application {
                 return m1.getMatchNumber() - m2.getMatchNumber();
             }
         });
+    }
+
+    public void saveUserToPrefs(){
+        SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
+        prefs.edit().putString("uID",user.getU_ID()).apply();
+        prefs.edit().putString("firstName", user.getFirstName()).apply();
+        prefs.edit().putString("lastName", user.getLastName()).apply();
+        prefs.edit().putString("email", user.getEmail()).apply();
+        prefs.edit().putStringSet("tournaments",user.getStoredTournamentsID()).apply();
+        prefs.edit().commit();
     }
 
 }

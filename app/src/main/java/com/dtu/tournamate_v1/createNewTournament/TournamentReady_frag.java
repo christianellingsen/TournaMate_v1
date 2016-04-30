@@ -1,5 +1,7 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Christian on 05-04-2015.
@@ -173,7 +177,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             tournament.setNumberOfMatches(MyApplication.matchList.size());
             newTournamentRef.setValue(tournament);
             Log.d("Firebase", "Tournament id: " + tournament.getT_ID());
-
+            saveTournamnetToUser();
             progress.dismiss();
 
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
@@ -184,5 +188,18 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
         }
     }
 
+    public void saveTournamnetToUser(){
+
+        Set storedTournaments;
+        MyApplication.getUser().getStoredTournamentsID().add(MyApplication.tournamentID_parse);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
+        storedTournaments = prefs.getStringSet("tournaments",new HashSet<String>());
+        prefs.edit().putStringSet("tournaments",storedTournaments).commit();
+
+        Firebase userRef = myFirebaseRef.child(MyApplication.usersString);
+        userRef.child(MyApplication.getUser().getU_ID()).setValue(MyApplication.getUser());
+
+    }
 
 }
