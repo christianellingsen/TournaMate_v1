@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity  {
     final Firebase ref = new Firebase(MyApplication.firebase_URL);
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -60,7 +60,7 @@ public class Login extends AppCompatActivity  {
         handler = new Handler();
 
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (EditText) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
