@@ -1,20 +1,11 @@
 package com.dtu.tournamate_v1;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,15 +18,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by ce on 18-04-2016.
  */
-public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> {
+public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRecyclerAdapter.ViewHolder> {
 
     private Context context;
     private Handler handler = new Handler();
@@ -69,7 +57,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyRecyclerAdapter(ArrayList<Tournament> myDataset, Fragment fragment, RecyclerView recyclerView) {
+    public TournamentRecyclerAdapter(ArrayList<Tournament> myDataset, Fragment fragment, RecyclerView recyclerView) {
         mDataset = myDataset;
         this.fragment = fragment;
         this.recyclerView = recyclerView;
@@ -77,7 +65,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+    public TournamentRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())

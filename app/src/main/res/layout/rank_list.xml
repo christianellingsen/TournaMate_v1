@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 style="@style/txt_h3"></TextView>
             <TextView
-                android:text="Point"
+                android:text="P"
                 android:id="@+id/textViewRankTV_Points"
                 android:textStyle="bold"
                 android:typeface="serif"
@@ -98,9 +98,9 @@
         android:layout_height="match_parent"
         android:id="@+id/listViewRankTeams"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@id/textViewRankTV_Rank"
         android:paddingRight="2dp"
         android:scrollbarThumbVertical="@drawable/scrollbar"
-        android:fadeScrollbars="false"/>
+        android:fadeScrollbars="false"
+        android:layout_below="@+id/textViewRankTV_Rank" />
 
 </RelativeLayout>

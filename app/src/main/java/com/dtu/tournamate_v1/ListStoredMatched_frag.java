@@ -31,7 +31,6 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 
 public class ListStoredMatched_frag extends Fragment {
@@ -57,7 +56,7 @@ public class ListStoredMatched_frag extends Fragment {
     SwipeRefreshLayout refreshLayout;
 
     //FirebaseRecyclerAdapter<Tournament, viewHolder> fireBaseAdapter;
-    MyRecyclerAdapter adapter;
+    TournamentRecyclerAdapter adapter;
 
     View root;
     View view;
@@ -143,7 +142,7 @@ public class ListStoredMatched_frag extends Fragment {
 
                 };
          **/
-        adapter = new MyRecyclerAdapter(storedTournaments,this,mRecyclerView);
+        adapter = new TournamentRecyclerAdapter(storedTournaments,this,mRecyclerView);
         mRecyclerView.setAdapter(adapter);
         //updateList();
         //mRecyclerView.setAdapter(fireBaseAdapter);

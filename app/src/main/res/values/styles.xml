@@ -73,7 +73,7 @@
         <item name="android:textColor">#000000</item>
         <item name="android:typeface">normal</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">18dp</item>
     </style>
 
     <style name="txt_normal">
@@ -81,14 +81,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">#000000</item>
         <item name="android:typeface">normal</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="txt_normal_no_color">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">normal</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="txt_h1_w">
