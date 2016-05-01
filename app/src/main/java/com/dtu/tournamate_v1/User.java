@@ -14,7 +14,7 @@ public class User {
     private String lastName;
     private String email;
     private String provider;
-    private Set<String> storedTournamentsID;
+    private ArrayList<String> storedTournamentsID;
 
     public User() {
         this.u_ID = "";
@@ -22,14 +22,14 @@ public class User {
         this.lastName = "";
         this.email ="";
         this.provider="";
-        this.storedTournamentsID = new HashSet<>();
+        this.storedTournamentsID = new ArrayList<>();
     }
 
-    public Set<String> getStoredTournamentsID() {
+    public ArrayList<String> getStoredTournamentsID() {
         return storedTournamentsID;
     }
 
-    public void setStoredTournamentsID(Set<String> storedTournamentsID) {
+    public void setStoredTournamentsID(ArrayList<String> storedTournamentsID) {
         this.storedTournamentsID = storedTournamentsID;
     }
 

@@ -41,9 +41,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
     private boolean readyToPlay = false;
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
     Firebase matchesRef = myFirebaseRef.child(MyApplication.matchesString);
-    Firebase activeMatchRef, nextMatchRef;
-
     Firebase teamsRef = myFirebaseRef.child(MyApplication.teamsString);
+    Firebase activeMatchRef, nextMatchRef;
     Firebase t1Ref, t2Ref;
 
     @Override
@@ -83,6 +82,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
         if (MyApplication.type.equals("Round Robin")) {
             matchTitle_tv.setVisibility(View.GONE);
+            readyToPlay = true;
         } else {
             matchTitle_tv.setVisibility(View.VISIBLE);
         }
@@ -133,8 +133,9 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             next_b.setText(getString(R.string.activeTournament_seeWinner));
         }
 
-        if (t1.getTeamName().length()>1 && t2.getTeamName().length()>1){
+        if (t1.getTeamName().length()>0 && t2.getTeamName().length()>0){
             readyToPlay = true;
+            Log.d("RR debug","match ready to play");
         }
         else {
             next_b.setText("Not ready yet");
@@ -326,9 +327,13 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         //Firebase updateMatchRef = matchesRef.child(m.getMatchID());
         if (readyToPlay) {
             activeMatchRef.setValue(m);
-            nextMatchRef.setValue(nextMatch);
             t1Ref.setValue(t1);
             t2Ref.setValue(t2);
+
+            if (MyApplication.type.equals(MyApplication.singleEliminationString)) {
+                nextMatchRef.setValue(nextMatch);
+            }
+
         }
     }
 

@@ -27,6 +27,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -99,10 +100,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             public void onClick(View view) {
                 Log.w("RecyclerView", "You clicked on " + position);
                 //mRecycleViewAdapter.getRef(position).removeValue();
-                ArrayList<String> tArray = new ArrayList<String>(MyApplication.getUser().getStoredTournamentsID());
-                tID = tArray.get(position);
+                tID = MyApplication.getUser().getStoredTournamentsID().get(position).toString();
                 fetchTournament();
                 fetchFromFireBase();
+
                 //fetchMatches(tID);
 
             }
@@ -156,10 +157,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String t_objectID = (String) child.child("tournamentID").getValue();
-                    Log.d("Firebase", "Team found: " + child.child("teamName").getValue());
                     if (t_objectID.equals(tID)) {
                         Team t = child.getValue(Team.class);
                         MyApplication.teams.add(t);
+                        Log.d("Firebase", "Team found: " + t.getTeamName());
                     }
                 }
                 Log.d("Firebase", "Done fetching teams");
@@ -177,11 +178,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
                 Log.d("Firebase", "Match listener called: ");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String m_objectID = (String) child.getKey();
-                    Log.d("Firebase", "Match found: " + (String) child.getKey());
                     String t_objectID = (String) child.child("tournamentID").getValue();
+                    //Log.d("Firebase", "Match found: " + (String) child.getKey());
                     if (t_objectID.equals(tID)) {
                         Match m = child.getValue(Match.class);
-                        Log.d("Firebase", "Match title: " + m.getMatchTitle());
+                        Log.d("Firebase", "Match found: " + (String) child.getKey());
                         fetchedMatchesFirebase.add(m);
                     }
                 }

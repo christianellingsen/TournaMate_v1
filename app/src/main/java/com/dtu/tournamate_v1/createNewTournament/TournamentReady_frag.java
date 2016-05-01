@@ -190,10 +190,11 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
 
     public void saveTournamnetToUser(){
 
-        MyApplication.getUser().getStoredTournamentsID().add(MyApplication.tournamentID_parse);
+        int index = MyApplication.getUser().getStoredTournamentsID().size();
+        MyApplication.getUser().getStoredTournamentsID().add(index,MyApplication.tournamentID_parse);
 
         SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
-        prefs.edit().putStringSet("tournaments", MyApplication.getUser().getStoredTournamentsID()).commit();
+        prefs.edit().putStringSet("tournaments", new HashSet<String>(MyApplication.getUser().getStoredTournamentsID())).commit();
 
         Firebase userRef = myFirebaseRef.child(MyApplication.usersString);
         userRef.child(MyApplication.getUser().getU_ID()).setValue(MyApplication.getUser());

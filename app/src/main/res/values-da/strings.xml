@@ -62,7 +62,7 @@
     <string name="addplayer_RemoveAllButton">Fjern markering</string>
     <string name="notOnline">Du er offline. Turneringen bliver ikke gemt online</string>
     <string name="Make_teams">Bland hold!</string>
-    <string name="action_sign_in">Log ind eller register dig</string>
+    <string name="action_sign_in">Log ind</string>
     <string name="action_sign_in_short">Log in</string>
     <string name="tournament_type">Type turnering</string>
 </resources>

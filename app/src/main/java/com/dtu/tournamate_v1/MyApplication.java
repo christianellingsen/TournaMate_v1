@@ -82,7 +82,7 @@ public class MyApplication extends android.app.Application {
         user.setFirstName(prefs.getString("firstName", ""));
         user.setLastName(prefs.getString("lastName", ""));
         user.setEmail(prefs.getString("email", ""));
-        user.setStoredTournamentsID(prefs.getStringSet("tournaments",new HashSet<String>()));
+        user.setStoredTournamentsID(new ArrayList<String>(prefs.getStringSet("tournaments",new HashSet<String>())));
 
         // ******* TEST ***********
         /**
@@ -164,7 +164,7 @@ public class MyApplication extends android.app.Application {
         prefs.edit().putString("firstName", user.getFirstName()).apply();
         prefs.edit().putString("lastName", user.getLastName()).apply();
         prefs.edit().putString("email", user.getEmail()).apply();
-        prefs.edit().putStringSet("tournaments",user.getStoredTournamentsID()).apply();
+        prefs.edit().putStringSet("tournaments", new HashSet<String>(user.getStoredTournamentsID())).apply();
         prefs.edit().commit();
     }
 

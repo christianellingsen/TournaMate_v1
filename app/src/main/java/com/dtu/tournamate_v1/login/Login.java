@@ -34,6 +34,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.HashSet;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -219,7 +221,7 @@ public class Login extends AppCompatActivity  {
                         prefs.edit().putString("firstName", user.getFirstName()).apply();
                         prefs.edit().putString("lastName", user.getLastName()).apply();
                         prefs.edit().putString("email", user.getEmail()).apply();
-                        prefs.edit().putStringSet("tournaments", user.getStoredTournamentsID()).apply();
+                        prefs.edit().putStringSet("tournaments", new HashSet<String>(user.getStoredTournamentsID())).apply();
                         prefs.edit().commit();
 
                     }

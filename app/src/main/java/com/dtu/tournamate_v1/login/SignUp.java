@@ -12,9 +12,12 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.dtu.tournamate_v1.MainMenu_akt;
 import com.dtu.tournamate_v1.MyApplication;
@@ -67,6 +70,17 @@ public class SignUp extends AppCompatActivity {
 
         mSignFormView = findViewById(R.id.signUp_form);
         mProgressView = findViewById(R.id.signUp_progress);
+        
+        mPasswordRepeat.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.signUp || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -151,7 +165,7 @@ public class SignUp extends AppCompatActivity {
                                     user.setEmail(email);
                                     user.setU_ID(authData.getUid());
                                     user.setProvider(authData.getProvider());
-                                    user.setStoredTournamentsID(new HashSet<String>());
+                                    //user.setStoredTournamentsID(new HashSet<String>());
                                     MyApplication.setUser(user);
                                     ref.child("users").child(authData.getUid()).setValue(user);
 
@@ -305,7 +319,7 @@ public class SignUp extends AppCompatActivity {
                                 user.setEmail(email);
                                 user.setU_ID(authData.getUid());
                                 user.setProvider(authData.getProvider());
-                                user.setStoredTournamentsID(new HashSet<String>());
+                                //user.setStoredTournamentsID(new HashSet<String>());
                                 MyApplication.setUser(user);
                                 ref.child("users").child(authData.getUid()).setValue(user);
 

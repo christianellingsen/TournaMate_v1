@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -53,6 +54,8 @@ public class ListStoredMatched_frag extends Fragment {
     Firebase tournamentRef = myFirebaseRef.child("Tournaments");
     Firebase userRef = myFirebaseRef.child(MyApplication.usersString).child(MyApplication.getUser().getU_ID());
 
+    SwipeRefreshLayout refreshLayout;
+
     //FirebaseRecyclerAdapter<Tournament, viewHolder> fireBaseAdapter;
     MyRecyclerAdapter adapter;
 
@@ -69,8 +72,9 @@ public class ListStoredMatched_frag extends Fragment {
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.list_stored_matched_fragment, container, false);
 
-
         handler = new Handler();
+
+        refreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.stored_matches_swipeRefresh);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.stored_matches_recycler_view);
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -93,6 +97,13 @@ public class ListStoredMatched_frag extends Fragment {
             }
         });
 
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshList();
+            }
+        });
 
 
         Log.d("Debug",MyApplication.getUser().getStoredTournamentsID().toString());
@@ -165,7 +176,7 @@ public class ListStoredMatched_frag extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
+                final int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.RIGHT){
 
@@ -175,16 +186,17 @@ public class ListStoredMatched_frag extends Fragment {
                                 @Override
                                 public void onClick(View view) {
 
-                                    undoDeleteTournament();
+                                    undoDeleteTournament(position);
                                     findUsersTournaments();
                                 }
                             });
 
                     snackbar.show();
-
+                    Log.d("Adapter", "Deleting: " + position);
                     deleteTournament(position);
                     findUsersTournaments();
-                    adapter.notifyItemRemoved(position);
+                    //adapter.notifyItemRemoved(position);
+                    adapter.notifyDataSetChanged();
                 } else {
                     Snackbar snackbar = Snackbar
                             .make(getView(), "Added to favourites.. if it was implemented..", Snackbar.LENGTH_LONG);
@@ -274,15 +286,24 @@ public class ListStoredMatched_frag extends Fragment {
 
     public void deleteTournament(int i) {
 
-        ArrayList<String> tArray = new ArrayList<>(MyApplication.getUser().getStoredTournamentsID());
+        Log.d("delete","delete called on element i: "+i);
+        ArrayList<String> tArray = MyApplication.getUser().getStoredTournamentsID();
+        Log.d("delete", "Array: " + tArray.toString());
         String toDelete = tArray.get(i);
-
+        Log.d("delete", "To delete: " + toDelete);
+        pendingDelete.clear();
         pendingDelete.add(toDelete);
 
         MyApplication.getUser().getStoredTournamentsID().remove(toDelete);
 
+        for (Tournament t : storedTournaments){
+            if (t.getName().equals(toDelete)){
+                storedTournaments.remove(t);
+            }
+        }
+
         SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
-        prefs.edit().putStringSet("tournaments", MyApplication.getUser().getStoredTournamentsID()).commit();
+        prefs.edit().putStringSet("tournaments", new HashSet<String>(MyApplication.getUser().getStoredTournamentsID())).commit();
 
         Firebase userRef = myFirebaseRef.child(MyApplication.usersString);
         userRef.child(MyApplication.getUser().getU_ID()).setValue(MyApplication.getUser());
@@ -290,17 +311,19 @@ public class ListStoredMatched_frag extends Fragment {
 
     }
 
-    public void undoDeleteTournament() {
+
+    public void undoDeleteTournament(int posistion) {
 
         //ArrayList<String> tArray = new ArrayList<>(MyApplication.getUser().getStoredTournamentsID());
-        Log.d("Delete","undo delete called");
+        Log.d("Delete", "undo delete called on posistion: " + posistion);
         String undoDelete = pendingDelete.get(0);
+        Log.d("Delete","pending delete : "+ pendingDelete.get(0));
         Log.d("Delete","t list before: "+ MyApplication.getUser().getStoredTournamentsID().toString());
-        MyApplication.getUser().getStoredTournamentsID().add(undoDelete);
+        MyApplication.getUser().getStoredTournamentsID().add(posistion,undoDelete);
         Log.d("Delete", "t list after: " + MyApplication.getUser().getStoredTournamentsID().toString());
 
         SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
-        prefs.edit().putStringSet("tournaments", MyApplication.getUser().getStoredTournamentsID()).commit();
+        prefs.edit().putStringSet("tournaments", new HashSet<String>(MyApplication.getUser().getStoredTournamentsID())).commit();
 
         Firebase userRef = myFirebaseRef.child(MyApplication.usersString);
         userRef.child(MyApplication.getUser().getU_ID()).setValue(MyApplication.getUser());
@@ -428,6 +451,33 @@ public class ListStoredMatched_frag extends Fragment {
 
         storedTournaments.clear();
         Firebase tournamentRef = myFirebaseRef.child(MyApplication.tournamentsString);
+        Firebase usersRef = userRef.child(MyApplication.usersString);
+        final String uid = MyApplication.getUser().getU_ID();
+
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    String child_uid = (String) child.getKey();
+                    if (uid.equals(child_uid)) {
+                        User user;
+                        user = child.getValue(User.class);
+                        MyApplication.getUser().setStoredTournamentsID(user.getStoredTournamentsID());
+
+                        SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
+                        prefs.edit().putStringSet("tournaments", new HashSet<String>(user.getStoredTournamentsID())).apply();
+                        prefs.edit().commit();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+
+        });
 
         tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -442,9 +492,9 @@ public class ListStoredMatched_frag extends Fragment {
                                 storedTournaments.add(t);
                             }
                         }
-
                     }
                     doneFetchingTournaments = true;
+                    refreshLayout.setRefreshing(false);
                     updateList();
                 }
             }
@@ -462,9 +512,12 @@ public class ListStoredMatched_frag extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    public void setDoneFetchingFirebase(boolean b){
-        doneFetchingFirebase =b;
+    void refreshList() {
+        // Load items
+        findUsersTournaments();
+
     }
+
 
 }
 

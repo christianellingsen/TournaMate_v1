@@ -31,6 +31,9 @@
             android:name=".login.Login"
             android:label="@string/title_activity_login" />
         <activity
+            android:name=".login.SignUp"
+            android:label="SignUp" />
+        <activity
             android:name=".login.WelcomeScreen_akt"
             android:label="@string/title_activity_welcome_screen_akt" />
 
