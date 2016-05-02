@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
 
+    <FrameLayout
+        android:id="@+id/shadowFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="#000000"
+        android:alpha="0.65"
+        android:visibility="gone">
+    </FrameLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,8 +46,7 @@
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            >
+            android:layout_width="match_parent">
             <TextView
                 android:id="@+id/textViewRankTV_Played"
                 android:text="K"
@@ -46,7 +56,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
+                style="@style/txt_h3"/>
             <TextView
                 android:id="@+id/textViewRankTV_Won"
                 android:text="V"
@@ -56,7 +66,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
+                style="@style/txt_h3"/>
             <TextView
                 android:id="@+id/textViewRankTV_Draw"
                 android:text="U"
@@ -66,7 +76,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
+                style="@style/txt_h3"/>
             <TextView
                 android:text="T"
                 android:id="@+id/textViewRankTV_Lost"
@@ -76,19 +86,28 @@
                 android:layout_marginRight="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
+                style="@style/txt_h3"/>
             <TextView
                 android:text="P"
                 android:id="@+id/textViewRankTV_Points"
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="gravity"
-                style="@style/txt_h3"></TextView>
+                style="@style/txt_h3"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="22dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tableInfoView"
+                android:layout_column="5"
+                android:src="@drawable/ic_info_outline_black_18dp"
+                android:layout_marginTop="-3dp" />
+
         </TableRow>
     </TableLayout>
 
@@ -102,5 +121,15 @@
         android:scrollbarThumbVertical="@drawable/scrollbar"
         android:fadeScrollbars="false"
         android:layout_below="@+id/textViewRankTV_Rank" />
+
+    <FrameLayout
+        android:id="@+id/info_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:alpha="1"
+        android:visibility="gone">
+    </FrameLayout>
 
 </RelativeLayout>

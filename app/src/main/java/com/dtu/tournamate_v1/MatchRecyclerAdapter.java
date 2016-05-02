@@ -1,6 +1,5 @@
 package com.dtu.tournamate_v1;
 
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;

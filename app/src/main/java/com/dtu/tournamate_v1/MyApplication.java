@@ -1,24 +1,14 @@
 package com.dtu.tournamate_v1;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.util.Base64;
-import android.util.Log;
 
-import com.dtu.tournamate_v1.Match;
-import com.dtu.tournamate_v1.Team;
 import com.firebase.client.Firebase;
 //import com.facebook.FacebookSdk;
 //import com.firebase.client.Firebase;
 //import com.parse.Parse;
 //import com.parse.ParseObject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

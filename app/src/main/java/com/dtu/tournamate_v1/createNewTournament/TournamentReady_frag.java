@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.dtu.tournamate_v1.Logic.RoundRobin_logic;
 import com.dtu.tournamate_v1.Logic.SingleElimination_logic;
@@ -33,7 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Christian on 05-04-2015.
@@ -114,6 +112,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             Tournament tournament = new Tournament();
             tournament.setName(MyApplication.tournamentName);
             tournament.setCreatedBy_uID(MyApplication.getUser().getU_ID());
+            tournament.setCreatedBy(MyApplication.getUser().getFullName());
             tournament.setIsDone(false);
             tournament.setWinner("No winner yet");
             tournament.setCreatedAt(date);

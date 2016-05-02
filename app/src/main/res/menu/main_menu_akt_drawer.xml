@@ -4,30 +4,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_my_tournaments"
-
+            android:icon="@drawable/ic_black_trophy"
             android:title="@string/nav_my_tournaments" />
 
         <item
             android:id="@+id/nav_my_profile"
-
+            android:icon="@drawable/ic_person_black_36dp"
             android:title="@string/nav_my_profile" />
 
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_settings_black_36dp"
             android:title="@string/drawer_settings" />
-    </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_log_out"
-                android:title="Log out" />
-        </menu>
-    </item>
+        <item
+            android:id="@+id/nav_log_out"
+            android:icon="@drawable/ic_cancel_black_36dp"
+            android:title="Log out" />
+    </group>
 
 </menu>
