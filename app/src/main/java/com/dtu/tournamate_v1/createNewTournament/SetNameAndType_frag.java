@@ -19,6 +19,8 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
     EditText t_name_et;
     Button groupPlay_b, elimination_b;
     View root;
+    private boolean cancel = false;
+    private View focusView = null;
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
@@ -41,17 +43,35 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        MyApplication.tournamentName = t_name_et.getText().toString();
-        if (v == groupPlay_b){
-            MyApplication.type="Round Robin";
-        }
-        else if (v == elimination_b){
-            MyApplication.type = "Single Elimination";
+        cancel = false;
+        focusView = null;
+
+        String t_name =  t_name_et.getText().toString();
+        t_name_et.setError(null);
+
+        if(t_name.length()<2){
+            t_name_et.setError("Name to short");
+            focusView = t_name_et;
+            cancel = true;
         }
 
-        AddPlayer_frag fragment = new AddPlayer_frag();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.main_frame, fragment)
-                .commit();
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        }
+        else {
+            MyApplication.tournamentName = t_name;
+            if (v == groupPlay_b) {
+                MyApplication.type = "Round Robin";
+            } else if (v == elimination_b) {
+                MyApplication.type = "Single Elimination";
+            }
+
+            AddPlayer_frag fragment = new AddPlayer_frag();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_frame, fragment)
+                    .commit();
+        }
     }
 }

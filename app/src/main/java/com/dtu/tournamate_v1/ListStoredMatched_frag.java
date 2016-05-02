@@ -369,7 +369,6 @@ public class ListStoredMatched_frag extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String t_objectID = (String) child.child("tournamentID").getValue();
-                    Log.d("Firebase", "Team found: " + child.child("teamName").getValue());
                     if (t_objectID.equals(tID)) {
                         Team t = child.getValue(Team.class);
                         MyApplication.teams.add(t);
@@ -390,7 +389,6 @@ public class ListStoredMatched_frag extends Fragment {
                 Log.d("Firebase", "Match listener called: ");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String m_objectID = (String) child.getKey();
-                    Log.d("Firebase", "Match found: " + (String) child.getKey());
                     String t_objectID = (String) child.child("tournamentID").getValue();
                     if (t_objectID.equals(tID)) {
                         Match m = child.getValue(Match.class);
