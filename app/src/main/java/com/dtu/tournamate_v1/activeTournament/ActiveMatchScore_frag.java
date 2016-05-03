@@ -217,17 +217,31 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     t1.addToOverAllScore(3);
                     t2.addToOverAllScore(0);
                     if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.type.equals("Single Elimination")) {
-
-                        if (nextMatch.getTeamsAdded() == 0) {
-                            nextMatch.setT1(m.getT1());
-                            nextMatch.setT1ID(m.getT1ID());
-                            nextMatch.setTeamsAdded(1);
-                            Log.d("Debug", "case 1");
-                        } else {
-                            nextMatch.setT2(m.getT1());
-                            nextMatch.setT2ID(m.getT1ID());
-                            nextMatch.setTeamsAdded(2);
-                            Log.d("Debug", "case 2");
+                        if (!m.isPlayed()) {
+                            Log.d("Debug","Match not played before");
+                            if (nextMatch.getTeamsAdded() == 0) {
+                                nextMatch.setT1(m.getT1());
+                                nextMatch.setT1ID(m.getT1ID());
+                                nextMatch.setTeamsAdded(1);
+                                Log.d("Debug", "case 1");
+                            } else {
+                                nextMatch.setT2(m.getT1());
+                                nextMatch.setT2ID(m.getT1ID());
+                                nextMatch.setTeamsAdded(2);
+                                Log.d("Debug", "case 2");
+                            }
+                        }
+                        else {
+                            Log.d("Debug","Match played before");
+                            if (nextMatch.getT1().getTeamName().equals(m.getT2().getTeamName())) {
+                                nextMatch.setT1(m.getT1());
+                                nextMatch.setT1ID(m.getT1ID());
+                                Log.d("Debug", "T1 overwrite t1");
+                            } else {
+                                nextMatch.setT2(m.getT1());
+                                nextMatch.setT2ID(m.getT1ID());
+                                Log.d("Debug", "T1 overwrite t2");
+                            }
                         }
                     }
                     Log.d("Debug", m.getT1().getTeamName() + " won");
@@ -240,16 +254,31 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     t2.addToOverAllScore(3);
 
                     if (m.getMatchNumber() < MyApplication.matchList.size()) {
-                        if (nextMatch.getTeamsAdded() == 0) {
-                            nextMatch.setT1(m.getT2());
-                            nextMatch.setT1ID(m.getT2ID());
-                            nextMatch.setTeamsAdded(1);
-                            Log.d("Debug", "case 3");
-                        } else {
-                            nextMatch.setT2(m.getT2());
-                            nextMatch.setT2ID(m.getT2ID());
-                            nextMatch.setTeamsAdded(2);
-                            Log.d("Debug", "case 4");
+                        if (!m.isPlayed()) {
+                            Log.d("Debug","Match not played before");
+                            if (nextMatch.getTeamsAdded() == 0) {
+                                nextMatch.setT1(m.getT2());
+                                nextMatch.setT1ID(m.getT2ID());
+                                nextMatch.setTeamsAdded(1);
+                                Log.d("Debug", "case 3");
+                            } else {
+                                nextMatch.setT2(m.getT2());
+                                nextMatch.setT2ID(m.getT2ID());
+                                nextMatch.setTeamsAdded(2);
+                                Log.d("Debug", "case 4");
+                            }
+                        }
+                        else {
+                            Log.d("Debug","Match played before");
+                            if (nextMatch.getT1().getTeamName().equals(m.getT1().getTeamName())) {
+                                nextMatch.setT1(m.getT2());
+                                nextMatch.setT1ID(m.getT2ID());
+                                Log.d("Debug", "T2 overwrite T1");
+                            } else {
+                                nextMatch.setT2(m.getT2());
+                                nextMatch.setT2ID(m.getT2ID());
+                                Log.d("Debug", "T2 overwrite T2");
+                            }
                         }
                         Log.d("Debug", m.getT2().getTeamName() + " won");
                     }

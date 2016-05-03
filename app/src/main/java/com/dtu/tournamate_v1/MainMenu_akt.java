@@ -9,24 +9,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.dtu.tournamate_v1.Settings.Settings;
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
-import com.dtu.tournamate_v1.login.Login;
 import com.dtu.tournamate_v1.login.WelcomeScreen_akt;
 import com.firebase.client.Firebase;
 
 public class MainMenu_akt extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    TextView userName;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_akt);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("My tournaments");
 
@@ -55,6 +59,20 @@ public class MainMenu_akt extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+
+        userName = (TextView) header.findViewById(R.id.drawerTop_userName);
+        userName.setText(MyApplication.getUser().getFullName());
+
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO
+                //Go to profile
+                Log.d("Drawer", "Drawer header click");
+            }
+        });
+
 
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack(null)
@@ -67,6 +85,7 @@ public class MainMenu_akt extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     @Override
@@ -100,10 +119,8 @@ public class MainMenu_akt extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        else if(id == R.id.action_home) {
+
+        if(id == R.id.action_home) {
             getSupportActionBar().setTitle("My tournaments");
             getSupportFragmentManager().beginTransaction()
                     .addToBackStack(null)
@@ -132,11 +149,22 @@ public class MainMenu_akt extends AppCompatActivity
             fabOnOff(1);
         }
 
+        else if (id== R.id.nav_settings){
+            getSupportActionBar().setTitle("Settings");
+            getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.main_frame, new Settings())
+                    .commit();
+            fabOnOff(0);
+        }
+
         else if (id == R.id.nav_log_out) {
             Firebase ref = new Firebase(MyApplication.firebase_URL);
             ref.unauth();
             startActivity(new Intent(this, WelcomeScreen_akt.class));
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -10,7 +10,7 @@ package com.dtu.tournamate_v1;
 
 public class Tournament {
 
-    private String name,winner,createdAt, t_ID,type,createdBy_uID;
+    private String name,winner,createdAt, t_ID,type,createdBy_uID, createdBy;
     private Boolean isDone, isDeleted;
     private int numberOfMatches;
 
@@ -56,5 +56,13 @@ public class Tournament {
 
     public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }

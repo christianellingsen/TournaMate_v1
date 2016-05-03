@@ -13,7 +13,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
         <EditText
             android:layout_width="250dp"
             android:layout_height="wrap_content"
@@ -27,8 +29,9 @@
             android:textColorHint="#c7c7c7"
             android:textColorLink="#c7c7c7"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-
+            android:layout_centerHorizontal="true"
+            android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
     </FrameLayout>
 

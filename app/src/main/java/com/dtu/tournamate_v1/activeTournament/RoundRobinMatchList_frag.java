@@ -1,27 +1,21 @@
 package com.dtu.tournamate_v1.activeTournament;
 
-import android.support.v4.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MatchRecyclerAdapter;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
-import com.dtu.tournamate_v1.Team;
-import com.dtu.tournamate_v1.TournamentRecyclerAdapter;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
@@ -35,13 +29,15 @@ public class RoundRobinMatchList_frag extends Fragment {
     ArrayList<String> matchesStringList;
     View root;
 
-
     // ******** UPDATE *******
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private MatchRecyclerAdapter adapter;
     private SwipeRefreshLayout refreshLayout;
+
+    Firebase ref = new Firebase(MyApplication.firebase_URL);
+    Firebase matchesRef = ref.child(MyApplication.matchesString);
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
@@ -109,6 +105,5 @@ public class RoundRobinMatchList_frag extends Fragment {
     void refreshList() {
         // Load items
         refreshLayout.setRefreshing(false);
-
     }
 }

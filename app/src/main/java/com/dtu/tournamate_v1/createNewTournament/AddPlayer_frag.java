@@ -66,11 +66,11 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
 
         newName_et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(event!=null && (event.getKeyCode()==KeyEvent.KEYCODE_ENTER)|| (actionId == EditorInfo.IME_ACTION_DONE))
-                {
-                    Log.i("Keyboard debug", "Enter pressed");
-                    onClick(newName_et);
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.add_player_ime || id == EditorInfo.IME_NULL) {
+                    addPlayer(newName_et.getText().toString());
+                    updateList();
+                    return true;
                 }
                 return false;
             }
@@ -113,15 +113,7 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
 
         else if (v== addPlayerToList_b){
             String newName = newName_et.getText().toString();
-            newName.replaceAll("\\s+$", "");
-            newName_et.setText("");
-
-            MyApplication.playerSet.add(newName);
-            pl_editor.putStringSet("Saved players",MyApplication.playerSet).commit();
-
-            Log.d("Debug","Singleton playerSet: "+MyApplication.playerSet.toString());
-
-
+            addPlayer(newName);
             updateList();
         }
         else if (v==done_b){
@@ -178,5 +170,19 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
         SharedPreferences.Editor pl_editor = playerList.edit();
         pl_editor.putStringSet("Saved players",MyApplication.playerSet);
         pl_editor.commit();
+    }
+
+    public void addPlayer(String name){
+        SharedPreferences playerList = getActivity().getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
+        SharedPreferences.Editor pl_editor = playerList.edit();
+
+        name.replaceAll("\\s+$", "");
+        newName_et.setText("");
+
+        MyApplication.playerSet.add(name);
+        pl_editor.putStringSet("Saved players",MyApplication.playerSet).commit();
+        Log.d("Debug", "Singleton playerSet: " + MyApplication.playerSet.toString());
+
+
     }
 }
