@@ -108,6 +108,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/apply_button"
         android:id="@+id/signUp_b"
-        android:text="Sign up" />
+        android:text="Sign up"
+        android:textColor="#ffffff"/>
 
 </LinearLayout>

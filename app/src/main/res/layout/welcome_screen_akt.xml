@@ -41,7 +41,9 @@
                 android:padding="5dp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/welcome_sign_up_b"/>
+                android:id="@+id/welcome_sign_up_b"
+                android:textColor="#bee6eb"
+                android:background="@drawable/startscreen_button"/>/>
             <Button
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -50,7 +52,9 @@
                 android:text="Log in"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/welcome_login_b"/>
+                android:id="@+id/welcome_login_b"
+                android:textColor="#bee6eb"
+                android:background="@drawable/startscreen_button"/>
 
             </RelativeLayout>
         </LinearLayout>
