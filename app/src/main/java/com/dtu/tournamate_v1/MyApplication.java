@@ -37,10 +37,13 @@ public class MyApplication extends android.app.Application {
     public static ArrayList<Player> players = new ArrayList<>();
     public static int matchesPlayed = 0;
     public static int activeMatch = 1;
+    public static int numberOfTeams = 2;
+    public static int teamSize = 1;
     public static String type, tournamentName, tournamentID_parse;
     public static boolean isDone = false;
     public static boolean resumingTournament = false;
     public static int numberOfMatches;
+    public static boolean isOpenToJoin = false;
 
     // Firebase strings
     public static final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/TournaMate_v1";

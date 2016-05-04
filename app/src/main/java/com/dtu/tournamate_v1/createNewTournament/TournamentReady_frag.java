@@ -117,7 +117,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             tournament.setWinner("No winner yet");
             tournament.setCreatedAt(date);
             tournament.setType(MyApplication.type);
-            tournament.setIsDeleted(false);
+            tournament.setIsOpenToJoin(false);
             tournament.setT_ID(newTournamentRef.getKey());
 
             MyApplication.tournamentID_parse = tournament.getT_ID();

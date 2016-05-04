@@ -184,7 +184,7 @@
             android:layout_marginBottom="2dp"
             cardview:cardElevation="10dp"
             android:id="@+id/number_cv"
-            android:alpha="0.4"
+            android:alpha="1"
             android:clickable="false">
 
             <LinearLayout
@@ -251,7 +251,7 @@
             android:layout_marginBottom="2dp"
             cardview:cardElevation="10dp"
             android:id="@+id/size_cv"
-            android:alpha="0.4"
+            android:alpha="1"
             android:clickable="false">
 
             <LinearLayout
@@ -263,7 +263,6 @@
                 android:gravity="center|center_horizontal">
 
                 <TextView
-                    android:id="@+id/team_size_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -271,7 +270,7 @@
                     android:textAppearance="@style/txt_h3" />
 
                 <TextView
-                    android:id="@+id/settings_value"
+                    android:id="@+id/team_size_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
