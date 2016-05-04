@@ -34,6 +34,7 @@ public class MyApplication extends android.app.Application {
     public static Set<String> selectedPlayerSet = new HashSet<>();
     public static ArrayList<Team> teams = new ArrayList<>();
     public static ArrayList<Match> matchList = new ArrayList<>();
+    public static ArrayList<Player> players = new ArrayList<>();
     public static int matchesPlayed = 0;
     public static int activeMatch = 1;
     public static String type, tournamentName, tournamentID_parse;

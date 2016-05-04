@@ -136,7 +136,7 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
             }
             else {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.main_frame, new MakeTeams_frag())
+                        .replace(R.id.main_frame, new MakeTeams2_frag())
                         .addToBackStack(null)
                         .commit();
             }

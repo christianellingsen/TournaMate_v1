@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="110dp"
         android:background="@color/colorPrimary"
         android:layout_gravity="center_horizontal">
 
@@ -16,7 +18,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorTextLight">
+                android:textColorHint="@color/colorTextLight"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true">
         <EditText
             android:layout_width="250dp"
             android:layout_height="wrap_content"
@@ -36,33 +40,292 @@
         </RelativeLayout>
     </FrameLayout>
 
-    <FrameLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/group_play_cv">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Group play"
-                android:id="@+id/set_group_play_b"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="110dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:gravity="center|center_horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Knockout"
-                android:id="@+id/set_elimination_b"
-                android:layout_below="@+id/set_group_play_b"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="114dp" />
-        </RelativeLayout>
-    </FrameLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="left"
+                    android:text="Group play"
+                    android:textAppearance="@style/txt_h3"
+                    android:textColor="@color/colorPrimary"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+                    android:layout_marginRight="120dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/navigation_drawer_user_account_picture_profile"
+                    android:id="@+id/textView2" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/groupPlayImage"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/user_pic"
+                    />
+
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/knock_out_cv">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp"
+                android:gravity="center|center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Knockout"
+                    android:textAppearance="@style/txt_h3"
+                    android:textColor="@color/colorPrimary"
+                    android:id="@+id/textView"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description"
+
+                    android:layout_marginRight="120dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/knock_out_image" />
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/knock_out_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/user_pic"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/set_number_cv">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:gravity="center|center_horizontal">
+
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set max. number of teams"
+                    android:textAppearance="@style/txt_h3"
+                    android:id="@+id/set_team_number_switch"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:checked="false" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/number_cv"
+            android:alpha="0.4"
+            android:clickable="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:gravity="center|center_horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Number of teams"
+                    android:textAppearance="@style/txt_h3" />
+
+                <TextView
+                    android:id="@+id/number_of_teams_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Value"
+                    android:textAppearance="@style/txt_h3"
+                    android:textColor="@color/colorPrimary"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/set_size_cv">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:gravity="center|center_horizontal">
+
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set a defined team size"
+                    android:textAppearance="@style/txt_h3"
+                    android:id="@+id/team_size_switch"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:checked="false" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/size_cv"
+            android:alpha="0.4"
+            android:clickable="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:gravity="center|center_horizontal">
+
+                <TextView
+                    android:id="@+id/team_size_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Team size"
+                    android:textAppearance="@style/txt_h3" />
+
+                <TextView
+                    android:id="@+id/settings_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Value"
+                    android:textAppearance="@style/txt_h3"
+                    android:textColor="@color/colorPrimary"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dp"
+            cardview:cardElevation="10dp"
+            android:id="@+id/open_cv">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:gravity="center|center_horizontal">
+
+                <Switch
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Open for others to join?"
+                    android:textAppearance="@style/txt_h3"
+                    android:id="@+id/open_to_join_switch"
+                    android:layout_weight="1"
+                    android:clickable="false"
+                    android:checked="false" />
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:text="Create"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/createTournamentButton"
+            android:alpha="0.3"
+            android:clickable="false"/>
+
+    </LinearLayout>
+    </ScrollView>
+
+
+    </RelativeLayout>
 </LinearLayout>

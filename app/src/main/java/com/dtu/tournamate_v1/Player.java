@@ -14,15 +14,15 @@ public class Player {
     private String teamRef;
     private String userRef;
 
-    public Player(String p_ID, String u_ID, String te_ID, String t_ID, String name, int score, String teamRef, String userRef) {
-        this.p_ID = p_ID;
-        this.u_ID = u_ID;
-        this.te_ID = te_ID;
-        this.t_ID = t_ID;
-        this.name = name;
-        this.score = score;
-        this.teamRef = teamRef;
-        this.userRef = userRef;
+    public Player() {
+        this.p_ID = "";
+        this.u_ID = "";
+        this.te_ID = "";
+        this.t_ID = "";
+        this.name = "";
+        this.score = 0;
+        this.teamRef = "";
+        this.userRef = "";
     }
 
     public String getName() {
