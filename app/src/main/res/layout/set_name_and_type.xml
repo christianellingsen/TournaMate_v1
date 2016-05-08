@@ -77,7 +77,7 @@
                     android:gravity="left"
                     android:text="Group play"
                     android:textAppearance="@style/txt_h3"
-                    android:textColor="@color/colorPrimary"/>
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -123,7 +123,6 @@
                     android:layout_weight="1"
                     android:text="Knockout"
                     android:textAppearance="@style/txt_h3"
-                    android:textColor="@color/colorPrimary"
                     android:id="@+id/textView"
                     android:layout_centerVertical="true"
                     android:layout_alignParentStart="true" />
