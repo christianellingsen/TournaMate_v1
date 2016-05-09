@@ -34,6 +34,9 @@ public class MatchRecyclerAdapter extends RecyclerView.Adapter<MatchRecyclerAdap
         TextView t2Score;
         ImageView t1Badge;
         ImageView t2Badge;
+        TextView matchNumber;
+        TextView title;
+        ImageView isPlayedCheck;
 
         public ViewHolder(View v) {
             super(v);
@@ -43,6 +46,9 @@ public class MatchRecyclerAdapter extends RecyclerView.Adapter<MatchRecyclerAdap
             t2Score = (TextView) v.findViewById(R.id.match_t2_score);
             t1Badge = (ImageView) v.findViewById(R.id.t1_badge);
             t2Badge = (ImageView) v.findViewById(R.id.t2_badge);
+            matchNumber = (TextView) v.findViewById(R.id.newMatchlist_matchNumber);
+            title = (TextView) v.findViewById(R.id.newMatchlist_matchTitle);
+            isPlayedCheck = (ImageView) v.findViewById(R.id.isPlayedCheckIV);
             mView = v;
         }
     }
@@ -77,8 +83,11 @@ public class MatchRecyclerAdapter extends RecyclerView.Adapter<MatchRecyclerAdap
         holder.t2Name.setText(m.getT2().getTeamName());
         holder.t1Score.setText(""+m.getScoreT1());
         holder.t2Score.setText("" + m.getScoreT2());
+        holder.matchNumber.setText("Match # "+m.getMatchNumber());
+        holder.title.setText(m.getMatchTitle());
 
         if (m.isPlayed()){
+            holder.isPlayedCheck.setImageResource(R.drawable.ic_check_black_36dp);
             if (m.getScoreT1()>m.getScoreT2()){
                 holder.t1Badge.setImageResource(R.drawable.win_badge);
                 holder.t2Badge.setImageResource(R.drawable.lost_bagde);

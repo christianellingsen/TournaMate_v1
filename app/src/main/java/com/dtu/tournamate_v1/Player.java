@@ -10,19 +10,13 @@ public class Player {
     private int score;
     // Image?
 
-    //Firebase
-    private String teamRef;
-    private String userRef;
-
-    public Player(String p_ID, String u_ID, String te_ID, String t_ID, String name, int score, String teamRef, String userRef) {
-        this.p_ID = p_ID;
-        this.u_ID = u_ID;
-        this.te_ID = te_ID;
-        this.t_ID = t_ID;
-        this.name = name;
-        this.score = score;
-        this.teamRef = teamRef;
-        this.userRef = userRef;
+    public Player() {
+        this.p_ID = "";
+        this.u_ID = "";
+        this.te_ID = "";
+        this.t_ID = "";
+        this.name = "";
+        this.score = 0;
     }
 
     public String getName() {
@@ -39,22 +33,6 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public String getTeamRef() {
-        return teamRef;
-    }
-
-    public void setTeamRef(String teamRef) {
-        this.teamRef = teamRef;
-    }
-
-    public String getUserRef() {
-        return userRef;
-    }
-
-    public void setUserRef(String userRef) {
-        this.userRef = userRef;
     }
 
     public String getP_ID() {

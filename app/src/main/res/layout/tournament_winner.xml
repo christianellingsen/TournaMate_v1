@@ -119,13 +119,13 @@
                 android:layout_height="wrap_content"
                 style="@style/txt_h3"></TextView>
             <TextView
-                android:text="Point"
+                android:text="P"
                 android:id="@+id/textViewRankTV_Points"
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:gravity="left"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:textAlignment="gravity"

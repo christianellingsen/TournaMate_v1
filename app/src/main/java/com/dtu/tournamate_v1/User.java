@@ -1,5 +1,7 @@
 package com.dtu.tournamate_v1;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,7 @@ public class User {
     private String lastName;
     private String email;
     private String provider;
-    private String imageURL;
+    //private String imageURL;
     private ArrayList<String> storedTournamentsID;
 
     public User() {
@@ -21,7 +23,7 @@ public class User {
         this.lastName = "";
         this.email ="";
         this.provider="";
-        this.imageURL="";
+        //this.imageURL="";
         this.storedTournamentsID = new ArrayList<>();
     }
 
@@ -73,6 +75,7 @@ public class User {
         this.email = email;
     }
 
+    @JsonIgnore
     public String getFullName(){
         return this.firstName + " " + this.lastName;
     }

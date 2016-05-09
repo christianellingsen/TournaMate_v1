@@ -11,10 +11,34 @@ package com.dtu.tournamate_v1;
 public class Tournament {
 
     private String name,winner,createdAt, t_ID,type,createdBy_uID, createdBy;
-    private Boolean isDone, isDeleted;
-    private int numberOfMatches;
+    private Boolean isDone, isOpenToJoin, isSetupDone;
+    private int numberOfMatches, numberOfTeams, teamSize;
 
     public void Tournament(){
+    }
+
+    public Boolean getIsSetupDone() {
+        return isSetupDone;
+    }
+
+    public int getNumberOfTeams() {
+        return numberOfTeams;
+    }
+
+    public void setNumberOfTeams(int numberOfTeams) {
+        this.numberOfTeams = numberOfTeams;
+    }
+
+    public int getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(int teamSize) {
+        this.teamSize = teamSize;
+    }
+
+    public void setIsSetupDone(Boolean isSetupDone) {
+        this.isSetupDone = isSetupDone;
     }
 
     public String getName(){return this.name;}
@@ -50,12 +74,12 @@ public class Tournament {
         this.createdBy_uID = createdBy_uID;
     }
 
-    public Boolean getIsDeleted() {
-        return isDeleted;
+    public Boolean getIsOpenToJoin() {
+        return isOpenToJoin;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setIsOpenToJoin(Boolean isOpenToJoin) {
+        this.isOpenToJoin = isOpenToJoin;
     }
 
     public String getCreatedBy() {
