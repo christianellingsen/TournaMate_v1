@@ -18,7 +18,7 @@
         </shape>
     </item>
     <item>
-        //Here you can set style you want when button is not pressed
+        //Here you can set style you want when button is notew pressed
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
             <!-- you can use any color you want I used here gray color-->
