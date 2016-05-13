@@ -92,7 +92,7 @@
                     android:id="@+id/groupPlayImage"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/user_pic"
+                    android:src="@drawable/gruppespil_icon"
                     />
 
 
@@ -140,7 +140,7 @@
                     android:id="@+id/knock_out_image"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/user_pic"
+                    android:src="@drawable/knockout_icon"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true" />
 
