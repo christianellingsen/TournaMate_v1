@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -145,7 +146,11 @@ public class Login extends AppCompatActivity  {
 
                         @Override
                         public void onAuthenticationError(FirebaseError error) {
-                            startActivity(new Intent(getBaseContext(),Login.class));
+                            //startActivity(new Intent(getBaseContext(),Login.class));
+                            showProgress(false);
+                            Snackbar snackbar = Snackbar
+                                    .make(mLoginFormView, "Failed to log in", Snackbar.LENGTH_LONG);
+                            snackbar.show();
                         }
                     });
         }

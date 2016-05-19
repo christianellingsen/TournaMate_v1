@@ -108,8 +108,8 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
 
         if (v==group_cv){
             typeSelected =true;
-            groupPlay_img.setImageResource(R.drawable.ic_check_black_36dp);
-            knockOut_img.setImageResource(R.drawable.user_pic);
+            groupPlay_img.setImageResource(R.drawable.save);
+            knockOut_img.setImageResource(R.drawable.knoc_out);
             create_b.setAlpha(1);
             create_b.setClickable(true);
             MyApplication.type="Round Robin";
@@ -117,8 +117,8 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
 
         else if (v==knockOut_cv){
             typeSelected =true;
-            knockOut_img.setImageResource(R.drawable.ic_check_black_36dp);
-            groupPlay_img.setImageResource(R.drawable.user_pic);
+            knockOut_img.setImageResource(R.drawable.save);
+            groupPlay_img.setImageResource(R.drawable.group_play);
             create_b.setAlpha(1);
             create_b.setClickable(true);
             MyApplication.type="Single Elimination";
