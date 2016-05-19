@@ -172,7 +172,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:weightSum="1"
         android:gravity="center_vertical|center_horizontal"
         android:background="@color/colorPrimary"
@@ -184,31 +184,30 @@
         android:id="@+id/linearLayout">
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="@string/activeTournament_buttonRank"
             android:id="@+id/buttonRank"
-            android:background="@drawable/standard_button"
+            android:background="@drawable/icon_ranking_teal"
             style="@style/txt_button"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="10dp"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="@string/activeTournament_buttonMatchlist"
             android:id="@+id/buttonViewAllMatches"
-            android:background="@drawable/standard_button"
+            android:background="@drawable/icon_history_teal"
             style="@style/txt_button"
-            android:layout_marginRight="5dp"/>
+            android:layout_marginRight="10dp"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:text="@string/activeTournament_buttonNext"
             android:id="@+id/buttonNextMatch"
-            android:background="@drawable/apply_button"
+            android:background="@drawable/icon_next_match_teal"
             android:textColor="#ffffff"
-            />
+            android:foregroundGravity="right"
+            android:gravity="right"
+            android:textAlignment="gravity" />
     </LinearLayout>
 
     <TextView
