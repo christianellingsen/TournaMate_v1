@@ -21,8 +21,8 @@
         android:layout_gravity="center_horizontal"
         android:divider="@color/button_material_dark"
         android:weightSum="1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
             android:layout_marginTop="20dp">
 
         <EditText
@@ -35,6 +35,8 @@
             android:imeActionLabel="Add"
             android:imeOptions="actionUnspecified"
             android:hint="@string/addplayer_hint"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorHighlight="@color/colorPrimaryDark"
             android:layout_weight="0.97" />
 
         <Button
@@ -42,22 +44,119 @@
             android:layout_height="40dp"
             android:text="@string/addplayer_addButton"
             android:id="@+id/buttonAddPlayer"
-            android:background="@drawable/apply_button"
-            android:textColor="#ffffff"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
+            android:layout_marginLeft="16dp"
             />
 
     </LinearLayout>
 
-    <ListView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:weightSum="3"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:orientation="horizontal"
+            android:id="@+id/add_play_control_buttons"
+            android:background="@color/colorPrimaryDark"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:id="@+id/add_player_DeleteSelected"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="3dp"
+                android:background="#d82929">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_delete_black_48dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Delete selected"
+                    style="@style/txt_h3"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:id="@+id/add_player_markAll"
+                android:gravity="center_vertical"
+                android:background="#FF8AFFE8"
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="3dp"
+                android:weightSum="3">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_done_all_black_48dp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Select all"
+                    android:layout_weight="2"
+                    style="@style/txt_h3"
+                    android:gravity="center"
+                    android:id="@+id/add_player_selectAll_tv"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:id="@+id/add_player_Hide"
+                android:gravity="center_vertical"
+                android:background="#FF8AFFE8"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="16dp"
+                android:weightSum="3">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_clear_black_48dp"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text="Hide"
+                    style="@style/txt_h3"
+                    android:gravity="center"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listViewSelectPlayers"
-        android:choiceMode="multipleChoice"
-        android:scrollbarFadeDuration="0"
-        android:scrollbarThumbVertical="@drawable/scrollbar"
-        android:fadeScrollbars="false"
-        android:layout_marginTop="10dp">
-    </ListView>
+        android:id="@+id/add_player_recyclerview"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"/>
+
+
 </LinearLayout>
 
     <LinearLayout
@@ -67,44 +166,18 @@
         android:weightSum="3"
         android:layout_alignParentEnd="false"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:id="@+id/linearLayout7"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp">
+        android:layout_marginTop="5dp">
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="@drawable/standard_button"
-            style="@style/txt_button"
-            android:text="@string/addplayer_removeButton"
-            android:id="@+id/buttonRemove"
-            android:layout_gravity="left" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="@drawable/standard_button"
-            style="@style/txt_button"
-            android:text="@string/addplayer_selectAllButton"
-            android:id="@+id/toggleButtonF"
-            android:checked="false"
-            android:textOff="@string/addplayer_selectAllButton"
-            android:textOn="@string/addplayer_RemoveAllButton"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:text="@string/addplayer_done"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:text="Make teams"
+            android:textColor="@color/colorAccent"
             android:id="@+id/buttonDonePlayers"
-            android:background="@drawable/apply_button"
-            android:textColor="#ffffff"
-            android:layout_gravity="right" />
+            />
     </LinearLayout>
 </RelativeLayout>

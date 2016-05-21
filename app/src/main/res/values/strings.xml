@@ -21,8 +21,8 @@
     <string name="newTournament_dialogText">Set tournament name</string>
     <string name="addplayer_header">Add players</string>
     <string name="addplayer_2players">You must choose at least 2 players</string>
-    <string name="addplayer_hint">Add a name to list</string>
-    <string name="addplayer_addButton">Add to list</string>
+    <string name="addplayer_hint">Player name</string>
+    <string name="addplayer_addButton">Add</string>
     <string name="addplayer_removeButton">Remove selected</string>
     <string name="addplayer_selectAllButton">Select All</string>
     <string name="addplayer_done">DONE</string>

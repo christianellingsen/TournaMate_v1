@@ -22,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Created by Christian on 19-04-2015.
  */
-public class RoundRobinMatchList_frag extends Fragment {
+public class MatchList_frag extends Fragment {
 
     ListView lv;
     ArrayList<Match> matches;

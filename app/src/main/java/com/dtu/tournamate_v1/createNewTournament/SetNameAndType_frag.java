@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
+import com.dtu.tournamate_v1.Player;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Tournament;
 import com.firebase.client.Firebase;
@@ -283,6 +284,10 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
                 ref.child(MyApplication.tournamentsString).child(MyApplication.getActiveTournament().getT_ID()).child("numberOfMatches").setValue(1);
 
                 saveTournamnetToUser();
+
+                for (Player p : MyApplication.players){
+                    p.setSelected(false);
+                }
 
                 AddPlayer_frag fragment = new AddPlayer_frag();
                 getFragmentManager().beginTransaction()

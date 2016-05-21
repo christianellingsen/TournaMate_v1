@@ -152,12 +152,6 @@ public class SignUp extends AppCompatActivity {
                                 @Override
                                 public void onAuthenticated(AuthData authData) {
                                     // Authentication just completed successfully :)
-                                    //Map<String, String> map = new HashMap<String, String>();
-                                    //map.put("provider", authData.getProvider());
-                                    //map.put("firstName", firstName);
-                                    //map.put("lastName", lastName);
-                                    //map.put("email", email);
-                                    //ref.child("users").child(authData.getUid()).setValue(map);
 
                                     User user = new User();
                                     user.setFirstName(firstName);

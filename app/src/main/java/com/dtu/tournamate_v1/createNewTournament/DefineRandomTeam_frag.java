@@ -107,7 +107,7 @@ public class DefineRandomTeam_frag extends Fragment implements View.OnClickListe
         Collections.shuffle(selectedPlayerNames);
         MyApplication.teams.clear();
 
-        //Log.d("MakeTeams", "Selected players: " + selectedPlayerNames.toString());
+        //Log.d("MakeTeams", "Selected selectedPlayers: " + selectedPlayerNames.toString());
         //Log.d("MakeTeams","Number of teams: "+numberOfTeams_tv);
 
         int numberOfMembersAdded = 0;

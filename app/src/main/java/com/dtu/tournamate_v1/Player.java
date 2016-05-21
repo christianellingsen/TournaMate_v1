@@ -1,5 +1,7 @@
 package com.dtu.tournamate_v1;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Created by ce on 25-04-2016.
  */
@@ -8,6 +10,7 @@ public class Player {
     //Basic info
     private String p_ID, u_ID, te_ID, t_ID,name;
     private int score;
+    boolean isSelected;
     // Image?
 
     public Player() {
@@ -17,6 +20,7 @@ public class Player {
         this.t_ID = "";
         this.name = "";
         this.score = 0;
+        this.isSelected = false;
     }
 
     public String getName() {
@@ -65,5 +69,14 @@ public class Player {
 
     public void setT_ID(String t_ID) {
         this.t_ID = t_ID;
+    }
+
+    @JsonIgnore
+    public boolean isSelected() {
+        return isSelected;
+    }
+    @JsonIgnore
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

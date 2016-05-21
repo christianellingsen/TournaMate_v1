@@ -231,7 +231,8 @@
             android:id="@+id/buttonRank"
             android:background="@drawable/icon_ranking_teal"
             style="@style/txt_button"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
 
         <Button
             android:layout_width="50dp"
@@ -239,7 +240,8 @@
             android:id="@+id/buttonViewAllMatches"
             android:background="@drawable/icon_history_teal"
             style="@style/txt_button"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
 
         <Button
             android:layout_width="50dp"
@@ -249,7 +251,9 @@
             android:textColor="#ffffff"
             android:foregroundGravity="right"
             android:gravity="right"
-            android:textAlignment="gravity" />
+            android:textAlignment="gravity"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
     </LinearLayout>
 
     <TextView

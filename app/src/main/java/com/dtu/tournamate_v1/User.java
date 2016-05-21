@@ -16,6 +16,7 @@ public class User {
     private String provider;
     //private String imageURL;
     private ArrayList<String> storedTournamentsID;
+    private ArrayList<String> storedPlayers;
 
     public User() {
         this.u_ID = "";
@@ -25,6 +26,15 @@ public class User {
         this.provider="";
         //this.imageURL="";
         this.storedTournamentsID = new ArrayList<>();
+        this.storedPlayers = new ArrayList<>();
+    }
+
+    public ArrayList<String> getStoredPlayers() {
+        return storedPlayers;
+    }
+
+    public void setStoredPlayers(ArrayList<String> storedPlayers) {
+        this.storedPlayers = storedPlayers;
     }
 
     public ArrayList<String> getStoredTournamentsID() {

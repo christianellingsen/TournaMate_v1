@@ -39,6 +39,10 @@ public class MakeTeamAdapter extends RecyclerView.Adapter<MakeTeamAdapter.ViewHo
     int teamSize;
     Fragment fragment;
 
+    Firebase ref = new Firebase(MyApplication.firebase_URL);
+    Firebase playerRef = ref.child(MyApplication.playersString);
+    Firebase teamRef = ref.child(MyApplication.teamsString);
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         View mView;
@@ -106,6 +110,10 @@ public class MakeTeamAdapter extends RecyclerView.Adapter<MakeTeamAdapter.ViewHo
                         for (int p = 0; p<numberOfPlayers;p++){
                             teamsList.get(teamsList.size()-1).addTeamMember(teamsList.get(position).getTeamMembers().get(p));
                         }
+
+                        String teamRefKey = teamsList.get(position).getTeamID();
+                        teamRef.child(teamRefKey).setValue(null);
+
                         teamsList.remove(position);
                         updateTeamlist();
                         dialog.dismiss();
@@ -237,6 +245,57 @@ public class MakeTeamAdapter extends RecyclerView.Adapter<MakeTeamAdapter.ViewHo
                     }
                 });
 
+                name.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(fragment.getContext());
+                        // Get the layout inflater
+                        LayoutInflater inflater = fragment.getActivity().getLayoutInflater();
+                        final View view = inflater.inflate(R.layout.dialog_add_player, null);
+                        // Inflate and set the layout for the dialog
+                        // Pass null as the parent view because its going in the dialog layout
+                        builder.setView(view);
+                        builder.setTitle("Delete player?");
+                        builder.create();
+
+                        final AlertDialog dialog = builder.show();
+
+                        Button done = (Button) view.findViewById(R.id.make_team_add_player_add);
+                        done.setText("Delete");
+                        done.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                String playerRefKey = teamsList.get(position).getTeamMembers().get(i).getP_ID();
+                                playerRef.child(playerRefKey).setValue(null);
+                                teamsList.get(position).getTeamMembers().get(i);
+
+                                teamsList.get(position).getTeamMembers().remove(i);
+                                updateTeamlist();
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Button cancel = (Button) view.findViewById(R.id.make_team_add_player_cancel);
+                        cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        Spinner teamSpinner = (Spinner) view.findViewById(R.id.dialog_add_player_team);
+                        teamSpinner.setVisibility(View.GONE);
+
+                        EditText et = (EditText) view.findViewById(R.id.dialog_add_player_name);
+                        et.setVisibility(View.GONE);
+
+
+                        return false;
+                    }
+                });
+
                 return view;
             }
         };
@@ -261,7 +320,6 @@ public class MakeTeamAdapter extends RecyclerView.Adapter<MakeTeamAdapter.ViewHo
         //Log.d("TeamsAdapter","Update list");
         this.notifyDataSetChanged();
 
-        Firebase ref = new Firebase(MyApplication.firebase_URL);
         // Firebase update teams
         for (Team t : teamsList){
             Firebase teamRef = ref.child(MyApplication.teamsString).child(t.getTeamID());

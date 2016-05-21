@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.dtu.tournamate_v1.Settings.Settings;
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.dtu.tournamate_v1.login.WelcomeScreen_akt;
+import com.dtu.tournamate_v1.spectateTournament.SearchTournaments;
 import com.firebase.client.Firebase;
 
 public class MainMenu_akt extends AppCompatActivity
@@ -149,10 +151,28 @@ public class MainMenu_akt extends AppCompatActivity
             fabOnOff(1);
         }
 
-        else if (id== R.id.nav_settings){
-            getSupportActionBar().setTitle("Settings");
+        else if (id==R.id.nav_search){
+            getSupportActionBar().setTitle("Search");
             getSupportFragmentManager().beginTransaction()
                     .addToBackStack(null)
+                    .replace(R.id.main_frame, new SearchTournaments())
+                    .commit();
+            fabOnOff(0);
+        }
+
+        else if (id==R.id.nav_my_profile){
+            Snackbar snackbar = Snackbar
+                    .make(getCurrentFocus(), "Not implemented yet", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+
+        else if (id== R.id.nav_settings){
+            getSupportActionBar().setTitle("Settings");
+            Snackbar snackbar = Snackbar
+                    .make(getCurrentFocus(), "Not implemented yet", Snackbar.LENGTH_LONG);
+            snackbar.show();
+
+            getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_frame, new Settings())
                     .commit();
             fabOnOff(0);

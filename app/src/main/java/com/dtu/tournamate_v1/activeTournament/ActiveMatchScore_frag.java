@@ -124,13 +124,13 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             teamY_tv.setText(t2.getTeamName());
         }
         if (MyApplication.matchesPlayed == matches.size() - 2) {
-            next_b.setText(getString(R.string.activeTournament_playNext));
+            //next_b.setText(getString(R.string.activeTournament_playNext));
         } else if (MyApplication.matchesPlayed == matches.size() - 1) {
-            next_b.setText(getString(R.string.activeTournament_done));
+            //next_b.setText(getString(R.string.activeTournament_done));
         }
 
         if (MyApplication.getActiveTournament().getIsDone()) {
-            next_b.setText(getString(R.string.activeTournament_seeWinner));
+            //next_b.setText(getString(R.string.activeTournament_seeWinner));
         }
 
         if (t1.getTeamName().length()>0 && t2.getTeamName().length()>0){
@@ -138,8 +138,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             Log.d("RR debug","match ready to play");
         }
         else {
-            next_b.setText("Not ready yet");
-            next_b.setBackground(getResources().getDrawable(R.drawable.red_button));
+            //next_b.setText("Not ready yet");
+            next_b.setBackground(getResources().getDrawable(R.drawable.icon_next_match_red));
             next_b.setClickable(false);
         }
 
@@ -185,7 +185,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     .commit();
         } else if (v == matchlist_b) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.main_frame, new RoundRobinMatchList_frag())
+                    .replace(R.id.main_frame, new MatchList_frag())
                     .addToBackStack(null)
                     .commit();
         } else if (v == next_b) {

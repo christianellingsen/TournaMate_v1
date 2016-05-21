@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:weightSum="1"
+        android:layout_above="@+id/linearLayout7">
+
+        <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:divider="@color/button_material_dark"
+        android:weightSum="1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editTextName"
+            android:imeActionId="@+id/add_player_ime"
+            android:imeActionLabel="Add"
+            android:imeOptions="actionUnspecified"
+            android:hint="@string/addplayer_hint"
+            android:layout_weight="0.97" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/addplayer_addButton"
+            android:id="@+id/buttonAddPlayer"
+            android:background="@drawable/apply_button"
+            android:textColor="#ffffff"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listViewSelectPlayers"
+        android:choiceMode="multipleChoice"
+        android:scrollbarFadeDuration="0"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:fadeScrollbars="false"
+        android:layout_marginTop="10dp">
+    </ListView>
+</LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/linearLayout7"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/addplayer_removeButton"
+            android:id="@+id/buttonRemove"
+            android:layout_gravity="left" />
+
+        <ToggleButton
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@drawable/standard_button"
+            style="@style/txt_button"
+            android:text="@string/addplayer_selectAllButton"
+            android:id="@+id/toggleButtonF"
+            android:checked="false"
+            android:textOff="@string/addplayer_selectAllButton"
+            android:textOn="@string/addplayer_RemoveAllButton"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:text="@string/addplayer_done"
+            android:id="@+id/buttonDonePlayers"
+            android:background="@drawable/apply_button"
+            android:textColor="#ffffff"
+            android:layout_gravity="right" />
+    </LinearLayout>
+</RelativeLayout>

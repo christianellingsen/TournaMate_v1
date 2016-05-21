@@ -1,9 +1,5 @@
 package com.dtu.tournamate_v1.createNewTournament;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -17,13 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtu.tournamate_v1.Adapter.AutofitRecyclerView;
 import com.dtu.tournamate_v1.Adapter.MakeTeamAdapter;
 import com.dtu.tournamate_v1.Adapter.MarginDecorator;
-import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.Player;
 import com.dtu.tournamate_v1.R;
@@ -32,7 +26,6 @@ import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,8 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
 
-    ArrayList<Player> players;
-    ArrayList<String> selectedPlayers;
+    ArrayList<Player> selectedPlayers;
     ArrayList<Team> teams;
 
     CircleImageView addPlayer_img, addTeam_img;
@@ -55,6 +47,11 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
     Button done;
 
     View root;
+
+    Firebase ref = new Firebase(MyApplication.firebase_URL);
+    Firebase playerRef = ref.child(MyApplication.playersString);
+    Firebase teamRef = ref.child(MyApplication.teamsString);
+    Firebase userRef = ref.child(MyApplication.usersString);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,13 +70,20 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
         teamSize = MyApplication.getActiveTournament().getTeamSize();
         numberOfTeams = MyApplication.getActiveTournament().getNumberOfTeams();
 
-        players = new ArrayList<>();
-        selectedPlayers = new ArrayList<>(MyApplication.selectedPlayerSet);
+        selectedPlayers = new ArrayList<>();
+        /**selectedPlayers = new ArrayList<>(MyApplication.selectedPlayerSet);
         for (String name : selectedPlayers){
             Player p = new Player();
             p.setName(name);
-            players.add(p);
+            selectedPlayers.add(p);
         }
+        **/
+        for (Player p : MyApplication.players){
+            if (p.isSelected()){
+                selectedPlayers.add(p);
+            }
+        }
+
 
         if (MyApplication.teams.size()<1){
             makeRandomTeams();
@@ -102,11 +106,13 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
 
     public void makeRandomTeams() {
         Log.d("MakeTeams","############ START MAKETEAMS ###########");
-        int remainder = players.size() % teamSize;
+
+        int remainder = selectedPlayers.size() % teamSize;
         if (remainder != 0) {
             numberOfTeams += 1;
         }
-        ArrayList<Player> shuffelPlayers = new ArrayList<>(players);
+        Log.d("MakeTeams","Number of teams: " +numberOfTeams+ " selected players: "+selectedPlayers.size());
+        ArrayList<Player> shuffelPlayers = new ArrayList<>(selectedPlayers);
         Collections.shuffle(shuffelPlayers);
         MyApplication.teams.clear();
 
@@ -133,8 +139,6 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
 
             // Firebase push
 
-            Firebase ref = new Firebase(MyApplication.firebase_URL);
-            Firebase teamRef = ref.child(MyApplication.teamsString);
             Firebase newTeamRef = teamRef.push();
             t.setTeamID(newTeamRef.getKey());
             t.setTournamentID(MyApplication.getActiveTournament().getT_ID());
@@ -170,15 +174,25 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
                 public void onClick(View v) {
                     EditText et = (EditText) view.findViewById(R.id.dialog_add_player_name);
                     String name = et.getText().toString();
+                    name.replaceAll("\\s+$", "");
                     Player p = new Player();
                     p.setName(name);
+                    p.setSelected(true);
+
+                    Firebase newPlayerRef = playerRef.push();
+                    p.setP_ID(newPlayerRef.getKey());
+                    newPlayerRef.setValue(p);
+
+                    MyApplication.players.add(p);
+                    MyApplication.getUser().getStoredPlayers().add(newPlayerRef.getKey());
                     teams.get(addToTeamIndex).addTeamMember(p);
 
-                    SharedPreferences playerList = getActivity().getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor pl_editor = playerList.edit();
-                    name.replaceAll("\\s+$", "");
-                    MyApplication.playerSet.add(name);
-                    pl_editor.putStringSet("Saved players",MyApplication.playerSet).commit();
+                    userRef.child(MyApplication.getUser().getU_ID()).setValue(MyApplication.getUser());
+                    //SharedPreferences playerList = getActivity().getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
+                    //SharedPreferences.Editor pl_editor = playerList.edit();
+
+                    //MyApplication.playerSet.add(name);
+                    //pl_editor.putStringSet("Saved selectedPlayers",MyApplication.playerSet).commit();
 
                     adapter.updateTeamlist();
                     dialog.dismiss();
@@ -208,7 +222,7 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
             teamSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(parent.getContext(), "Team: " + teams.get(position).getTeamName().toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(parent.getContext(), "Team: " + teams.get(position).getTeamName().toString(), Toast.LENGTH_SHORT).show();
                     addToTeamIndex = position;
                 }
 
@@ -224,7 +238,7 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
             Team t = new Team();
             t.setTeamName("Team # "+(teams.size()+1));
             t.setTournamentID(MyApplication.getActiveTournament().getT_ID());
-            Firebase ref = new Firebase(MyApplication.firebase_URL);
+
             Firebase matchesRef = ref.child(MyApplication.teamsString).push();
             t.setTeamID(matchesRef.getKey());
             MyApplication.teams.add(t);

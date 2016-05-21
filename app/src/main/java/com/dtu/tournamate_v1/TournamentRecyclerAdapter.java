@@ -211,11 +211,13 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
                     if (MyApplication.getActiveTournament().getIsStarted()) {
                         fragment.getFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new NewTournament_frag())
+                                .addToBackStack(null)
                                 .commit();
                     }
                     else {
                         fragment.getFragmentManager().beginTransaction()
                                 .replace(R.id.main_frame, new TournamentReady_frag())
+                                .addToBackStack(null)
                                 .commit();
                     }
                     ((MainMenu_akt)fragment.getActivity()).fabOnOff(0);

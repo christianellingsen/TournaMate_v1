@@ -2,8 +2,15 @@ package com.dtu.tournamate_v1;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.util.Log;
 
+import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
+import com.dtu.tournamate_v1.createNewTournament.TournamentReady_frag;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 //import com.facebook.FacebookSdk;
 //import com.firebase.client.Firebase;
 //import com.parse.Parse;
@@ -29,7 +36,7 @@ public class MyApplication extends android.app.Application {
     public static boolean emailExits = false;
 
     // Tournaments data
-    //public static List<String> tournamnetTypes = new ArrayList<>();
+
     public static Set<String> playerSet = new HashSet<>();
     public static Set<String> selectedPlayerSet = new HashSet<>();
 
@@ -39,13 +46,10 @@ public class MyApplication extends android.app.Application {
     public static int matchesPlayed = 0;
     public static int activeMatch = 1;
 
-    //public static String type, tournamentName, tournamentRef_firebase;
-    //public static boolean isDone = false;
     public static boolean resumingTournament = false;
-    //public static int numberOfMatches;
-    //public static boolean isOpenToJoin = false;
-    //public static boolean isStarted = false;
 
+    private boolean doneFetchingUser, doneFetchingPlayers = false;
+    private Handler handler;
 
     // TEST ACTIVE TOURNAMENT
 
@@ -57,14 +61,17 @@ public class MyApplication extends android.app.Application {
     public static String tournamentsString = "Tournaments";
     public static String teamsString = "Teams";
     public static String matchesString = "Matches";
+    public static String playersString = "Players";
 
     // Tournament type strings
     public static String roundRobinString = "Round Robin";
     public static String singleEliminationString ="Single Elimination";
 
+    // Speactate tournament
+    public static String spectateT_ID ="";
+    public static String spectateT_name ="";
 
     // Make teams
-
     public static Player playerToMove;
     public static boolean playerToMoveSelected = false;
     public static int playerMoveFromTeam = 0;
@@ -74,15 +81,7 @@ public class MyApplication extends android.app.Application {
     public void onCreate() {
         super.onCreate();
 
-        // Firebase
-        Firebase.setAndroidContext(this);
-        Firebase.getDefaultConfig().setPersistenceEnabled(true);
-
-        Firebase ref = new Firebase(firebase_URL);
-
-        //tournamnetTypes.add("Round Robin");
-        //tournamnetTypes.add("Single Elimination");
-
+        handler = new Handler();
 
         SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
         user.setU_ID(prefs.getString("uID", ""));
@@ -90,6 +89,15 @@ public class MyApplication extends android.app.Application {
         user.setLastName(prefs.getString("lastName", ""));
         user.setEmail(prefs.getString("email", ""));
         user.setStoredTournamentsID(new ArrayList<String>(prefs.getStringSet("tournaments",new HashSet<String>())));
+
+
+        // Firebase
+        Firebase.setAndroidContext(this);
+        Firebase.getDefaultConfig().setPersistenceEnabled(true);
+
+        fetchUserFromFirebase();
+        new Thread(fetchFirebaseRunnable).start();
+
         //user.setStoredTournamentsID(new ArrayList<String>());
 
 
@@ -138,14 +146,77 @@ public class MyApplication extends android.app.Application {
         });
     }
 
-    public void saveUserToPrefs(){
-        SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
-        prefs.edit().putString("uID",user.getU_ID()).apply();
-        prefs.edit().putString("firstName", user.getFirstName()).apply();
-        prefs.edit().putString("lastName", user.getLastName()).apply();
-        prefs.edit().putString("email", user.getEmail()).apply();
-        prefs.edit().putStringSet("tournaments", new HashSet<String>(user.getStoredTournamentsID())).apply();
-        prefs.edit().commit();
+
+    public void fetchUserFromFirebase(){
+        Firebase ref = new Firebase(firebase_URL);
+        Firebase usersRef = ref.child(MyApplication.usersString);
+        Firebase playersRef = ref.child(MyApplication.playersString);
+        final String uid = MyApplication.getUser().getU_ID();
+
+        if(!doneFetchingUser) {
+            usersRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    setUser(user);
+                            //MyApplication.getUser().setStoredTournamentsID(user.getStoredTournamentsID());
+                            //MyApplication.getUser().setStoredPlayers(user.);
+                    doneFetchingUser = true;
+                   // Log.d("MyApplication","User fetched: " +getUser().getFullName());
+                    //Log.d("MyApplication","User playerList: "+ getUser().getStoredPlayers().size());
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                }
+            });
+        }
+        if (!doneFetchingPlayers && doneFetchingUser) {
+            players.clear();
+            playersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        String playerID = child.getKey();
+                        //Log.d("Fetch tournamnets","MY U_ID: "+MyApplication.getUser().getU_ID());
+                        //Log.d("MyApplication: ", "Found player: "+ playerID);
+                        for (String s : getUser().getStoredPlayers()) {
+                            //Log.d("MyApplication","Compare "+s+" with " +playerID);
+                            if (s!=null && s.equals(playerID)) {
+                                Player p = child.getValue(Player.class);
+                                players.add(p);
+                                //Log.d("MyApplication", "Player added");
+                            }
+                        }
+                    }
+                    doneFetchingPlayers=true;
+                    //Log.d("MyApplication", "Datasnapshot loop done");
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                }
+            });
+        }
+        else {
+            //Log.d("MyApplication","Fetching players not ready yet");
+        }
     }
+
+    public final Runnable fetchFirebaseRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            //Log.d("Firebase", "Runnable call");
+            if (doneFetchingUser && doneFetchingPlayers) {
+                //Log.d("MyApplication","Done. Players: "+players.size());
+            }
+            else {
+                handler.postDelayed(fetchFirebaseRunnable, 1000);
+                //Log.d("MyApplication","Still fetching. DoneUser: "+ doneFetchingUser+ " donePlayers: "+ doneFetchingPlayers);
+                fetchUserFromFirebase();
+            }
+        }
+    };
 
 }

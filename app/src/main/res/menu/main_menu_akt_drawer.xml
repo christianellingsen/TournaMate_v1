@@ -8,6 +8,11 @@
             android:title="@string/nav_my_tournaments" />
 
         <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search_black_48dp"
+            android:title="Search" />
+
+        <item
             android:id="@+id/nav_my_profile"
             android:icon="@drawable/ic_person_black_36dp"
             android:title="@string/nav_my_profile" />
