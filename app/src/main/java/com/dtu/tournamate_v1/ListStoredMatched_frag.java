@@ -35,6 +35,8 @@ import java.util.HashSet;
 
 public class ListStoredMatched_frag extends Fragment {
 
+    private String TAG = this.getTag();
+
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -73,6 +75,8 @@ public class ListStoredMatched_frag extends Fragment {
 
         handler = new Handler();
 
+        //MyApplication.getUser().getStoredTournamentsID().clear();
+
         refreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.stored_matches_swipeRefresh);
         mRecyclerView = (RecyclerView) root.findViewById(R.id.stored_matches_recycler_view);
         // use this setting to improve performance if you know that changes
@@ -105,10 +109,10 @@ public class ListStoredMatched_frag extends Fragment {
         });
 
 
-        Log.d("Debug",MyApplication.getUser().getStoredTournamentsID().toString());
+        Log.d(TAG,MyApplication.getUser().getStoredTournamentsID().toString());
         // Standard adapter
         Query tournamentQueryUID = tournamentRef.orderByChild("createdBy_uID").equalTo(MyApplication.getUser().getU_ID());
-        Log.d("Log in","User id: "+MyApplication.getUser().getU_ID());
+        Log.d(TAG,"User id: "+MyApplication.getUser().getU_ID());
         //Query tournamentQueryDeleted = tournamentRef.orderByChild("isDeleted").equalTo(false);
         //Query tournamentQueryDeleted = tournamentRef.orderByChild("isDeleted").equalTo(false);
         //Query tournamentQueryUID = tournamentQueryDeleted.getRef().orderByChild("createdBy_uID").equalTo(MyApplication.getUser().getU_ID());
@@ -147,7 +151,11 @@ public class ListStoredMatched_frag extends Fragment {
         //updateList();
         //mRecyclerView.setAdapter(fireBaseAdapter);
         mRecyclerView.setClickable(true);
-        findUsersTournaments();
+
+        if (MyApplication.getUser().getStoredTournamentsID().size()>0){
+            findUsersTournaments();
+        }
+
         initSwipe();
         return root;
     }
@@ -191,7 +199,7 @@ public class ListStoredMatched_frag extends Fragment {
                             });
 
                     snackbar.show();
-                    Log.d("Adapter", "Deleting: " + position);
+                    Log.d(TAG, "Deleting: " + position);
                     deleteTournament(position);
                     findUsersTournaments();
                     //adapter.notifyItemRemoved(position);
@@ -253,43 +261,15 @@ public class ListStoredMatched_frag extends Fragment {
         super.onDestroyView();
         //fireBaseAdapter.cleanup();
     }
-    /**
-    public void deleteTournament(final String tournamentID) {
 
-        tID = tournamentID;
-
-        Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-
-        tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String t_objectID = (String) child.getKey();
-                    if (t_objectID.equals(tournamentID)) {
-                        //child.getRef().removeValue();
-                        child.getRef().child("isDeleted").setValue(true);
-                        Log.d("Firebase", "Tournament found and deleted");
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-
-        });
-
-    }
-    **/
 
     public void deleteTournament(int i) {
 
-        Log.d("delete","delete called on element i: "+i);
+        Log.d(TAG,"delete called on element i: "+i);
         ArrayList<String> tArray = MyApplication.getUser().getStoredTournamentsID();
-        Log.d("delete", "Array: " + tArray.toString());
+        Log.d(TAG, "Array: " + tArray.toString());
         String toDelete = tArray.get(i);
-        Log.d("delete", "To delete: " + toDelete);
+        Log.d(TAG, "To delete: " + toDelete);
         pendingDelete.clear();
         pendingDelete.add(toDelete);
 
@@ -314,12 +294,12 @@ public class ListStoredMatched_frag extends Fragment {
     public void undoDeleteTournament(int posistion) {
 
         //ArrayList<String> tArray = new ArrayList<>(MyApplication.getUser().getStoredTournamentsID());
-        Log.d("Delete", "undo delete called on posistion: " + posistion);
+        Log.d(TAG, "undo delete called on posistion: " + posistion);
         String undoDelete = pendingDelete.get(0);
-        Log.d("Delete","pending delete : "+ pendingDelete.get(0));
-        Log.d("Delete","t list before: "+ MyApplication.getUser().getStoredTournamentsID().toString());
+        Log.d(TAG,"pending delete : "+ pendingDelete.get(0));
+        Log.d(TAG,"t list before: "+ MyApplication.getUser().getStoredTournamentsID().toString());
         MyApplication.getUser().getStoredTournamentsID().add(posistion,undoDelete);
-        Log.d("Delete", "t list after: " + MyApplication.getUser().getStoredTournamentsID().toString());
+        Log.d(TAG, "t list after: " + MyApplication.getUser().getStoredTournamentsID().toString());
 
         SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
         prefs.edit().putStringSet("tournaments", new HashSet<String>(MyApplication.getUser().getStoredTournamentsID())).commit();
@@ -329,120 +309,6 @@ public class ListStoredMatched_frag extends Fragment {
 
     }
 
-    public void fetchTournament() {
-
-        MyApplication.resumingTournament = true;
-        MyApplication.matchList.clear();
-        MyApplication.teams.clear();
-        fetchedMatchesFirebase.clear();
-
-        Firebase matchRef = myFirebaseRef.child(MyApplication.matchesString);
-        Firebase tournamentRef = myFirebaseRef.child(MyApplication.tournamentsString);
-        Firebase teamsRef = myFirebaseRef.child(MyApplication.teamsString);
-
-        tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Firebase", "Tournament listener called: ");
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String t_objectID = (String) child.getKey();
-                    if (t_objectID.equals(tID)) {
-                        MyApplication.tournamentID_parse = t_objectID;
-                        MyApplication.isDone = (boolean) child.child("isDone").getValue();
-                        MyApplication.tournamentName = (String) child.child("name").getValue();
-                        MyApplication.type = (String) child.child("type").getValue();
-                        MyApplication.numberOfMatches = Integer.parseInt("" + child.child("numberOfMatches").getValue());
-                        Log.d("Firebase", "Tournament found: " + MyApplication.tournamentID_parse);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-
-        });
-
-        teamsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String t_objectID = (String) child.child("tournamentID").getValue();
-                    if (t_objectID.equals(tID)) {
-                        Team t = child.getValue(Team.class);
-                        MyApplication.teams.add(t);
-                    }
-                }
-                Log.d("Firebase", "Done fetching teams");
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Firebase", "Team fetch error: " + firebaseError.getMessage());
-            }
-        });
-
-        matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Firebase", "Match listener called: ");
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String m_objectID = (String) child.getKey();
-                    String t_objectID = (String) child.child("tournamentID").getValue();
-                    if (t_objectID.equals(tID)) {
-                        Match m = child.getValue(Match.class);
-                        Log.d("Firebase", "Match title: " + m.getMatchTitle());
-                        fetchedMatchesFirebase.add(m);
-                    }
-                }
-                MyApplication.matchList = fetchedMatchesFirebase;
-                doneFetchingFirebase = true;
-                Log.d("Firebase", "Done fetching, and added to Myapplication");
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Firebase", "Match fetch error: " + firebaseError.getMessage());
-            }
-        });
-
-
-    }
-
-    public void fetchFromFireBase(){
-        progressDialog = ProgressDialog.show(getActivity(), "",
-                "Loading. Please wait...", true);
-        progressDialog.setCancelable(true);
-        new Thread(resumeWhenReady).start();
-    }
-
-    public final Runnable resumeWhenReady = new Runnable() {
-
-        @Override
-        public void run() {
-            Log.d("Firebase", "Runnable call");
-            if (doneFetchingFirebase) {
-                Log.d("Firebase", "doneFetchingFirebase true");
-                Log.d("Firebase", "Size of matchlist:" + MyApplication.matchList.size() + " and number of matches: " + MyApplication.numberOfMatches);
-                if (MyApplication.matchList.size() == MyApplication.numberOfMatches && MyApplication.matchList.size() > 0) {
-                    progressDialog.dismiss();
-                    Log.d("Firebase", "Done fetching = true");
-                    Log.d("Firebase", "Number of matches " + MyApplication.matchList.size());
-
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.main_frame, new NewTournament_frag())
-                            .commit();
-                    ((MainMenu_akt)getActivity()).fabOnOff(0);
-                }
-            }
-            else {
-                Log.d("Firebase", "doneFetchingFirebase true");
-                handler.postDelayed(resumeWhenReady, 1000);
-            }
-        }
-    };
 
     public void findUsersTournaments() {
 
@@ -481,7 +347,8 @@ public class ListStoredMatched_frag extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String createdBy = (String) child.child("createdBy_uID").getValue();
-
+                    //Log.d("Fetch tournamnets","MY U_ID: "+MyApplication.getUser().getU_ID());
+                    //Log.d("Child u_id: ",createdBy);
                     if (createdBy.equals(MyApplication.getUser().getU_ID())) {
                         for (String s : MyApplication.getUser().getStoredTournamentsID()) {
                             if (s.equals(child.getKey())) {

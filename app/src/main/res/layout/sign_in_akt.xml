@@ -40,6 +40,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:hint="First name"
+                    android:textColorHint="@color/colorAccent"
+                    android:textColor="@color/colorAccent"
                     android:ems="10"
                     android:id="@+id/welcome_first_name_et"
                     />
@@ -55,6 +57,8 @@
                         android:inputType="textPersonName"
                         android:hint="Last name"
                         android:ems="10"
+                        android:textColorHint="@color/colorAccent"
+                        android:textColor="@color/colorAccent"
                         android:id="@+id/welcome_last_name_et"
                         android:layout_gravity="center_horizontal" />
             </android.support.design.widget.TextInputLayout>
@@ -68,6 +72,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:hint="E-mail"
+                        android:textColorHint="@color/colorAccent"
+                        android:textColor="@color/colorAccent"
                         android:ems="10"
                         android:id="@+id/welcome_email_et"
                         android:layout_gravity="center_horizontal" />
@@ -82,6 +88,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:hint="Password"
+                        android:textColorHint="@color/colorAccent"
+                        android:textColor="@color/colorAccent"
                         android:ems="10"
                         android:id="@+id/welcome_password_et"
                         android:layout_gravity="center_horizontal" />
@@ -96,6 +104,8 @@
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
                         android:hint="Repeat password"
+                        android:textColorHint="@color/colorAccent"
+                        android:textColor="@color/colorAccent"
                         android:imeActionId="@+id/signUp"
                         android:imeActionLabel="Sign up"
                         android:imeOptions="actionUnspecified"

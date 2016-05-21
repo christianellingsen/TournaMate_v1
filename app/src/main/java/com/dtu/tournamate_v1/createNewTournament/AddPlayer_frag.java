@@ -80,6 +80,7 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
         lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         SharedPreferences playerList = getActivity().getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
+
         MyApplication.playerSet.addAll(playerList.getStringSet("Saved players",new HashSet<String>()));
 
 
@@ -135,6 +136,13 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
                 Toast.makeText(getActivity(),getString(R.string.addplayer_2players),Toast.LENGTH_SHORT).show();
             }
             else {
+
+                if (MyApplication.selectedPlayerSet.size()!= (int)(MyApplication.getActiveTournament().getNumberOfTeams())/MyApplication.getActiveTournament().getTeamSize()){
+                    //MyApplication.numberOfTeams = (int)MyApplication.selectedPlayerSet.size()/MyApplication.teamSize;
+                    MyApplication.getActiveTournament().setNumberOfTeams((int)MyApplication.selectedPlayerSet.size()/MyApplication.getActiveTournament().getTeamSize());
+                    //Log.d("Team size","Number of teams: " + MyApplication.numberOfTeams + " team size: "+MyApplication.teamSize);
+                }
+
                 getFragmentManager().beginTransaction()
                         .replace(R.id.main_frame, new MakeTeams2_frag())
                         .addToBackStack(null)

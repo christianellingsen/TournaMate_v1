@@ -114,7 +114,7 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
         lv.setAdapter(adapter);
 
         Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-        Firebase updateTournamentRef = tournamentRef.child(MyApplication.tournamentID_parse);
+        Firebase updateTournamentRef = tournamentRef.child(MyApplication.getActiveTournament().getT_ID());
         updateTournamentRef.child("isDone").setValue(true);
         updateTournamentRef.child("winner").setValue(winner.getTeamName());
 

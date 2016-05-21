@@ -140,7 +140,7 @@ public class Login extends AppCompatActivity  {
 
                             ref.child("users").child(authData.getUid()).setValue(map);
                             **/
-
+                            Log.d("Login","Login success");
                             saveLocalUserData(authData.getUid());
                         }
 

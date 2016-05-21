@@ -68,37 +68,6 @@ public class RoundRobinMatchList_frag extends Fragment {
             }
         });
 
-        /**lv = (ListView) root.findViewById(R.id.listView);
-
-        for (Match m : matches){
-            Team t1 = m.getT1();
-            Team t2 = m.getT2();
-
-            matchesStringList.add(t1.getTeamName() + " VS " + t2.getTeamName());
-        }
-        Log.d("Debug","Size of matches " +matches.size());
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(),R.layout.match_list_with_score,R.id.textViewMatchList_team,matchesStringList) {
-            @Override
-            public View getView(int position, View cachedView, ViewGroup parent) {
-                View view = super.getView(position, cachedView, parent);
-                Log.d("Debug","Matchlist element: match: "+matchesStringList.get(position)+" number: "+matches.get(position).getMatchNumber());
-
-                TextView matchNumber = (TextView) view.findViewById(R.id.textViewMatchList_number);
-                matchNumber.setText(""+matches.get(position).getMatchNumber());
-
-                TextView score = (TextView) view.findViewById(R.id.textViewMatchList_score);
-                score.setText(matches.get(position).getScoreT1() + " - " + matches.get(position).getScoreT2());
-                score.setTextColor(Color.parseColor("#000000"));
-                if (matches.get(position).isPlayed()){
-                    score.setTextColor(Color.parseColor("#0FAE02"));
-                }
-
-                return view;
-            }
-        };
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener(this);
-        **/
         return root;
     }
 

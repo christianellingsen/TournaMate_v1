@@ -12,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.dtu.tournamate_v1.MyApplication;
+import com.dtu.tournamate_v1.Player;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
 
@@ -116,14 +117,18 @@ public class DefineRandomTeam_frag extends Fragment implements View.OnClickListe
             Team t = new Team();
             if (selectedPlayerNames.size()-numberOfMembersAdded < reguestedTeamSize){
                 for(int i = numberOfMembersAdded; i<selectedPlayerNames.size();i++){
-                    t.addTeamMember(selectedPlayerNames.get(numberOfMembersAdded));
+                    Player p = new Player();
+                    p.setName(selectedPlayerNames.get(numberOfMembersAdded));
+                    t.addTeamMember(p);
                     numberOfMembersAdded++;
                     //Log.d("MakeTeams","Making uneven team");
                 }
             }
             else {
                 for (int i = 0; i < reguestedTeamSize; i++) {
-                    t.addTeamMember(selectedPlayerNames.get(numberOfMembersAdded));
+                    Player p = new Player();
+                    p.setName(selectedPlayerNames.get(numberOfMembersAdded));
+                    t.addTeamMember(p);
                     numberOfMembersAdded++;
                     //Log.d("MakeTeams","Making a normal size team");
                 }

@@ -29,21 +29,27 @@ public class MyApplication extends android.app.Application {
     public static boolean emailExits = false;
 
     // Tournaments data
-    public static List<String> tournamnetTypes = new ArrayList<>();
+    //public static List<String> tournamnetTypes = new ArrayList<>();
     public static Set<String> playerSet = new HashSet<>();
     public static Set<String> selectedPlayerSet = new HashSet<>();
+
     public static ArrayList<Team> teams = new ArrayList<>();
     public static ArrayList<Match> matchList = new ArrayList<>();
     public static ArrayList<Player> players = new ArrayList<>();
     public static int matchesPlayed = 0;
     public static int activeMatch = 1;
-    public static int numberOfTeams = 2;
-    public static int teamSize = 1;
-    public static String type, tournamentName, tournamentID_parse;
-    public static boolean isDone = false;
+
+    //public static String type, tournamentName, tournamentRef_firebase;
+    //public static boolean isDone = false;
     public static boolean resumingTournament = false;
-    public static int numberOfMatches;
-    public static boolean isOpenToJoin = false;
+    //public static int numberOfMatches;
+    //public static boolean isOpenToJoin = false;
+    //public static boolean isStarted = false;
+
+
+    // TEST ACTIVE TOURNAMENT
+
+    private static Tournament activeTournament = new Tournament();
 
     // Firebase strings
     public static final String firebase_URL = "https://brilliant-torch-7862.firebaseio.com/TournaMate_v1";
@@ -57,6 +63,13 @@ public class MyApplication extends android.app.Application {
     public static String singleEliminationString ="Single Elimination";
 
 
+    // Make teams
+
+    public static Player playerToMove;
+    public static boolean playerToMoveSelected = false;
+    public static int playerMoveFromTeam = 0;
+    public static int playerMovePlayerIndex = 0;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,8 +80,8 @@ public class MyApplication extends android.app.Application {
 
         Firebase ref = new Firebase(firebase_URL);
 
-        tournamnetTypes.add("Round Robin");
-        tournamnetTypes.add("Single Elimination");
+        //tournamnetTypes.add("Round Robin");
+        //tournamnetTypes.add("Single Elimination");
 
 
         SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
@@ -77,42 +90,7 @@ public class MyApplication extends android.app.Application {
         user.setLastName(prefs.getString("lastName", ""));
         user.setEmail(prefs.getString("email", ""));
         user.setStoredTournamentsID(new ArrayList<String>(prefs.getStringSet("tournaments",new HashSet<String>())));
-
-        // ******* TEST ***********
-        /**
-        SharedPreferences prefs = getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
-
-        if (prefs.getBoolean("firstrun", true)) {
-
-            Firebase usersRef = ref.child("users");
-            Firebase newUserRef = usersRef.push();
-
-            user.setFirstName("Test");
-            user.setLastName("Person");
-            user.setUserName("testUser");
-            user.setEmail("test@firebaseuser.com");
-            user.setU_ID(newUserRef.getKey());
-
-            newUserRef.setValue(user);
-
-            prefs.edit().putBoolean("firstrun", false).apply();
-            prefs.edit().putString("user_ID", user.getU_ID()).apply();
-            prefs.edit().putString("userName",user.getUserName()).apply();
-            prefs.edit().commit();
-            Log.d("First time test","First time! User added to Firebase and SharedPrefs");
-        }
-        else {
-            user.setU_ID(prefs.getString("user_ID",""));
-            user.setUserName(prefs.getString("userName", ""));
-            Log.d("First time test", "Not first time! User data collected from SharedPrefs. username is:" +
-                    user.getUserName());
-        }
-        **/
-
-        //SharedPreferences playerList = getSharedPreferences("PlayerList", Context.MODE_PRIVATE);
-        //SharedPreferences teamList = getSharedPreferences("TeamList", Context.MODE_PRIVATE);
-        //SharedPreferences.Editor pl_editor = playerList.edit();
-        //SharedPreferences.Editor tl_editor = teamList.edit();
+        //user.setStoredTournamentsID(new ArrayList<String>());
 
 
         /**
@@ -130,6 +108,14 @@ public class MyApplication extends android.app.Application {
 
     public static void setUser(User user) {
         MyApplication.user = user;
+    }
+
+    public static Tournament getActiveTournament() {
+        return activeTournament;
+    }
+
+    public static void setActiveTournament(Tournament activeTournament) {
+        MyApplication.activeTournament = activeTournament;
     }
 
     public static void rankTeams() {

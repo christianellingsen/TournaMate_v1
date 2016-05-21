@@ -18,7 +18,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorTextLight"
+
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true">
         <EditText
@@ -29,10 +29,9 @@
             android:text=""
             android:hint="Tournament name"
             android:textSize="25dp"
-            android:textColor="#c7c7c7"
-            android:textColorHighlight="#c7c7c7"
-            android:textColorHint="#c7c7c7"
-            android:textColorLink="#c7c7c7"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="@color/colorAccent"
+            android:textColorHighlight="@color/colorAccent"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:singleLine="true"/>

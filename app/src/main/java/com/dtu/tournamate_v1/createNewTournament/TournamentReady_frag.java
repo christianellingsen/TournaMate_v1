@@ -19,19 +19,18 @@ import com.dtu.tournamate_v1.Logic.RoundRobin_logic;
 import com.dtu.tournamate_v1.Logic.SingleElimination_logic;
 import com.dtu.tournamate_v1.Match;
 import com.dtu.tournamate_v1.MyApplication;
+import com.dtu.tournamate_v1.Player;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
-import com.dtu.tournamate_v1.Tournament;
 import com.dtu.tournamate_v1.activeTournament.ActiveMatchScore_frag;
 import com.firebase.client.Firebase;
 //import com.parse.ParseException;
 //import com.parse.SaveCallback;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * Created by Christian on 05-04-2015.
@@ -39,11 +38,10 @@ import java.util.HashSet;
 public class  TournamentReady_frag extends Fragment implements View.OnClickListener {
 
     // Define graphical elements
-    TextView selectedType_tv;
-    Button start_b;
+    TextView tournamanetName_tv, selectedType_tv, numberOfPlayers_tv, numberOfTeams_tv;
+    Button start_b,editTeams_b;
     ListView lv;
     View rod;
-    Boolean tCreated = false;
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
 
     @Override
@@ -52,24 +50,30 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
         rod = i.inflate(R.layout.tournament_ready, container, false);
 
         lv = (ListView) rod.findViewById(R.id.listViewTeams);
+        tournamanetName_tv = (TextView) rod.findViewById(R.id.tournamnet_ready_name);
         selectedType_tv = (TextView) rod.findViewById(R.id.textViewSelectedType);
+        numberOfPlayers_tv = (TextView) rod.findViewById(R.id.tournament_ready_numberOfPlayers_tv);
+        numberOfTeams_tv = (TextView) rod.findViewById(R.id.tournament_ready_numberOfTeams_tv);
         start_b = (Button) rod.findViewById(R.id.buttonStart);
+        editTeams_b = (Button) rod.findViewById(R.id.tournament_ready_edit_teams_b);
 
-        selectedType_tv.setText(MyApplication.type);
+        tournamanetName_tv.setText(MyApplication.getActiveTournament().getName());
+        selectedType_tv.setText(MyApplication.getActiveTournament().getType());
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(MyApplication.tournamentName);
-
-        MyApplication.activeMatch = 1;
-        MyApplication.matchesPlayed = 0;
-        MyApplication.isDone = false;
-        MyApplication.tournamentID_parse = "";
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Start tournament");
 
         ArrayList<String> teamNames = new ArrayList<>();
+        int playerCounter = 0;
 
         for (Team t : MyApplication.teams) {
             String teamName = t.getTeamName();
+            playerCounter = playerCounter + t.getTeamMembers().size();
             teamNames.add(teamName);
         }
+
+        numberOfPlayers_tv.setText(""+playerCounter);
+        numberOfTeams_tv.setText(""+MyApplication.teams.size());
+
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.team_tv, R.id.textViewTeamName, teamNames) {
             @Override
             public View getView(int position, View cachedView, ViewGroup parent) {
@@ -84,6 +88,7 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
         lv.setAdapter(adapter);
 
         start_b.setOnClickListener(this);
+        editTeams_b.setOnClickListener(this);
 
         return rod;
     }
@@ -96,53 +101,52 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
             progress.setCancelable(false);
             progress.show();
 
+            // Delete dummy match in Firebase
+            Firebase matchesRef = myFirebaseRef.child("Matches");
+            matchesRef.child(MyApplication.matchList.get(0).getMatchID()).setValue(null);
+
             //Start tournament
 
             MyApplication.matchList.clear();
             MyApplication.matchesPlayed = 0;
 
             // Save tournament to Firebase
+            Firebase tournamentRef = myFirebaseRef.child(MyApplication.tournamentsString);
+            Firebase tRef = tournamentRef.child(MyApplication.getActiveTournament().getT_ID());
+            Log.d("TournamantReady","T ref: "+ MyApplication.getActiveTournament().getT_ID());
 
-            Firebase tournamentRef = myFirebaseRef.child("Tournaments");
-            Firebase newTournamentRef = tournamentRef.push();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String date  = dateFormat.format(new Date());
-
-            Tournament tournament = new Tournament();
-            tournament.setName(MyApplication.tournamentName);
-            tournament.setCreatedBy_uID(MyApplication.getUser().getU_ID());
-            tournament.setCreatedBy(MyApplication.getUser().getFullName());
-            tournament.setIsDone(false);
-            tournament.setWinner("No winner yet");
-            tournament.setCreatedAt(date);
-            tournament.setType(MyApplication.type);
-            tournament.setIsOpenToJoin(false);
-            tournament.setT_ID(newTournamentRef.getKey());
-
-            MyApplication.tournamentID_parse = tournament.getT_ID();
-            tournament.setT_ID(newTournamentRef.getKey());
-
+            tRef.child("isOpenToJoin").setValue(false);
+            tRef.child("isStarted").setValue(true);
 
             // Save teams to Firebase
-
+            /**
             Firebase teamsRef = myFirebaseRef.child("Teams");
 
             for (Team t : MyApplication.teams){
                 Firebase newTeamRef = teamsRef.push();
                 t.setTeamID(newTeamRef.getKey());
-                t.setTournamentID(MyApplication.tournamentID_parse);
+                t.setTournamentID(MyApplication.getActiveTournament().getT_ID());
                 newTeamRef.setValue(t);
             }
+             **/
+
+            //Delete dummy match
+            if (MyApplication.matchList.size()>0){
+                Firebase ref = new Firebase(MyApplication.firebase_URL);
+                for (Match m : MyApplication.matchList){
+                    Firebase matchRef = ref.child(MyApplication.matchesString).child(m.getMatchID());
+                    matchesRef.setValue(null);
+                }
+            }
+            MyApplication.matchList.clear();
 
             // Make matches
-
-            if (MyApplication.type.equals("Round Robin")) {
+            if (MyApplication.getActiveTournament().getType().equals("Round Robin")) {
                 RoundRobin_logic rr;
                 rr = new RoundRobin_logic();
                 rr.createMatches();
             }
-            else if (MyApplication.type.equals("Single Elimination")){
+            else if (MyApplication.getActiveTournament().getType().equals("Single Elimination")){
                 SingleElimination_logic se;
                 se = new SingleElimination_logic();
                 try {
@@ -152,14 +156,14 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 }
             }
 
-            // Save matches to Firebase
 
-            Firebase matchesRef = myFirebaseRef.child("Matches");
+
+            // Save matches to Firebase
 
             for (Match m : MyApplication.matchList) {
                 Firebase newMatchesRef = matchesRef.push();
                 m.setMatchID(newMatchesRef.getKey());
-                m.setTournamentID(MyApplication.tournamentID_parse);
+                m.setTournamentID(MyApplication.getActiveTournament().getT_ID());
                 m.setT1ID(m.getT1().getTeamID());
                 m.setT2ID(m.getT2().getTeamID());
 
@@ -172,11 +176,10 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 }
                 newMatchesRef.setValue(m);
             }
-
-            tournament.setNumberOfMatches(MyApplication.matchList.size());
-            newTournamentRef.setValue(tournament);
-            Log.d("Firebase", "Tournament id: " + tournament.getT_ID());
-            saveTournamnetToUser();
+            tRef.child("numberOfMatches").setValue(MyApplication.matchList.size());
+            //tournament.setNumberOfMatches(MyApplication.matchList.size());
+            //newTournamentRef.setValue(tournament);
+            //Log.d("Firebase", "Tournament id: " + tournament.getT_ID());
             progress.dismiss();
 
             ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
@@ -185,19 +188,16 @@ public class  TournamentReady_frag extends Fragment implements View.OnClickListe
                 .commit();
 
         }
+        else {
+
+
+            MakeTeams2_frag fragment = new MakeTeams2_frag();
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.main_frame, fragment)
+                    .commit();
+
+        }
     }
 
-    public void saveTournamnetToUser(){
-
-        int index = MyApplication.getUser().getStoredTournamentsID().size();
-        MyApplication.getUser().getStoredTournamentsID().add(index,MyApplication.tournamentID_parse);
-
-        SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
-        prefs.edit().putStringSet("tournaments", new HashSet<String>(MyApplication.getUser().getStoredTournamentsID())).commit();
-
-        Firebase userRef = myFirebaseRef.child(MyApplication.usersString);
-        userRef.child(MyApplication.getUser().getU_ID()).setValue(MyApplication.getUser());
-
-    }
 
 }

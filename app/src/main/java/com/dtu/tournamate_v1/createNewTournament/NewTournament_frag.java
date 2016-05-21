@@ -46,8 +46,14 @@ public class NewTournament_frag extends Fragment {
             }
         }
         else {
-            if (!MyApplication.isDone){
+            if (!MyApplication.getActiveTournament().getIsDone()){
                 ActiveMatchScore_frag fragment = new ActiveMatchScore_frag();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.main_frame, fragment)
+                        .commit();
+            }
+            else if (!MyApplication.getActiveTournament().getIsStarted()){
+                TournamentReady_frag fragment = new TournamentReady_frag();
                 getFragmentManager().beginTransaction()
                         .replace(R.id.main_frame, fragment)
                         .commit();

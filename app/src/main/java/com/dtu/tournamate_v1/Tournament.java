@@ -11,14 +11,14 @@ package com.dtu.tournamate_v1;
 public class Tournament {
 
     private String name,winner,createdAt, t_ID,type,createdBy_uID, createdBy;
-    private Boolean isDone, isOpenToJoin, isSetupDone;
+    private Boolean isDone, isOpenToJoin, isStarted;
     private int numberOfMatches, numberOfTeams, teamSize;
 
     public void Tournament(){
     }
 
-    public Boolean getIsSetupDone() {
-        return isSetupDone;
+    public Boolean getIsStarted() {
+        return isStarted;
     }
 
     public int getNumberOfTeams() {
@@ -37,8 +37,8 @@ public class Tournament {
         this.teamSize = teamSize;
     }
 
-    public void setIsSetupDone(Boolean isSetupDone) {
-        this.isSetupDone = isSetupDone;
+    public void setIsStarted(Boolean isStarted) {
+        this.isStarted = isStarted;
     }
 
     public String getName(){return this.name;}

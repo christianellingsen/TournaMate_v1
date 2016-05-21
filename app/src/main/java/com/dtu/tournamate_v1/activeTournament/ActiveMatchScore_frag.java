@@ -50,7 +50,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
         rod = i.inflate(R.layout.active_match_score, container, false);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(MyApplication.tournamentName);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(MyApplication.getActiveTournament().getName());
 
         matchNumber_tv = (TextView) rod.findViewById(R.id.textViewMatchNumber);
         matchTitle_tv = (TextView) rod.findViewById(R.id.textView_matchtitle);
@@ -80,15 +80,15 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         nextMatch = new Match();
 
 
-        if (MyApplication.type.equals("Round Robin")) {
+        if (MyApplication.getActiveTournament().getType().equals("Round Robin")) {
             matchTitle_tv.setVisibility(View.GONE);
             readyToPlay = true;
         } else {
             matchTitle_tv.setVisibility(View.VISIBLE);
         }
 
-        Log.d("Debug", "Active match: " + MyApplication.activeMatch);
-        Log.d("Debug", "Matches played: " + MyApplication.matchesPlayed);
+        //Log.d("Debug", "Active match: " + MyApplication.activeMatch);
+        //Log.d("Debug", "Matches played: " + MyApplication.matchesPlayed);
 
         if (MyApplication.matchesPlayed + 1 != MyApplication.activeMatch) {
             activeMatchNumber = MyApplication.activeMatch;
@@ -129,7 +129,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             next_b.setText(getString(R.string.activeTournament_done));
         }
 
-        if (MyApplication.isDone) {
+        if (MyApplication.getActiveTournament().getIsDone()) {
             next_b.setText(getString(R.string.activeTournament_seeWinner));
         }
 
@@ -151,7 +151,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             matchNumber_tv.setBackgroundColor(Color.parseColor("#0FAE02"));
         }
 
-        if (MyApplication.type.equals(MyApplication.singleEliminationString)) {
+        if (MyApplication.getActiveTournament().getType().equals(MyApplication.singleEliminationString)) {
             nextMatch = matches.get(m.getNextMatchNumber() - 1);
         }
 
@@ -189,7 +189,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     .addToBackStack(null)
                     .commit();
         } else if (v == next_b) {
-            if(m.getScoreT1()==m.getScoreT2() && MyApplication.type.equals("Single Elimination")){
+            if(m.getScoreT1()==m.getScoreT2() && MyApplication.getActiveTournament().getType().equals("Single Elimination")){
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setCancelable(false)
@@ -216,7 +216,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     t2.matchResult("lost");
                     t1.addToOverAllScore(3);
                     t2.addToOverAllScore(0);
-                    if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.type.equals("Single Elimination")) {
+                    if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.getActiveTournament().getType().equals("Single Elimination")) {
                         if (!m.isPlayed()) {
                             Log.d("Debug","Match not played before");
                             if (nextMatch.getTeamsAdded() == 0) {
@@ -311,7 +311,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                 } else Log.d("Match", "Match draw!");
 
                 if (MyApplication.matchesPlayed == matches.size()) {
-                    MyApplication.isDone = true;
+                    MyApplication.getActiveTournament().setIsDone(true);
                     getFragmentManager().beginTransaction()
                             .replace(R.id.main_frame, new TournamentWinner_frag())
                             .addToBackStack(null)
@@ -359,7 +359,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
             t1Ref.setValue(t1);
             t2Ref.setValue(t2);
 
-            if (MyApplication.type.equals(MyApplication.singleEliminationString)) {
+            if (MyApplication.getActiveTournament().getType().equals(MyApplication.singleEliminationString)) {
                 nextMatchRef.setValue(nextMatch);
             }
 

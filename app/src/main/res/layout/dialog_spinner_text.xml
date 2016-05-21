@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:text="Player name"
+    android:id="@+id/make_team_playerName"
+    android:textColor="@color/colorAccent"
+    android:gravity="left"
+    android:background="@color/colorPrimaryDark"
+    style="@style/txt_h2"
+    android:singleLine="true"
+    android:ellipsize="marquee"
+    android:textAlignment="inherit"
+    android:layout_marginBottom="2dp"/>

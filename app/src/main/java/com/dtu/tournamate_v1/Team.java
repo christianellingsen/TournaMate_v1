@@ -1,6 +1,7 @@
 package com.dtu.tournamate_v1;
 
 import android.util.Log;
+import android.util.SparseArray;
 
 //import com.parse.ParseClassName;
 //import com.parse.ParseObject;
@@ -16,7 +17,7 @@ public class Team { // extends ParseObject{
 
     private String teamName, teamID, tournamentID;
     private int matchesWon, matchesLost, matchesDraw, matechesPlayed, overAllScore;
-    private ArrayList<String> teamMembers = new ArrayList<>();
+    private ArrayList<Player> teamMembers = new ArrayList<>();
     //private long teamID_sql;
 
     public Team() {
@@ -31,7 +32,7 @@ public class Team { // extends ParseObject{
     }
 
 
-    public void addTeamMember(String newTeamMember){
+    public void addTeamMember(Player newTeamMember){
         teamMembers.add(newTeamMember);
     }
     public String getTeamName(){return teamName;}
@@ -52,11 +53,11 @@ public class Team { // extends ParseObject{
         this.tournamentID = tournamentID;
     }
 
-    public ArrayList<String> getTeamMembers() {
+    public ArrayList<Player> getTeamMembers() {
         return teamMembers;
     }
 
-    public void setTeamMembers(ArrayList<String> teamMembers) {
+    public void setTeamMembers(ArrayList<Player> teamMembers) {
         this.teamMembers = teamMembers;
     }
 
@@ -125,7 +126,8 @@ public class Team { // extends ParseObject{
         teamName = "Dummy";
         if(teamMembers.size()>0){
             teamName = "";
-            for(String name : teamMembers) {
+            for(int i=0; i<teamMembers.size();i++) {
+                String name = teamMembers.get(i).getName();
                 teamName += name;
                 teamName += " & ";
             }

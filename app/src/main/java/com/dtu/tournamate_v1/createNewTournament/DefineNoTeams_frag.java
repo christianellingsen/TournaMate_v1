@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dtu.tournamate_v1.MyApplication;
+import com.dtu.tournamate_v1.Player;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.Team;
 //import com.parse.ParseObject;
@@ -60,8 +61,10 @@ public class DefineNoTeams_frag extends Fragment {
     private void makeTeams(){
 
         for (int i = 1; i<= selectedPlayers.size();i++){
+            Player p = new Player();
+            p.setName(selectedPlayers.get(i-1));
             Team t = new Team();
-            t.addTeamMember(selectedPlayers.get(i-1));
+            t.addTeamMember(p);
             t.makeTeamName();
             MyApplication.teams.add(t);
         }

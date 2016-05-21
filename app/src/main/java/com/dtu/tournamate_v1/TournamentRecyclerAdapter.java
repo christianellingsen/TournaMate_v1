@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
+import com.dtu.tournamate_v1.createNewTournament.TournamentReady_frag;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
  * Created by ce on 18-04-2016.
  */
 public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRecyclerAdapter.ViewHolder> {
+
+    private String TAG = "T_RecyclerAdaper";
 
     private Context context;
     private Handler handler = new Handler();
@@ -38,6 +41,8 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
 
     private Paint p = new Paint();
     RecyclerView recyclerView;
+
+    int fetchCounter = 0;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -86,7 +91,7 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.w("RecyclerView", "You clicked on " + position);
+                Log.w(TAG, "You clicked on " + position);
                 //mRecycleViewAdapter.getRef(position).removeValue();
                 tID = MyApplication.getUser().getStoredTournamentsID().get(position).toString();
                 fetchTournament();
@@ -119,16 +124,13 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
         tournamentRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Firebase", "Tournament listener called: ");
+                //Log.d("Firebase", "Tournament listener called: ");
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
                     String t_objectID = (String) child.getKey();
                     if (t_objectID.equals(tID)) {
-                        MyApplication.tournamentID_parse = t_objectID;
-                        MyApplication.isDone = (boolean) child.child("isDone").getValue();
-                        MyApplication.tournamentName = (String) child.child("name").getValue();
-                        MyApplication.type = (String) child.child("type").getValue();
-                        MyApplication.numberOfMatches = Integer.parseInt("" + child.child("numberOfMatches").getValue());
-                        Log.d("Firebase", "Tournament found: " + MyApplication.tournamentID_parse);
+                        Tournament t = child.getValue(Tournament.class);
+                        MyApplication.setActiveTournament(t);
+                        Log.d(TAG, "Tournament found: " + MyApplication.getActiveTournament().getT_ID());
                     }
                 }
             }
@@ -148,46 +150,44 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
                     if (t_objectID.equals(tID)) {
                         Team t = child.getValue(Team.class);
                         MyApplication.teams.add(t);
-                        Log.d("Firebase", "Team found: " + t.getTeamName());
+                        Log.d(TAG, "Team found: " + t.getTeamName());
                     }
                 }
-                Log.d("Firebase", "Done fetching teams");
+                Log.d(TAG, "Done fetching teams");
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Firebase", "Team fetch error: " + firebaseError.getMessage());
+                Log.d(TAG, "Team fetch error: " + firebaseError.getMessage());
             }
         });
-
         matchRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("Firebase", "Match listener called: ");
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String m_objectID = (String) child.getKey();
-                    String t_objectID = (String) child.child("tournamentID").getValue();
-                    //Log.d("Firebase", "Match found: " + (String) child.getKey());
-                    if (t_objectID.equals(tID)) {
-                        Match m = child.getValue(Match.class);
-                        Log.d("Firebase", "Match found: " + (String) child.getKey());
-                        fetchedMatchesFirebase.add(m);
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Log.d("Firebase", "Match listener called: ");
+                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+                        String m_objectID = (String) child.getKey();
+                        String t_objectID = (String) child.child("tournamentID").getValue();
+                        //Log.d("Firebase", "Match found: " + (String) child.getKey());
+                        if (t_objectID.equals(tID)) {
+                            Match m = child.getValue(Match.class);
+                            Log.d(TAG, "Match found: " + (String) child.getKey());
+                            fetchedMatchesFirebase.add(m);
+                        }
                     }
+                    MyApplication.matchList = fetchedMatchesFirebase;
+                    doneFetchingFirebase = true;
+                    Log.d(TAG, "Done fetching matches, and added to Myapplication");
+
                 }
-                MyApplication.matchList = fetchedMatchesFirebase;
-                doneFetchingFirebase = true;
-                Log.d("Firebase", "Done fetching, and added to Myapplication");
 
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-                Log.d("Firebase", "Match fetch error: " + firebaseError.getMessage());
-            }
-        });
-
-
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.d(TAG, "Match fetch error: " + firebaseError.getMessage());
+                }
+            });
     }
+
 
     public void fetchFromFireBase() {
         progressDialog = ProgressDialog.show(fragment.getActivity(), "",
@@ -200,23 +200,31 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
 
         @Override
         public void run() {
-            Log.d("Firebase", "Runnable call");
-            if (doneFetchingFirebase) {
-                Log.d("Firebase", "doneFetchingFirebase true");
-                Log.d("Firebase", "Size of matchlist:" + MyApplication.matchList.size() + " and number of matches: " + MyApplication.numberOfMatches);
-                if (MyApplication.matchList.size() == MyApplication.numberOfMatches && MyApplication.matchList.size() > 0) {
+            //Log.d("Firebase", "Runnable call");
+            if (doneFetchingFirebase ) {
+                Log.d(TAG, "doneFetchingFirebase true ");
+                Log.d(TAG, "Size of matchlist:" + MyApplication.matchList.size() + " and number of matches: " + MyApplication.getActiveTournament().getNumberOfMatches());
+                if ((MyApplication.matchList.size() == MyApplication.getActiveTournament().getNumberOfMatches()&& MyApplication.matchList.size() > 0) ) {
+                    Log.d(TAG, "come on");
                     progressDialog.dismiss();
-                    Log.d("Firebase", "Done fetching = true");
-                    Log.d("Firebase", "Number of matches " + MyApplication.matchList.size());
 
-                    fragment.getFragmentManager().beginTransaction()
-                            .replace(R.id.main_frame, new NewTournament_frag())
-                            .commit();
+                    if (MyApplication.getActiveTournament().getIsStarted()) {
+                        fragment.getFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, new NewTournament_frag())
+                                .commit();
+                    }
+                    else {
+                        fragment.getFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, new TournamentReady_frag())
+                                .commit();
+                    }
                     ((MainMenu_akt)fragment.getActivity()).fabOnOff(0);
+
                 }
             } else {
-                Log.d("Firebase", "doneFetchingFirebase true");
+                Log.d(TAG, "handler postDelay");
                 handler.postDelayed(resumeWhenReady, 1000);
+
             }
         }
     };

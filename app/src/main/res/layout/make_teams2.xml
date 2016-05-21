@@ -4,123 +4,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="dk.dtu.ce.swap.MainActivity"
     android:weightSum="10">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        android:padding="10dp"
-        android:id="@+id/make_teams_controlsView">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Button1" />
-
-
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
             android:layout_weight="2"
-            >
+            android:gravity="center">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Team size"
-                android:layout_gravity="center_horizontal"
-                android:textSize="18dp"
-                android:textColor="#000000" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="center">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/make_team_add_player"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/add_player"
+                android:layout_marginRight="20dp"
+                 />
 
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:text="-"
-                    android:id="@+id/teamSizeMinusButton"
-                    android:textSize="50dp"
-                    android:background="@drawable/delete_point_button"
-                    android:textColor="#ffffff"
-                    android:includeFontPadding="false"
-                    android:textStyle="bold" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/make_team_add_team"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/add_team"
+                android:layout_marginLeft="20dp"
+                />
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"
-                    android:id="@+id/make_team_teamSize"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textAppearance="@style/match_result"/>
-
-
-                <Button
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:text="+"
-                    android:id="@+id/teamSizePlusButton"
-                    android:textSize="50dp"
-                    android:background="@drawable/add_point_button"
-                    android:textColor="#ffffff"
-                    android:includeFontPadding="false"
-                    android:textStyle="bold"
-                    />
-
-
-            </LinearLayout>
 
         </LinearLayout>
-
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Button2" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:id="@+id/make_teams_missingPlayersView">
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-
-        </android.support.v7.widget.RecyclerView>
-
-    </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_weight="8"
         android:id="@+id/make_teams_teamlistView">
 
         <com.dtu.tournamate_v1.Adapter.AutofitRecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/make_teams_teamsRecyclerview"
-            android:columnWidth="150dp"
+            android:columnWidth="160dp"
             android:clipToPadding="false">
 
 
@@ -128,5 +51,15 @@
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="Save"
+        android:textColor="@color/colorAccent"
+        android:id="@+id/make_teams_done_b"
+        />
 
 </LinearLayout>
