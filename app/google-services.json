@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "268671480765",
+    "firebase_url": "https://brilliant-torch-7862.firebaseio.com",
+    "project_id": "brilliant-torch-7862",
+    "storage_bucket": "brilliant-torch-7862.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:268671480765:android:54ebe5f5b013b849",
+        "android_client_info": {
+          "package_name": "com.dtu.tournamate_v1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "268671480765-cl5canl39soktmkj356o9i71tr1da7b9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARWx_N92hHeb8z54iCUTREORd2rb9h4vs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -42,4 +42,7 @@ dependencies {
     compile 'com.commit451:inkpageindicator:1.0.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'biz.kasual:materialnumberpicker:1.2.1'
+
 }
+
+apply plugin: 'com.google.gms.google-services'
