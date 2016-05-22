@@ -78,7 +78,7 @@ public class MainMenu_akt extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack(null)
-                .replace(R.id.main_frame, new ListStoredMatched_frag())
+                .replace(R.id.main_frame, new ListStoredTournaments_frag())
                 .commit();
 
     }
@@ -126,7 +126,7 @@ public class MainMenu_akt extends AppCompatActivity
             getSupportActionBar().setTitle("My tournaments");
             getSupportFragmentManager().beginTransaction()
                     .addToBackStack(null)
-                    .replace(R.id.main_frame, new ListStoredMatched_frag())
+                    .replace(R.id.main_frame, new ListStoredTournaments_frag())
                     .commit();
             fabOnOff(1);
             return true;
@@ -146,7 +146,7 @@ public class MainMenu_akt extends AppCompatActivity
             getSupportActionBar().setTitle("My tournaments");
             getSupportFragmentManager().beginTransaction()
                     .addToBackStack(null)
-                    .replace(R.id.main_frame, new ListStoredMatched_frag())
+                    .replace(R.id.main_frame, new ListStoredTournaments_frag())
                     .commit();
             fabOnOff(1);
         }

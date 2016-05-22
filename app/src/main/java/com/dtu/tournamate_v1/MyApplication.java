@@ -1,12 +1,14 @@
 package com.dtu.tournamate_v1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.dtu.tournamate_v1.createNewTournament.TournamentReady_frag;
+import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -95,8 +97,15 @@ public class MyApplication extends android.app.Application {
         Firebase.setAndroidContext(this);
         Firebase.getDefaultConfig().setPersistenceEnabled(true);
 
-        fetchUserFromFirebase();
-        new Thread(fetchFirebaseRunnable).start();
+
+
+        Firebase ref = new Firebase(MyApplication.firebase_URL);
+        AuthData authData = ref.getAuth();
+        if (authData != null) {
+            fetchUserFromFirebase();
+            new Thread(fetchFirebaseRunnable).start();
+        }
+
 
         //user.setStoredTournamentsID(new ArrayList<String>());
 

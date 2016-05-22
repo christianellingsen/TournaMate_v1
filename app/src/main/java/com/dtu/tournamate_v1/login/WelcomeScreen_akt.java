@@ -1,6 +1,7 @@
 package com.dtu.tournamate_v1.login;
 
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
@@ -100,6 +101,7 @@ public class WelcomeScreen_akt extends AppCompatActivity implements View.OnClick
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.welcome_screen_frag, container, false);
+
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
@@ -126,7 +128,7 @@ public class WelcomeScreen_akt extends AppCompatActivity implements View.OnClick
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override

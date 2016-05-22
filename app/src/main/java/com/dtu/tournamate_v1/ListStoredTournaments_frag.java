@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 
-public class ListStoredMatched_frag extends Fragment {
+public class ListStoredTournaments_frag extends Fragment {
 
     private String TAG = this.getTag();
 
