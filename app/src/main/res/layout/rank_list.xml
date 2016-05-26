@@ -49,7 +49,7 @@
             android:layout_width="match_parent">
             <TextView
                 android:id="@+id/textViewRankTV_Played"
-                android:text="K"
+                android:text="P"
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:gravity="left"
@@ -59,7 +59,7 @@
                 style="@style/txt_h3"/>
             <TextView
                 android:id="@+id/textViewRankTV_Won"
-                android:text="V"
+                android:text="W"
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:gravity="left"
@@ -69,7 +69,7 @@
                 style="@style/txt_h3"/>
             <TextView
                 android:id="@+id/textViewRankTV_Draw"
-                android:text="U"
+                android:text="D"
                 android:textStyle="bold"
                 android:typeface="serif"
                 android:gravity="left"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 style="@style/txt_h3"/>
             <TextView
-                android:text="T"
+                android:text="L"
                 android:id="@+id/textViewRankTV_Lost"
                 android:textStyle="bold"
                 android:typeface="serif"

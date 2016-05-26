@@ -47,7 +47,7 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         rod = i.inflate(R.layout.active_match_score, container, false);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(MyApplication.getActiveTournament().getName());
@@ -73,6 +73,8 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         rank_b.setOnClickListener(this);
         matchlist_b.setOnClickListener(this);
         next_b.setOnClickListener(this);
+        teamX_tv.setOnClickListener(this);
+        teamY_tv.setOnClickListener(this);
 
         matches = MyApplication.matchList;
         t1 = new Team();
@@ -147,9 +149,6 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
         teamXScore_tv.setText("" + m.getScoreT1());
         teamYScore_tv.setText("" + m.getScoreT2());
 
-        if (m.isPlayed()) {
-            matchNumber_tv.setBackgroundColor(Color.parseColor("#0FAE02"));
-        }
 
         if (MyApplication.getActiveTournament().getType().equals(MyApplication.singleEliminationString)) {
             nextMatch = matches.get(m.getNextMatchNumber() - 1);
@@ -188,139 +187,164 @@ public class ActiveMatchScore_frag extends Fragment implements View.OnClickListe
                     .replace(R.id.main_frame, new MatchList_frag())
                     .addToBackStack(null)
                     .commit();
-        } else if (v == next_b) {
-            if(m.getScoreT1()==m.getScoreT2() && MyApplication.getActiveTournament().getType().equals("Single Elimination")){
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setCancelable(false)
-                        .setTitle("Someone must be ELIMINATED")
-                        .setMessage("This is a elimination tournament. Make sure that " +
-                                "the match is not draw")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                //All of the fun happens inside the CustomListener now.
-                                //I had to move it to enable data validation.
-                            }
-                        });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+        }
+        else if (v==teamX_tv){
+            if (teamX_tv.getText().equals(m.getT1().getTeamName())){
+                teamX_tv.setText(m.getT1().getTeamMembersAsString());
             }
             else {
-                if (!m.isPlayed()) {
-                    MyApplication.matchesPlayed++;
-                }
+                teamX_tv.setText(m.getT1().getTeamName());
+            }
+        }
+        else if (v==teamY_tv){
+            if (teamY_tv.getText().equals(m.getT2().getTeamName())){
+                teamY_tv.setText(m.getT2().getTeamMembersAsString());
+            }
+            else {
+                teamY_tv.setText(m.getT2().getTeamName());
+            }
+        }
 
-                if (m.getScoreT1() > m.getScoreT2()) {
-                    m.setWinner(t1.getTeamName());
-                    t1.matchResult("won");
-                    t2.matchResult("lost");
-                    t1.addToOverAllScore(3);
-                    t2.addToOverAllScore(0);
-                    if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.getActiveTournament().getType().equals("Single Elimination")) {
-                        if (!m.isPlayed()) {
-                            Log.d("Debug","Match not played before");
-                            if (nextMatch.getTeamsAdded() == 0) {
-                                nextMatch.setT1(m.getT1());
-                                nextMatch.setT1ID(m.getT1ID());
-                                nextMatch.setTeamsAdded(1);
-                                Log.d("Debug", "case 1");
-                            } else {
-                                nextMatch.setT2(m.getT1());
-                                nextMatch.setT2ID(m.getT1ID());
-                                nextMatch.setTeamsAdded(2);
-                                Log.d("Debug", "case 2");
-                            }
-                        }
-                        else {
-                            Log.d("Debug","Match played before");
-                            if (nextMatch.getT1().getTeamName().equals(m.getT2().getTeamName())) {
-                                nextMatch.setT1(m.getT1());
-                                nextMatch.setT1ID(m.getT1ID());
-                                Log.d("Debug", "T1 overwrite t1");
-                            } else {
-                                nextMatch.setT2(m.getT1());
-                                nextMatch.setT2ID(m.getT1ID());
-                                Log.d("Debug", "T1 overwrite t2");
-                            }
-                        }
-                    }
-                    Log.d("Debug", m.getT1().getTeamName() + " won");
+        else if (v == next_b) {
+            if (MyApplication.getActiveTournament().getIsDone()){
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.main_frame, new TournamentWinner_frag())
+                        .addToBackStack(null)
+                        .commit();
+            }
+            else {
 
-                } else if (m.getScoreT1() < m.getScoreT2()) {
-                    m.setWinner(t2.getTeamName());
-                    t1.matchResult("lost");
-                    t2.matchResult("won");
-                    t1.addToOverAllScore(0);
-                    t2.addToOverAllScore(3);
 
-                    if (m.getMatchNumber() < MyApplication.matchList.size()) {
-                        if (!m.isPlayed()) {
-                            Log.d("Debug","Match not played before");
-                            if (nextMatch.getTeamsAdded() == 0) {
-                                nextMatch.setT1(m.getT2());
-                                nextMatch.setT1ID(m.getT2ID());
-                                nextMatch.setTeamsAdded(1);
-                                Log.d("Debug", "case 3");
-                            } else {
-                                nextMatch.setT2(m.getT2());
-                                nextMatch.setT2ID(m.getT2ID());
-                                nextMatch.setTeamsAdded(2);
-                                Log.d("Debug", "case 4");
-                            }
-                        }
-                        else {
-                            Log.d("Debug","Match played before");
-                            if (nextMatch.getT1().getTeamName().equals(m.getT1().getTeamName())) {
-                                nextMatch.setT1(m.getT2());
-                                nextMatch.setT1ID(m.getT2ID());
-                                Log.d("Debug", "T2 overwrite T1");
-                            } else {
-                                nextMatch.setT2(m.getT2());
-                                nextMatch.setT2ID(m.getT2ID());
-                                Log.d("Debug", "T2 overwrite T2");
-                            }
-                        }
-                        Log.d("Debug", m.getT2().getTeamName() + " won");
-                    }
+                if (m.getScoreT1() == m.getScoreT2() && MyApplication.getActiveTournament().getType().equals("Single Elimination")) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setCancelable(false)
+                            .setTitle("Someone must be ELIMINATED")
+                            .setMessage("This is a elimination tournament. Make sure that " +
+                                    "the match is not draw")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    //All of the fun happens inside the CustomListener now.
+                                    //I had to move it to enable data validation.
+                                }
+                            });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                 } else {
-                    t1.matchResult("draw");
-                    t2.matchResult("draw");
-                    t1.addToOverAllScore(1);
-                    t2.addToOverAllScore(1);
-                    Log.d("Debug", "Is was a draw");
-                }
-
-                // m.getT1().addToOverAllScore(Integer.parseInt(teamXScore_tv.getText().toString()));
-                //m.getT2().addToOverAllScore(Integer.parseInt(teamYScore_tv.getText().toString()));
-
-                m.setPlayed(true);
-
-
-                for (Match mm : matches) {
-                    if (!mm.isPlayed()) {
-                        MyApplication.activeMatch = matches.indexOf(mm) + 1;
-                        Log.d("Debug", "Next match: " + (matches.indexOf(mm) + 1));
-                        break;
+                    if (!m.isPlayed()) {
+                        MyApplication.matchesPlayed++;
                     }
-                }
 
-                Log.d("Match", "Match " + activeMatchNumber + " done!");
-                Log.d("Match", "Score " + m.getScoreT1() + " - " + m.getScoreT2());
-                if (m.getWinner() != null) {
-                    Log.d("Match", "Winner is " + m.getWinner());
-                } else Log.d("Match", "Match draw!");
+                    if (m.getScoreT1() > m.getScoreT2()) {
+                        m.setWinner(t1.getTeamName());
+                        t1.matchResult("won");
+                        t2.matchResult("lost");
+                        t1.addToOverAllScore(3);
+                        t2.addToOverAllScore(0);
+                        if (m.getMatchNumber() < MyApplication.matchList.size() && MyApplication.getActiveTournament().getType().equals("Single Elimination")) {
+                            if (!m.isPlayed()) {
+                                Log.d("Debug", "Match not played before");
+                                if (nextMatch.getTeamsAdded() == 0) {
+                                    nextMatch.setT1(m.getT1());
+                                    nextMatch.setT1ID(m.getT1ID());
+                                    nextMatch.setTeamsAdded(1);
+                                    Log.d("Debug", "case 1");
+                                } else {
+                                    nextMatch.setT2(m.getT1());
+                                    nextMatch.setT2ID(m.getT1ID());
+                                    nextMatch.setTeamsAdded(2);
+                                    Log.d("Debug", "case 2");
+                                }
+                            } else {
+                                Log.d("Debug", "Match played before");
+                                if (nextMatch.getT1().getTeamName().equals(m.getT2().getTeamName())) {
+                                    nextMatch.setT1(m.getT1());
+                                    nextMatch.setT1ID(m.getT1ID());
+                                    Log.d("Debug", "T1 overwrite t1");
+                                } else {
+                                    nextMatch.setT2(m.getT1());
+                                    nextMatch.setT2ID(m.getT1ID());
+                                    Log.d("Debug", "T1 overwrite t2");
+                                }
+                            }
+                        }
+                        Log.d("Debug", m.getT1().getTeamName() + " won");
 
-                if (MyApplication.matchesPlayed == matches.size()) {
-                    MyApplication.getActiveTournament().setIsDone(true);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.main_frame, new TournamentWinner_frag())
-                            .addToBackStack(null)
-                            .commit();
-                } else {
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.main_frame, new ActiveMatchScore_frag())
-                            .addToBackStack(null)
-                            .commit();
+                    } else if (m.getScoreT1() < m.getScoreT2()) {
+                        m.setWinner(t2.getTeamName());
+                        t1.matchResult("lost");
+                        t2.matchResult("won");
+                        t1.addToOverAllScore(0);
+                        t2.addToOverAllScore(3);
+
+                        if (m.getMatchNumber() < MyApplication.matchList.size()) {
+                            if (!m.isPlayed()) {
+                                Log.d("Debug", "Match not played before");
+                                if (nextMatch.getTeamsAdded() == 0) {
+                                    nextMatch.setT1(m.getT2());
+                                    nextMatch.setT1ID(m.getT2ID());
+                                    nextMatch.setTeamsAdded(1);
+                                    Log.d("Debug", "case 3");
+                                } else {
+                                    nextMatch.setT2(m.getT2());
+                                    nextMatch.setT2ID(m.getT2ID());
+                                    nextMatch.setTeamsAdded(2);
+                                    Log.d("Debug", "case 4");
+                                }
+                            } else {
+                                Log.d("Debug", "Match played before");
+                                if (nextMatch.getT1().getTeamName().equals(m.getT1().getTeamName())) {
+                                    nextMatch.setT1(m.getT2());
+                                    nextMatch.setT1ID(m.getT2ID());
+                                    Log.d("Debug", "T2 overwrite T1");
+                                } else {
+                                    nextMatch.setT2(m.getT2());
+                                    nextMatch.setT2ID(m.getT2ID());
+                                    Log.d("Debug", "T2 overwrite T2");
+                                }
+                            }
+                            Log.d("Debug", m.getT2().getTeamName() + " won");
+                        }
+                    } else {
+                        t1.matchResult("draw");
+                        t2.matchResult("draw");
+                        t1.addToOverAllScore(1);
+                        t2.addToOverAllScore(1);
+                        Log.d("Debug", "Is was a draw");
+                    }
+
+                    // m.getT1().addToOverAllScore(Integer.parseInt(teamXScore_tv.getText().toString()));
+                    //m.getT2().addToOverAllScore(Integer.parseInt(teamYScore_tv.getText().toString()));
+
+                    m.setPlayed(true);
+
+
+                    for (Match mm : matches) {
+                        if (!mm.isPlayed()) {
+                            MyApplication.activeMatch = matches.indexOf(mm) + 1;
+                            Log.d("Debug", "Next match: " + (matches.indexOf(mm) + 1));
+                            break;
+                        }
+                    }
+
+                    Log.d("Match", "Match " + activeMatchNumber + " done!");
+                    Log.d("Match", "Score " + m.getScoreT1() + " - " + m.getScoreT2());
+                    if (m.getWinner() != null) {
+                        Log.d("Match", "Winner is " + m.getWinner());
+                    } else Log.d("Match", "Match draw!");
+
+                    if (MyApplication.matchesPlayed == matches.size()) {
+                        MyApplication.getActiveTournament().setIsDone(true);
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, new TournamentWinner_frag())
+                                .addToBackStack(null)
+                                .commit();
+                    } else {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.main_frame, new ActiveMatchScore_frag())
+                                .addToBackStack(null)
+                                .commit();
+                    }
                 }
             }
 

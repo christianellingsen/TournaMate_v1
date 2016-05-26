@@ -47,15 +47,26 @@ public class FoundTournamentsAdapter extends RecyclerView.Adapter<FoundTournamen
     public void onBindViewHolder(final ViewHolder viewHolder, int position) {
 
         final int pos = position;
-
-        viewHolder.tName.setText(tList.get(pos).getName());
-        viewHolder.tDate.setText(tList.get(pos).getCreatedAt());
-        viewHolder.tCreatedBy.setText(tList.get(pos).getCreatedBy());
-        if (tList.get(pos).getIsOpenToJoin()){
+        Tournament t = tList.get(pos);
+        viewHolder.tName.setText(t.getName());
+        viewHolder.tDate.setText(t.getCreatedAt());
+        viewHolder.tCreatedBy.setText(t.getCreatedBy());
+        if (t.getIsOpenToJoin()){
             viewHolder.tOpen.setText("Open to join");
         }
         else {
             viewHolder.tOpen.setText("Closed");
+        }
+        if (t.getIsStarted()){
+            if (t.getIsDone()){
+                viewHolder.tStatus.setText("Done");
+            }
+            else {
+                viewHolder.tStatus.setText("Started");
+            }
+        }
+        else {
+            viewHolder.tStatus.setText("Not started");
         }
 
         viewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +102,7 @@ public class FoundTournamentsAdapter extends RecyclerView.Adapter<FoundTournamen
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         View mView;
-        TextView tName,tDate,tCreatedBy,tOpen;
+        TextView tName,tDate,tCreatedBy,tOpen, tStatus;
 
         public ViewHolder(View v) {
             super(v);
@@ -99,6 +110,7 @@ public class FoundTournamentsAdapter extends RecyclerView.Adapter<FoundTournamen
             tDate = (TextView) v.findViewById(R.id.found_tournament_list_date);
             tCreatedBy = (TextView) v.findViewById(R.id.found_tournament_list_createdBy);
             tOpen = (TextView) v.findViewById(R.id.found_tournament_list_open);
+            tStatus = (TextView) v.findViewById(R.id.found_tournament_list_status);
             mView = v;
         }
     }

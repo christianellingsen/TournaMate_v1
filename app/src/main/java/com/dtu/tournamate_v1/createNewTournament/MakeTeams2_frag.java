@@ -55,7 +55,7 @@ public class MakeTeams2_frag extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         root = inflater.inflate(R.layout.make_teams2, container, false);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Make teams");
 

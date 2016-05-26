@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d3d3d3">
+    android:background="#f5f5f5">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:orientation="vertical">
 
             <TextView
-            style="@style/txt_h2"
+            style="@style/txt_h1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -140,7 +140,7 @@
 
 
     <TextView
-        style="@style/txt_h2"
+        style="@style/txt_h1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"

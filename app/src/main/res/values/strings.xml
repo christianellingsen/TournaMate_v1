@@ -50,7 +50,7 @@
     <string name="activeTournament_done">DONE!</string>
     <string name="activeTournament_seeWinner">See winner</string>
     <string name="tournamentWinner_header">Results</string>
-    <string name="tournamentWinner_theWinneris">Tournament winner:</string>
+    <string name="tournamentWinner_theWinneris">Tournament winner</string>
     <string name="tournamentWinner_end">End</string>
     <string name="addplayer_selectPlayers">Select players</string>
     <string name="rank_tournamentRank">Tournament rank</string>

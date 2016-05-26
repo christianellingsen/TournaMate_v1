@@ -2,8 +2,11 @@ package com.dtu.tournamate_v1.activeTournament;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
  */
 public class RankList_frag extends Fragment {
 
+    private static final String TAG = "Ranklist";
     ImageView info;
     FrameLayout infoCardFrame, shadowFrame;
     ListView lv;
@@ -41,6 +45,12 @@ public class RankList_frag extends Fragment {
         infoCardFrame = (FrameLayout) rod.findViewById(R.id.info_container);
         shadowFrame = (FrameLayout) rod.findViewById(R.id.shadowFrame);
         info = (ImageView) rod.findViewById(R.id.tableInfoView);
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Rank list");
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+
+
 
         shadowFrame.setVisibility(View.GONE);
         infoCardFrame.setVisibility(View.GONE);
@@ -132,6 +142,24 @@ public class RankList_frag extends Fragment {
     }
 
 
+    @Override
+    public void onStop() {
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onStop();
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG,"onOptionsSelected");
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Log.d(TAG,"R.id.home pressed");
+                getActivity().onBackPressed();
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

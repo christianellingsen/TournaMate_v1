@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.dtu.tournamate_v1.createNewTournament.TournamentReady_frag;
 import com.firebase.client.AuthData;
@@ -18,6 +19,7 @@ import com.firebase.client.ValueEventListener;
 //import com.parse.Parse;
 //import com.parse.ParseObject;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,6 +32,7 @@ import java.util.Set;
  */
 
 public class MyApplication extends android.app.Application {
+    private static final String TAG = "MyApplication" ;
 
     // User data
 
@@ -82,6 +85,7 @@ public class MyApplication extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         handler = new Handler();
 
@@ -104,6 +108,25 @@ public class MyApplication extends android.app.Application {
         if (authData != null) {
             fetchUserFromFirebase();
             new Thread(fetchFirebaseRunnable).start();
+
+
+            Firebase userRef = ref.child(MyApplication.usersString).child(MyApplication.getUser().getU_ID());
+            userRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //adapter.notifyDataSetChanged();
+                    Log.d(TAG,"User onDataChanged");
+                    User u = dataSnapshot.getValue(User.class);
+                    MyApplication.getUser().setStoredTournamentsID(u.getStoredTournamentsID());
+                    Log.d(TAG,"size of storedTournaments: " +MyApplication.getUser().getStoredTournamentsID().size());
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+
         }
 
 

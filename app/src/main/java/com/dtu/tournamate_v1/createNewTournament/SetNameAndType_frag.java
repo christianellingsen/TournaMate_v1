@@ -58,7 +58,7 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         root = i.inflate(R.layout.set_name_and_type, container, false);
 
         t_name_et = (EditText) root.findViewById(R.id.set_tournament_name_et);

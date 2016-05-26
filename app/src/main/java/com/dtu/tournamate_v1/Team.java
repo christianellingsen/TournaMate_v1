@@ -6,6 +6,8 @@ import android.util.SparseArray;
 //import com.parse.ParseClassName;
 //import com.parse.ParseObject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 /**
@@ -133,6 +135,17 @@ public class Team { // extends ParseObject{
             }
             teamName = teamName.substring(0,teamName.length()-3);
         }
+    }
+
+    @JsonIgnore
+    public String getTeamMembersAsString(){
+        String teamMembers = "";
+        for (Player p : getTeamMembers()){
+            teamMembers += p.getName();
+            teamMembers += " & ";
+        }
+        teamMembers = teamMembers.substring(0,teamMembers.length()-3);
+        return teamMembers;
     }
 
 }

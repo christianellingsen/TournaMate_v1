@@ -70,7 +70,7 @@ public class AddPlayer_frag extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState){
-
+        super.onCreate(savedInstanceState);
         rod = i.inflate(R.layout.add_players, container, false);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Add selectedPlayers");

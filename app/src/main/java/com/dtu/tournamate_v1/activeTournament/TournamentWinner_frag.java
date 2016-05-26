@@ -4,12 +4,14 @@ import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,27 +36,40 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
     private TextView winnerName_tv;
     private Button rank_b, matchList_b, end_b;
     private Team winner;
-    ListView lv;
-    ArrayList<Team> teams;
-    ArrayList<String> teamsStringList;
-    ArrayList<Match> matches;
-    ArrayList<String> matchesStringList;
-    View rod;
+
+    private ArrayList<Team> teams;
+    private ArrayList<String> teamsStringList;
+    private ArrayList<Match> matches;
+    private ArrayList<String> matchesStringList;
+    private View rod;
+
+    private FrameLayout frame;
+
     Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
 
     @Override
     public View onCreateView(LayoutInflater i, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         rod = i.inflate(R.layout.tournament_winner, container, false);
+
         matchesStringList = new ArrayList<>();
         teams = MyApplication.teams;
         matches = MyApplication.matchList;
         teamsStringList = new ArrayList<>();
 
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Result");
+
         winnerName_tv = (TextView) rod.findViewById(R.id.textViewWinner_teamName);
         rank_b = (Button) rod.findViewById(R.id.buttonWinner_rank);
         matchList_b = (Button) rod.findViewById(R.id.buttonWinner_matchList);
         end_b = (Button) rod.findViewById(R.id.buttonWinner_end);
+        frame = (FrameLayout) rod.findViewById(R.id.winner_frame);
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.winner_frame, new RankList_frag())
+                .addToBackStack(null)
+                .commit();
 
 
         rank_b.setOnClickListener(this);
@@ -66,52 +81,6 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
         winner = MyApplication.teams.get(0);
 
         winnerName_tv.setText(winner.getTeamName());
-
-        lv = (ListView) rod.findViewById(R.id.listViewWinner);
-
-        for(Team t : teams){
-            if(t.getTeamName().equals("Dummy")) {
-
-            }
-            else {
-                teamsStringList.add(t.getTeamName());
-                Log.d("Debug", "" + t.getTeamName() + " has played " + t.getMatechesPlayed() + " matches");
-            }
-        }
-        for (Match m : matches){
-            Team t1 = m.getT1();
-            Team t2 = m.getT2();
-
-            matchesStringList.add(t1.getTeamName() + " VS " + t2.getTeamName());
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(),R.layout.rank_tv,R.id.textViewRankTV_name,teamsStringList) {
-            @Override
-            public View getView(int position, View cachedView, ViewGroup parent) {
-                View view = super.getView(position, cachedView, parent);
-
-                TextView teamRank = (TextView) view.findViewById(R.id.textViewRankTV_Rank);
-                teamRank.setText("" + (position+1));
-
-                TextView played = (TextView) view.findViewById(R.id.textViewRankTV_Played);
-                played.setText(""+teams.get(position).getMatechesPlayed());
-
-                TextView won = (TextView) view.findViewById(R.id.textViewRankTV_Won);
-                won.setText(""+teams.get(position).getMatchesWon());
-
-                TextView lost = (TextView) view.findViewById(R.id.textViewRankTV_Lost);
-                lost.setText(""+teams.get(position).getMatchesLost());
-
-                TextView draw = (TextView) view.findViewById(R.id.textViewRankTV_Draw);
-                draw.setText(""+teams.get(position).getMatchesDraw());
-
-                TextView points = (TextView) view.findViewById(R.id.textViewRankTV_Points);
-                points.setText(""+teams.get(position).getOverAllScore());
-
-                return view;
-            }
-        };
-        lv.setAdapter(adapter);
 
         Firebase tournamentRef = myFirebaseRef.child("Tournaments");
         Firebase updateTournamentRef = tournamentRef.child(MyApplication.getActiveTournament().getT_ID());
@@ -125,55 +94,17 @@ public class TournamentWinner_frag extends Fragment implements View.OnClickListe
     @Override
     public void onClick(View v){
         if (v==rank_b){
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(),R.layout.rank_tv,R.id.textViewRankTV_name,teamsStringList) {
-                @Override
-                public View getView(int position, View cachedView, ViewGroup parent) {
-                    View view = super.getView(position, cachedView, parent);
-
-                    TextView teamRank = (TextView) view.findViewById(R.id.textViewRankTV_Rank);
-                    teamRank.setText("" + (position+1));
-
-                    TextView played = (TextView) view.findViewById(R.id.textViewRankTV_Played);
-                    played.setText(""+teams.get(position).getMatechesPlayed());
-
-                    TextView won = (TextView) view.findViewById(R.id.textViewRankTV_Won);
-                    won.setText(""+teams.get(position).getMatchesWon());
-
-                    TextView lost = (TextView) view.findViewById(R.id.textViewRankTV_Lost);
-                    lost.setText(""+teams.get(position).getMatchesLost());
-
-                    TextView draw = (TextView) view.findViewById(R.id.textViewRankTV_Draw);
-                    draw.setText(""+teams.get(position).getMatchesDraw());
-
-                    TextView points = (TextView) view.findViewById(R.id.textViewRankTV_Points);
-                    points.setText(""+teams.get(position).getOverAllScore());
-
-                    return view;
-                }
-            };
-            lv.setAdapter(adapter);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.winner_frame, new RankList_frag())
+                    .addToBackStack(null)
+                    .commit();
 
         }
         else if (v==matchList_b){
-            ArrayAdapter adapter = new ArrayAdapter(getActivity(),R.layout.match_list_with_score,R.id.textViewMatchList_team,matchesStringList) {
-                @Override
-                public View getView(int position, View cachedView, ViewGroup parent) {
-                    View view = super.getView(position, cachedView, parent);
-
-                    TextView teamNumber = (TextView) view.findViewById(R.id.textViewMatchList_number);
-                    teamNumber.setText("" + (position + 1));
-
-                    TextView score = (TextView) view.findViewById(R.id.textViewMatchList_score);
-                    score.setText(matches.get(position).getScoreT1() + " - " + matches.get(position).getScoreT2());
-
-                    if (matches.get(position).isPlayed()){
-                        score.setTextColor(Color.parseColor("#0FAE02"));
-                    }
-
-                    return view;
-                }
-            };
-            lv.setAdapter(adapter);
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.winner_frame, new MatchList_frag())
+                    .addToBackStack(null)
+                    .commit();
         }
         else if (v==end_b){
 

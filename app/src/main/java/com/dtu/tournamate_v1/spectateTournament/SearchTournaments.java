@@ -66,6 +66,9 @@ public class SearchTournaments extends Fragment{
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setClickable(true);
 
+        searchView.setIconified(false);
+        searchView.setQueryHint("Tournament name");
+
         //***setOnQueryTextListener***
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

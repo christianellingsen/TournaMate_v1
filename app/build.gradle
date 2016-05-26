@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     compileSdkVersion 23
@@ -42,6 +57,10 @@ dependencies {
     compile 'com.commit451:inkpageindicator:1.0.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'biz.kasual:materialnumberpicker:1.2.1'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+        transitive = true;
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

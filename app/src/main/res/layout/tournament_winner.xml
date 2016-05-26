@@ -1,187 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
-        android:id="@+id/linearLayout6"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/tournamentWinner_theWinneris"
-        android:id="@+id/textView42"
-        android:textSize="35dp"
-        android:layout_above="@+id/textViewWinner_teamName"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Team name"
-        android:id="@+id/textViewWinner_teamName"
-        android:textColor="#0FAE02"
-        android:textSize="27dp"
-        android:paddingBottom="20dp"
-        android:layout_above="@+id/linearLayout6"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-
-        android:id="@+id/linearLayout5"
-        android:layout_above="@+id/listViewWinner"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="false">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="#"
-            android:id="@+id/textViewRankTV_Rank"
-            android:layout_marginLeft="10dp"
-            style="@style/txt_h3"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Hold navn"
-            android:id="@+id/textViewRankTV_name"
-            android:layout_marginLeft="10dp"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/textViewRankTV_Rank"
-            style="@style/txt_h3"/>
-
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="155dp">
-
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content">
-            <TextView
-                android:id="@+id/textViewRankTV_Played"
-                android:text="K"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:gravity="left"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
-            <TextView
-                android:id="@+id/textViewRankTV_Won"
-                android:text="V"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:gravity="left"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
-            <TextView
-                android:id="@+id/textViewRankTV_Draw"
-                android:text="U"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:gravity="left"
-                android:layout_marginRight="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
-            <TextView
-                android:text="T"
-                android:id="@+id/textViewRankTV_Lost"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:gravity="left"
-                android:layout_marginRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/txt_h3"></TextView>
-            <TextView
-                android:text="P"
-                android:id="@+id/textViewRankTV_Points"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:gravity="left"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="15dp"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="gravity"
-                style="@style/txt_h3"></TextView>
-        </TableRow>
-        </TableLayout>
-    </LinearLayout>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="323dp"
-        android:id="@+id/listViewWinner"
-        android:layout_gravity="center_horizontal"
-        android:layout_above="@+id/linearLayout4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:scrollbarFadeDuration="0"
-        android:scrollbarThumbVertical="@drawable/scrollbar"
-        android:fadeScrollbars="false"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_weight="0.35"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:id="@+id/linearLayout4">
 
-        <Button
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.CardView
+            android:id="@+id/tournament_list_card_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/standard_button"
-            style="@style/txt_button"
-            android:text="@string/activeTournament_buttonRank"
-            android:id="@+id/buttonWinner_rank"
-            android:layout_marginRight="5dp" />
+            android:layout_gravity="center"
+            cardview:cardElevation="10dp"
+            app:cardCornerRadius="5dp"
+            android:backgroundTint="@color/colorPrimary">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/standard_button"
-            style="@style/txt_button"
-            android:text="@string/activeTournament_buttonMatchlist"
-            android:id="@+id/buttonWinner_matchList"
-            android:layout_marginRight="5dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="15dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/standard_button"
-            style="@style/txt_button"
-            android:text="@string/tournamentWinner_end"
-            android:id="@+id/buttonWinner_end" />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/colorAccent"
+                    android:text="@string/tournamentWinner_theWinneris"
+                    android:id="@+id/textView42"
+                    android:textSize="25dp"
+                    android:layout_above="@+id/textViewWinner_teamName"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Team name"
+                    android:id="@+id/textViewWinner_teamName"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20dp"
+                    android:paddingBottom="15dp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/linearLayout4"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/linearLayout"
+        android:id="@+id/winner_frame"></FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@color/colorPrimary"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/buttonWinner_rank"
+            android:background="@drawable/icon_ranking_teal"
+            style="@style/txt_button"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/buttonWinner_matchList"
+            android:background="@drawable/icon_history_teal"
+            style="@style/txt_button"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/buttonWinner_end"
+            android:background="@drawable/icon_done_teal"
+            android:textColor="#ffffff"
+            android:foregroundGravity="right"
+            android:gravity="right"
+            android:textAlignment="gravity"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"/>
+    </LinearLayout>
+
 </RelativeLayout>
