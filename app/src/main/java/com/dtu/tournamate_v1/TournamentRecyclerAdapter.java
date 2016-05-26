@@ -173,7 +173,7 @@ public class TournamentRecyclerAdapter extends RecyclerView.Adapter<TournamentRe
                             .make(fragment.getView(), "Added to favourites.. if it was implemented..", Snackbar.LENGTH_LONG);
 
                     snackbar.show();
-
+                    notifyDataSetChanged();
                 }
             }
 

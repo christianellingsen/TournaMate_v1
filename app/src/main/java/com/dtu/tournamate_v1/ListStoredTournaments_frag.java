@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -32,8 +33,11 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import jp.wasabeef.recyclerview.animators.LandingAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInRightAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 
 public class ListStoredTournaments_frag extends Fragment {
@@ -72,7 +76,11 @@ public class ListStoredTournaments_frag extends Fragment {
         mRecyclerView = (RecyclerView) root.findViewById(R.id.stored_matches_recycler_view);
 
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemAnimator(new SlideInRightAnimator());
+        DefaultItemAnimator animator = new DefaultItemAnimator();
+        animator.setAddDuration(200);
+        //animator.setRemoveDuration(0);
+        mRecyclerView.setItemAnimator(animator);
+       // mRecyclerView.setItemAnimator(new SlideInRightAnimator());
 
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
