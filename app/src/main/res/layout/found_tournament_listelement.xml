@@ -17,7 +17,8 @@
         android:layout_gravity="center"
         cardview:cardElevation="10dp"
         app:cardCornerRadius="3dp"
-        android:backgroundTint="@color/colorPrimary">
+        android:backgroundTint="@color/colorWhiteBox"
+        android:layout_margin="5dip">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorTextBlack"
                 android:text="Name"
                 android:padding="10dp"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -40,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorTextBlack"
                 android:gravity="left"
                 android:text="date created"
                 android:paddingLeft="10dp"
@@ -52,7 +53,7 @@
             <TextView
                 android:id="@+id/found_tournament_list_createdBy"
                 android:layout_width="match_parent"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorTextBlack"
                 android:layout_height="wrap_content"
                 android:text="created by"
                 android:paddingLeft="10dp"
@@ -77,7 +78,7 @@
                 <TextView
                     android:id="@+id/found_tournament_list_open"
                     android:layout_width="0dp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorTextBlack"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="open"
@@ -87,7 +88,7 @@
                 <TextView
                     android:id="@+id/found_tournament_list_status"
                     android:layout_width="0dp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorTextBlack"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="status"
