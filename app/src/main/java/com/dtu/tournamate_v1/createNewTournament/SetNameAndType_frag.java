@@ -39,17 +39,17 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
     EditText t_name_et;
     Button create_b;
     CircleImageView groupPlay_img, knockOut_img;
-    Switch setNumberOfTeams, setTeamSize, open;
-    TextView numberOfTeams_tv, teamSize_tv;
+    Switch setTeamSize, open;
+    TextView teamSize_tv;
 
-    CardView group_cv, knockOut_cv, setNumber_cv, number_cv, setSize_cv, size_cv, open_cv;
+    CardView group_cv, knockOut_cv, number_cv, setSize_cv, size_cv, open_cv;
 
     View root;
     private boolean cancel = false;
     private boolean typeSelected = false;
     private View focusView = null;
 
-    int numberOfTeams = 2;
+    //int numberOfTeams = 2;
     int teamSize = 1;
 
     Tournament activeTournament;
@@ -65,15 +65,15 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
         create_b = (Button) root.findViewById(R.id.createTournamentButton);
         groupPlay_img = (CircleImageView) root.findViewById(R.id.groupPlayImage);
         knockOut_img = (CircleImageView) root.findViewById(R.id.knock_out_image);
-        setNumberOfTeams = (Switch) root.findViewById(R.id.set_team_number_switch);
-        numberOfTeams_tv = (TextView) root.findViewById(R.id.number_of_teams_value);
+        //setNumberOfTeams = (Switch) root.findViewById(R.id.set_team_number_switch);
+        //numberOfTeams_tv = (TextView) root.findViewById(R.id.number_of_teams_value);
         setTeamSize = (Switch) root.findViewById(R.id.team_size_switch);
         teamSize_tv = (TextView) root.findViewById(R.id.team_size_value);
         open = (Switch) root.findViewById(R.id.open_to_join_switch);
 
         group_cv = (CardView) root.findViewById(R.id.group_play_cv);
         knockOut_cv = (CardView) root.findViewById(R.id.knock_out_cv);
-        setNumber_cv = (CardView) root.findViewById(R.id.set_number_cv);
+        //setNumber_cv = (CardView) root.findViewById(R.id.set_number_cv);
         number_cv = (CardView) root.findViewById(R.id.number_cv);
         setSize_cv = (CardView) root.findViewById(R.id.set_size_cv);
         size_cv = (CardView) root.findViewById(R.id.size_cv);
@@ -83,25 +83,25 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
 
         SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
         setTeamSize.setChecked(prefs.getBoolean("setTeamSize",false));
-        setNumberOfTeams.setChecked(prefs.getBoolean("setNumberOfTeams",false));
+        //setNumberOfTeams.setChecked(prefs.getBoolean("setNumberOfTeams",false));
         teamSize = prefs.getInt("teamSize",1);
-        numberOfTeams = prefs.getInt("numberOfTeams",2);
+        //numberOfTeams = prefs.getInt("numberOfTeams",2);
 
         teamSize_tv.setText(""+teamSize);
-        numberOfTeams_tv.setText(""+numberOfTeams);
+        //numberOfTeams_tv.setText(""+numberOfTeams);
 
         if (!setTeamSize.isChecked()) {
             size_cv.setAlpha((float) 0.4);
         }
-        if (!setNumberOfTeams.isChecked()) {
+        /**if (!setNumberOfTeams.isChecked()) {
             number_cv.setAlpha((float) 0.4);
-        }
-        number_cv.setClickable(setTeamSize.isChecked());
+        }**/
+        //number_cv.setClickable(setTeamSize.isChecked());
         size_cv.setClickable(setTeamSize.isChecked());
 
         group_cv.setOnClickListener(this);
         knockOut_cv.setOnClickListener(this);
-        setNumber_cv.setOnClickListener(this);
+        //setNumber_cv.setOnClickListener(this);
         number_cv.setOnClickListener(this);
         setSize_cv.setOnClickListener(this);
         size_cv.setOnClickListener(this);
@@ -123,7 +123,7 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
         if (v==group_cv){
             typeSelected =true;
             groupPlay_img.setImageResource(R.drawable.save);
-            knockOut_img.setImageResource(R.drawable.knoc_out);
+            knockOut_img.setImageResource(R.drawable.knockout_v2);
             create_b.setAlpha(1);
             create_b.setClickable(true);
             //MyApplication.type="Round Robin";
@@ -133,14 +133,14 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
         else if (v==knockOut_cv){
             typeSelected =true;
             knockOut_img.setImageResource(R.drawable.save);
-            groupPlay_img.setImageResource(R.drawable.group_play);
+            groupPlay_img.setImageResource(R.drawable.gruppespil_icon_v2);
             create_b.setAlpha(1);
             create_b.setClickable(true);
             //MyApplication.type="Single Elimination";
             activeTournament.setType("Single Elimination");
         }
 
-        else if (v==setNumber_cv){
+        /**else if (v==setNumber_cv){
             setNumberOfTeams.setChecked(!setNumberOfTeams.isChecked());
             number_cv.setClickable(setNumberOfTeams.isChecked());
             if (setNumberOfTeams.isChecked()){
@@ -149,7 +149,7 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
             else {
                 number_cv.setAlpha((float)0.4);
             }
-        }
+        }**/
 
         else if (v==setSize_cv){
             setTeamSize.setChecked(!setTeamSize.isChecked());
@@ -162,7 +162,7 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
             }
         }
 
-        else if (v==number_cv && setNumberOfTeams.isChecked()){
+        /**else if (v==number_cv && setNumberOfTeams.isChecked()){
 
             final MaterialNumberPicker numberPicker = new MaterialNumberPicker.Builder(getContext())
                     .minValue(1)
@@ -189,7 +189,7 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
                     })
                     .show();
 
-        }
+        }**/
 
         else if (v==size_cv && setTeamSize.isChecked()) {
             final MaterialNumberPicker numberPicker = new MaterialNumberPicker.Builder(getContext())
@@ -258,7 +258,7 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
                 activeTournament.setCreatedAt(date);
                 activeTournament.setIsOpenToJoin(open.isChecked());
                 activeTournament.setIsStarted(false);
-                activeTournament.setNumberOfTeams(numberOfTeams);
+                //activeTournament.setNumberOfTeams(numberOfTeams);
                 activeTournament.setTeamSize(teamSize);
                 activeTournament.setNumberOfMatches(0);
                 activeTournament.setT_ID(newTournamentRef.getKey());
@@ -305,9 +305,9 @@ public class SetNameAndType_frag extends Fragment implements View.OnClickListene
         SharedPreferences prefs = getActivity().getSharedPreferences("com.dtu.tournamate_v1", Context.MODE_PRIVATE);
         prefs.edit().putStringSet("tournaments", new HashSet<String>(MyApplication.getUser().getStoredTournamentsID())).apply();
         prefs.edit().putBoolean("setTeamSize",setTeamSize.isChecked()).apply();
-        prefs.edit().putBoolean("setNumberOfTeams",setNumberOfTeams.isChecked()).apply();
+        //prefs.edit().putBoolean("setNumberOfTeams",setNumberOfTeams.isChecked()).apply();
         prefs.edit().putInt("teamSize",teamSize).apply();
-        prefs.edit().putInt("numberOfTeams",numberOfTeams).apply();
+        //prefs.edit().putInt("numberOfTeams",numberOfTeams).apply();
         prefs.edit().commit();
 
         Firebase userRef = ref.child(MyApplication.usersString);

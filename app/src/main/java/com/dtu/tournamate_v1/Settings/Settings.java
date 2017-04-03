@@ -2,16 +2,22 @@ package com.dtu.tournamate_v1.Settings;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.dtu.tournamate_v1.MyApplication;
 import com.dtu.tournamate_v1.R;
 import com.dtu.tournamate_v1.SettingsRecyclerAdapter;
 import com.dtu.tournamate_v1.User;
+import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,12 +25,17 @@ import java.util.LinkedHashMap;
 /**
  * Created by ce on 02-05-2016.
  */
+
 public class Settings extends Fragment {
 
         private RecyclerView mRecyclerView;
         private RecyclerView.LayoutManager mLayoutManager;
 
         private SettingsRecyclerAdapter adapter;
+
+        Firebase myFirebaseRef = new Firebase(MyApplication.firebase_URL);
+
+
 
         View root;
 
@@ -59,7 +70,7 @@ public class Settings extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-            adapter = new SettingsRecyclerAdapter(settingsMap,settingTypes);
+            adapter = new SettingsRecyclerAdapter(settingsMap,settingTypes,this);
             mRecyclerView.setAdapter(adapter);
             //updateList();
             //mRecyclerView.setAdapter(fireBaseAdapter);

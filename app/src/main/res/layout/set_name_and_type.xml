@@ -90,7 +90,7 @@
                             android:id="@+id/groupPlayImage"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/group_play"
+                            android:src="@drawable/gruppespil_icon_v2"
                             />
 
 
@@ -138,14 +138,14 @@
                             android:id="@+id/knock_out_image"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:src="@drawable/knoc_out"
+                            android:src="@drawable/knockout_v2"
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <!--<android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -172,7 +172,7 @@
 
 
                     </LinearLayout>
-                </android.support.v7.widget.CardView>
+                </android.support.v7.widget.CardView>-->
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                     android:alpha="1"
                     android:clickable="false">
 
-                    <LinearLayout
+                    <!--<LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_weight="2"
@@ -209,7 +209,7 @@
                             android:textAppearance="@style/txt_h3"
                             android:textColor="@color/colorPrimary"/>
 
-                    </LinearLayout>
+                    </LinearLayout>-->
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView

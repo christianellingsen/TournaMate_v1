@@ -159,40 +159,40 @@ public class MakeTeamAdapter extends RecyclerView.Adapter<MakeTeamAdapter.ViewHo
                     builder.create();
 
                     EditText teamName = (EditText) view.findViewById(R.id.dialog_add_player_name);
-                    if (teamsList.get(position).getTeamMembers().size()>0) {
-                        teamName.setText("Team "+teamsList.get(position).getTeamMembers().get(0).getName());
-                    }
-                    else {
-                        teamName.setText(teamsList.get(position).getTeamName());
-                    }
-
-                    final AlertDialog dialog = builder.show();
-
-                    Button done = (Button) view.findViewById(R.id.make_team_add_player_add);
-                    done.setText("Done");
-                    done.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            EditText et = (EditText) view.findViewById(R.id.dialog_add_player_name);
-                            String name = et.getText().toString();
-                            teamsList.get(position).setTeamName(name);
-
-                            updateTeamlist();
-                            dialog.dismiss();
-                        }
-                    });
-
-                    Button cancel = (Button) view.findViewById(R.id.make_team_add_player_cancel);
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    Spinner teamSpinner = (Spinner) view.findViewById(R.id.dialog_add_player_team);
-                    teamSpinner.setVisibility(View.GONE);
+                if (teamsList.get(position).getTeamMembers().size()>0) {
+                    teamName.setText("Team "+teamsList.get(position).getTeamMembers().get(0).getName());
                 }
+                else {
+                    teamName.setText(teamsList.get(position).getTeamName());
+                }
+
+                final AlertDialog dialog = builder.show();
+
+                Button done = (Button) view.findViewById(R.id.make_team_add_player_add);
+                done.setText("Done");
+                done.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText et = (EditText) view.findViewById(R.id.dialog_add_player_name);
+                        String name = et.getText().toString();
+                        teamsList.get(position).setTeamName(name);
+
+                        updateTeamlist();
+                        dialog.dismiss();
+                    }
+                });
+
+                Button cancel = (Button) view.findViewById(R.id.make_team_add_player_cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Spinner teamSpinner = (Spinner) view.findViewById(R.id.dialog_add_player_team);
+                teamSpinner.setVisibility(View.GONE);
+            }
 
             }
         });

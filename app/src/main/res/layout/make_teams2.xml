@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorGreyBackground"
     android:weightSum="10">
 
         <LinearLayout
@@ -43,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/make_teams_teamsRecyclerview"
-            android:columnWidth="160dp"
+            android:columnWidth="180dp"
             android:clipToPadding="false">
 
 

@@ -20,6 +20,7 @@ import com.dtu.tournamate_v1.Settings.Settings;
 import com.dtu.tournamate_v1.createNewTournament.NewTournament_frag;
 import com.dtu.tournamate_v1.login.WelcomeScreen_akt;
 import com.dtu.tournamate_v1.spectateTournament.SearchTournaments;
+import com.dtu.tournamate_v1.myProfile.MyProfile;
 import com.firebase.client.Firebase;
 
 public class MainMenu_akt extends AppCompatActivity
@@ -27,6 +28,7 @@ public class MainMenu_akt extends AppCompatActivity
 
     TextView userName;
     Toolbar toolbar;
+    //ImageView userImg;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,9 @@ public class MainMenu_akt extends AppCompatActivity
 
         userName = (TextView) header.findViewById(R.id.drawerTop_userName);
         userName.setText(MyApplication.getUser().getFullName());
+
+        //userImg = (ImageView) header.findViewById(R.id.navigation_drawer_user_account_picture_profile);
+        //userImg.setImage (MyApplication.getUser().getImage());
 
         header.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,9 +166,12 @@ public class MainMenu_akt extends AppCompatActivity
         }
 
         else if (id==R.id.nav_my_profile){
-            Snackbar snackbar = Snackbar
-                    .make(getCurrentFocus(), "Not implemented yet", Snackbar.LENGTH_LONG);
-            snackbar.show();
+            getSupportActionBar().setTitle("My Profile");
+            getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.main_frame, new Settings())
+                    .commit();
+            fabOnOff(0);
         }
 
         else if (id== R.id.nav_settings){

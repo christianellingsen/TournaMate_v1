@@ -4,13 +4,10 @@
     android:layout_height="match_parent"
     android:background="#f0f0f0">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/settings_recycler_view"
-        android:scrollbars="vertical"
+
+    <TextView
+        android:text="TextView"
         android:layout_width="match_parent"
-        android:layout_height="203dp"
-        />
-
+        android:layout_height="wrap_content"
+        android:id="@+id/myprofileusername" />
 </LinearLayout>
-
-
